@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web&display=swap");
+
+body {
+  display: flex;
+  justify-content: center;
+  font-family: "Titillium Web", sans-serif;
+  background: #f5f5f5;
+}
+
+.content {
+  padding: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 500px;
+  line-height: 30px;
+}
+
+.loading-animation {
+  background: linear-gradient(
+    135deg,
+    rgba(238, 238, 238, 1) 0%,
+    rgba(238, 238, 238, 1) 33%,
+    rgb(255, 255, 255) 53%,
+    rgba(238, 238, 238, 1) 59%,
+    rgba(238, 238, 238, 1) 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 2s ease infinite;
+}
+
+.title {
+  font-size: 30px;
+  padding: 0 30px 30px 0;
+}
+
+.block {
+  background: white;
+  box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.overview {
+  display: flex;
+  flex-direction: row;
+}
+
+.overview_item {
+  margin: 15px;
+  text-align: center;
+}
+
+.overview_number {
+  font-size: 2em;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 120% 0%;
+  }
+  100% {
+    background-position: -50% 0%;
+  }
+}
