@@ -77,7 +77,7 @@
       <div class="title">死亡率及治愈率</div>
       <Chart
         id="rateChart3"
-        type="line"
+        type="area"
         :dataHistory="dataHistory"
         :seriesData="rateChart3"
         :colors='["#ca0011","#0088ff"]'

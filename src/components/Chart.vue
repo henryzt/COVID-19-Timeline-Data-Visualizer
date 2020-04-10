@@ -1,16 +1,16 @@
 <template>
   <div class="mBlock">
     <div class="btn-group center" role="group" aria-label="date range">
-      <button type="button" class="btn btn-secondary" @click="updateRange(-7,true)">
+      <button type="button" class="btn btn-secondary" :class="{active: range===-7}" @click="updateRange(-7,true)">
         一周内
       </button>
-      <button type="button" class="btn btn-secondary" @click="updateRange(-14,true)">
+      <button type="button" class="btn btn-secondary" :class="{active: range===-14}" @click="updateRange(-14,true)">
         两周内
       </button>
-      <button type="button" class="btn btn-secondary" @click="updateRange(-31,false)">
+      <button type="button" class="btn btn-secondary" :class="{active: range===-31}" @click="updateRange(-31,false)">
         一个月内
       </button>
-      <button type="button" class="btn btn-secondary" @click="updateRange(0,false)">
+      <button type="button" class="btn btn-secondary" :class="{active: range===0}" @click="updateRange(0,false)">
         全部数据
       </button>
     </div>
@@ -39,7 +39,7 @@ export default {
   data: function () {
     return {
       showLabel: false,
-      range: 0,
+      range: -31,
     };
   },
   methods:{
