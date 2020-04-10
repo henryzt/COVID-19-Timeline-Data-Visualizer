@@ -57,7 +57,7 @@
 
       <div class="title">确诊及死亡</div>
       <Chart
-              id="confirmedAndDeathChart1"
+        id="confirmedAndDeathChart1"
         type="line"
         :dataHistory="dataHistory"
         :seriesData="confirmedAndDeathChart1"
@@ -66,12 +66,23 @@
 
       <div class="title">新增死亡</div>
       <Chart
-              id="deathChart2"
-              type="bar"
-              :dataHistory="dataHistory"
-              :seriesData="deathChart2"
-              :colors='["#ff0000"]'
+        id="deathChart2"
+        type="bar"
+        :stacked="true"
+        :dataHistory="dataHistory"
+        :seriesData="deathChart2"
+        :colors='["#c40000","#3d000d","#2c9100"]'
       ></Chart>
+
+      <div class="title">死亡率及治愈率</div>
+      <Chart
+        id="rateChart3"
+        type="line"
+        :dataHistory="dataHistory"
+        :seriesData="rateChart3"
+        :colors='["#ca0011","#0088ff"]'
+      ></Chart>
+
 
     </div>
   </div>
@@ -87,7 +98,6 @@ export default {
   },
   data: () => {
     return {
-      message: "Test",
       dataNow: null,
       dataHistory: null,
       confirmedAndDeathChart: null
@@ -122,16 +132,46 @@ export default {
       ]
     },
     deathChart2:function () {
+      let lastConfirmed = 0;
       let lastDeath = 0;
+      // let lastCured = 0;
       return [
         {
-          name: '死亡人数',
+          name: '新增确诊',
+          data: this.dataHistory.map(a => {
+            let newConfirmed = a.confirmed - lastConfirmed;
+            lastConfirmed = a.confirmed;
+            return newConfirmed
+          })
+        },
+        {
+          name: '新增死亡',
           data: this.dataHistory.map(a => {
             let newDeath = a.death - lastDeath;
             lastDeath = a.death;
             return newDeath
           })
         }
+
+      ]
+    },
+    rateChart3:function () {
+      return [
+        {
+          name: '死亡率',
+          data: this.dataHistory.map(a => {
+            let rate = (a.death / a.confirmed).toPrecision(4) ;
+            return rate
+          })
+        },
+        {
+          name: '治愈率',
+          data: this.dataHistory.map(a => {
+            let rate = (a.cured / a.confirmed).toPrecision(4) ;
+            return rate
+          })
+        }
+
       ]
     }
   },

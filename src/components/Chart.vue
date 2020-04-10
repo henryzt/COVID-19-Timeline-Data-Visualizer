@@ -33,7 +33,9 @@ export default {
     dataHistory:Array,
     id: String,
     type: String,
-    colors: Array},
+    colors: Array,
+    stacked:Boolean
+  },
   data: function () {
     return {
       showLabel: false,
@@ -59,6 +61,7 @@ export default {
           id: this.id,
           height: 350,
           type: this.type?this.type:"line",
+          stacked: this.stacked,
           zoom: {
             enabled: true
           }
