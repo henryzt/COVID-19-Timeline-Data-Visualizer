@@ -66,6 +66,11 @@ body {
   font-size: 2em;
 }
 
+.center {
+  text-align: center;
+  margin: auto inherit;
+}
+
 @keyframes loading {
   0% {
     background-position: 120% 0%;

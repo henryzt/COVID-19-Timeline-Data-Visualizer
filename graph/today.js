@@ -2,20 +2,24 @@ Vue.component("apexchart", VueApexCharts);
 
 // written by https://github.com/DaviesXue/UCLCSSA_COVID19
 
-function renderConfirmedChart(showLabel) {
+function renderConfirmedChart(range, showLabel) {
   app.confirmedAndDeathChart = {
     series: [
       {
         name: "总确诊",
-        data: app.dataHistory.map((a) => {
-          return a.confirmed;
-        }),
+        data: app.dataHistory
+          .map((a) => {
+            return a.confirmed;
+          })
+          .slice(range),
       },
       {
         name: "总死亡",
-        data: app.dataHistory.map((a) => {
-          return a.death;
-        }),
+        data: app.dataHistory
+          .map((a) => {
+            return a.death;
+          })
+          .slice(range),
       },
     ],
     options: {
@@ -43,9 +47,11 @@ function renderConfirmedChart(showLabel) {
       },
       xaxis: {
         type: "datetime",
-        categories: app.dataHistory.map((a) => {
-          return a.date;
-        }),
+        categories: app.dataHistory
+          .map((a) => {
+            return a.date;
+          })
+          .slice(range),
         labels: {
           format: "dd/MM",
           rotate: -10,

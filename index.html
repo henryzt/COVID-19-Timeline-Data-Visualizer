@@ -76,7 +76,28 @@
         </div>
 
         <div class="title">确诊及死亡</div>
+
         <div class="mBlock">
+          <div class="btn-group center" role="group" aria-label="date range">
+            <button type="button" class="btn btn-secondary" onclick="renderConfirmedChart(-7,true)">
+              一周内
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="renderConfirmedChart(-31,false)"
+            >
+              一个月内
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary active"
+              onclick="renderConfirmedChart(0,false)"
+            >
+              全部数据
+            </button>
+          </div>
+
           <apexchart
             width="500"
             type="line"
