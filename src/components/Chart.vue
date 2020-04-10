@@ -1,17 +1,16 @@
 <template>
   <div class="mBlock">
     <div class="btn-group center" role="group" aria-label="date range">
-      <button type="button" class="btn btn-secondary" onclick="renderConfirmedChart(-7,true)">
+      <button type="button" class="btn btn-secondary" @click="updateRange(-7,true)">
         一周内
       </button>
-      <button type="button" class="btn btn-secondary" onclick="renderConfirmedChart(-31,false)">
+      <button type="button" class="btn btn-secondary" @click="updateRange(-14,true)">
+        两周内
+      </button>
+      <button type="button" class="btn btn-secondary" @click="updateRange(-31,false)">
         一个月内
       </button>
-      <button
-        type="button"
-        class="btn btn-secondary active"
-        onclick="renderConfirmedChart(0,false)"
-      >
+      <button type="button" class="btn btn-secondary" @click="updateRange(0,false)">
         全部数据
       </button>
     </div>
@@ -25,22 +24,35 @@ import VueApexCharts from "vue-apexcharts";
 
 // written by https://github.com/DaviesXue/UCLCSSA_COVID19
 
-// function renderConfirmedChart(range, showLabel) {
-//   app.confirmedAndDeathChart = {};
-// }
-
 export default {
   name: "Chart",
   components: {
     VueApexCharts
   },
-  props: {seriesData: Array, range: Number, dataHistory:Array},
+  props: {seriesData: Array, dataHistory:Array, id: String},
   data: function () {
     return {
-      series: this.seriesData,
-      options: {
+      showLabel: false,
+      range: 0,
+    };
+  },
+  methods:{
+    updateRange: function (range, showLabel) {
+      this.range = range;
+      this.showLabel = showLabel;
+    }
+  },
+  computed: {
+      series: function (){
+        return this.seriesData.map(a => {
+        a.originalData = a.originalData?a.originalData:a.data;
+        a.data = a.originalData.slice(this.range);
+        return a
+      });
+      },
+      options:function (){ return  {
         chart: {
-          id: "confirmedAndDeathChart",
+          id: this.id,
           height: 350,
           type: "line",
           zoom: {
@@ -49,7 +61,7 @@ export default {
         },
         colors: ["#3d0707", "#ff0000"],
         dataLabels: {
-          enabled: false
+          enabled: this.showLabel
         },
         stroke: {
           curve: "smooth"
@@ -64,17 +76,17 @@ export default {
         xaxis: {
           type: "datetime",
           categories: this.dataHistory
-            .map(a => {
-              return a.date;
-            })
-            .slice(this.range),
+                  .map(a => {
+                    return a.date;
+                  })
+                  .slice(this.range),
           labels: {
             format: "dd/MM",
             rotate: -10
           }
         }
       }
-    };
+    }
   }
 };
 </script>
