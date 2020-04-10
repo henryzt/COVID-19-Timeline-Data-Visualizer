@@ -15,7 +15,7 @@
       </button>
     </div>
 
-    <VueApexCharts width="500" type="line" :options="options" :series="series"></VueApexCharts>
+    <VueApexCharts width="500" :type="type" :options="options" :series="series" ></VueApexCharts>
   </div>
 </template>
 
@@ -29,7 +29,11 @@ export default {
   components: {
     VueApexCharts
   },
-  props: {seriesData: Array, dataHistory:Array, id: String},
+  props: {seriesData: Array,
+    dataHistory:Array,
+    id: String,
+    type: String,
+    colors: Array},
   data: function () {
     return {
       showLabel: false,
@@ -54,12 +58,12 @@ export default {
         chart: {
           id: this.id,
           height: 350,
-          type: "line",
+          type: this.type?this.type:"line",
           zoom: {
             enabled: true
           }
         },
-        colors: ["#3d0707", "#ff0000"],
+        colors: this.colors?this.colors: ["#3d0707", "#ff0000"],
         dataLabels: {
           enabled: this.showLabel
         },

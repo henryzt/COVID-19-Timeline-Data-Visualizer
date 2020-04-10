@@ -57,22 +57,22 @@
 
       <div class="title">确诊及死亡</div>
       <Chart
+              id="confirmedAndDeathChart1"
+        type="line"
         :dataHistory="dataHistory"
-        :seriesData="[
-          {
-            name: '总确诊',
-            data: dataHistory.map(a => {
-              return a.confirmed;
-            })
-          },
-          {
-            name: '总死亡',
-            data: dataHistory.map(a => {
-              return a.death;
-            })
-          }
-        ]"
+        :seriesData="confirmedAndDeathChart1"
       ></Chart>
+
+
+      <div class="title">新增死亡</div>
+      <Chart
+              id="deathChart2"
+              type="bar"
+              :dataHistory="dataHistory"
+              :seriesData="deathChart2"
+              :colors='["#ff0000"]'
+      ></Chart>
+
     </div>
   </div>
 </template>
@@ -103,12 +103,43 @@ export default {
       let data = await res.json();
       this.$data.dataHistory = data.data;
     });
-  }
+  },
+  computed: {
+    confirmedAndDeathChart1: function () {
+      return [
+        {
+          name: '总确诊',
+          data: this.dataHistory.map(a => {
+            return a.confirmed;
+          })
+        },
+        {
+          name: '总死亡',
+          data: this.dataHistory.map(a => {
+            return a.death;
+          })
+        }
+      ]
+    },
+    deathChart2:function () {
+      let lastDeath = 0;
+      return [
+        {
+          name: '死亡人数',
+          data: this.dataHistory.map(a => {
+            let newDeath = a.death - lastDeath;
+            lastDeath = a.death;
+            return newDeath
+          })
+        }
+      ]
+    }
+  },
+
 };
 
 
 </script>
 
 <style>
-
 </style>
