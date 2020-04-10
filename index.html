@@ -13,10 +13,14 @@
     />
     <!-- style -->
     <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <!--apexcharts  -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
   </head>
   <body>
     <div id="app">
-      <div class="mContent">
+      <div class="mContent" v-if="dataNow && dataHistory">
         <div class="title">今日概览</div>
         <div class="overview mBlock">
           <div class="overview_item" style="color: #ff5151;">
@@ -70,11 +74,22 @@
             </li>
           </ul>
         </div>
+
+        <div class="title">确诊及死亡</div>
+        <div class="mBlock">
+          <apexchart
+            width="500"
+            type="line"
+            :options="confirmedAndDeathChart.options"
+            :series="confirmedAndDeathChart.series"
+          ></apexchart>
+        </div>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="./script.js"></script>
+    <script src="./graph/today.js"></script>
 
     <!-- bootstrap -->
     <script
