@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div class="mNav">
+      <div class="mNav" style="position: sticky;top: 0;z-index: 100;">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
             <a class="nav-link active" href="#charts">当前数据</a>

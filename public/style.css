@@ -1,8 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Titillium+Web&display=swap");
 
 body {
-  display: flex;
-  justify-content: center;
+  margin: auto;
   font-family: "Titillium Web", sans-serif;
   background: #f5f5f5;
 }
@@ -60,6 +59,8 @@ body {
 .overview_item {
   margin: 1px 15px;
   text-align: center;
+  width: 25%;
+  flex-basis: 100%
 }
 
 .overview_number {
@@ -81,9 +82,10 @@ body {
   }
 }
 
-/*.btn-group-wrap {*/
-/*  text-align: center;*/
-/*}*/
+.btn-group-wrap {
+  /*text-align: center;*/
+  padding-bottom: 10px;
+}
 
 div.btn-group {
   margin: 0 auto;
@@ -112,4 +114,19 @@ div.btn-group {
   padding-top: 10px;
   font-size: 18px;
   text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+.mBlock {
+  padding: 20px;
+}
+  .btn-group-wrap {
+    text-align: center;
+  }
+  .overview_number {
+    font-size: 1.8em;
+  }
+  .overview_title {
+    font-size: 1em;
+  }
 }

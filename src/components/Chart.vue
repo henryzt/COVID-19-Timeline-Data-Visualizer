@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <VueApexCharts width="500" :type="type" :options="options" :series="series" ></VueApexCharts>
+    <VueApexCharts width="100%" :type="type" :options="options" :series="series" ></VueApexCharts>
   </div>
 </template>
 
