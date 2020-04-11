@@ -161,7 +161,7 @@
 
                     yearSlice.forEach((d,i) => d.rank = i);
 
-                    //console.log('IntervalYear: ', yearSlice);
+                    console.log('IntervalYear: ', yearSlice);
 
                     x.domain([0, d3.max(yearSlice, d => d.value)]);
 
@@ -277,8 +277,9 @@
 
                     yearText.html(~~year);
 
-                    if(year == 2018) ticker.stop();
+                    if(year == 2018) year=2000;
                     year = d3.format('.1f')((+year) + 0.1);
+                    console.log(year)
                 },tickDuration);
 
             });
