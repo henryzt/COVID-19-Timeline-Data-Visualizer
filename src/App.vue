@@ -94,7 +94,7 @@
 
       <br>
       <div class="title" id="regionData">地区列表</div>
-      <RegionTable :dataNow="dataNow"></RegionTable>
+      <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
 
     </div>
   </div>
