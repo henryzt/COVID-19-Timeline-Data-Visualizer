@@ -97,7 +97,7 @@
 
           <div class="mSection" id="animation">
               <div class="title">数据动画</div>
-
+                <BarRace></BarRace>
           </div>
 
         <div class="mSection" id="regionData">
@@ -114,13 +114,15 @@
 <script>
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
+import BarRace from "./components/BarRace.vue";
 
 
 export default {
   name: "App",
   components: {
     Chart,
-    RegionTable
+    RegionTable,
+      BarRace
   },
   data: () => {
     return {
