@@ -94,23 +94,7 @@
 
       <br>
       <div class="title" id="regionData">地区列表</div>
-      <div class="mBlock">
-        <table class="table table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">位置</th>
-              <th scope="col">数量</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="singleRegionData" v-for="singleRegion in regionData" :key="singleRegion">
-              <th>{{ singleRegion.place }}</th>
-              <td>{{ singleRegion.number }}</td>
-            </tr>
-            <tr></tr>
-          </tbody>
-        </table>
-      </div>
+      <RegionTable :dataNow="dataNow"></RegionTable>
 
     </div>
   </div>
@@ -118,19 +102,19 @@
 
 <script>
 import Chart from "./components/Chart.vue";
+import RegionTable from "./components/RegionTable.vue";
 
 export default {
   name: "App",
   components: {
-    Chart
+    Chart,
+    RegionTable
   },
   data: () => {
     return {
       dataNow: null,
       dataHistory: null,
       dataUK: null,
-      confirmedAndDeathChart: null,
-      regionData: [],
       todayData: null,
       yestData: null
     };
@@ -139,16 +123,13 @@ export default {
     fetch("https://api.covid19uk.live/").then(async res => {
       let data = await res.json();
       this.$data.dataNow = data.data;
-      this.loadRegionData();
     });
 
     fetch("https://api.covid19uk.live/historyfigures").then(async res => {
       let data = await res.json();
       this.$data.dataHistory = data.data;
       this.todayData = this.dataHistory[this.dataHistory.length - 1];
-      console.log(this.todayData)
       this.yestData = this.dataHistory[this.dataHistory.length - 2];
-      console.log(this.yestData)
     });
 
     fetch("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true").then(async res => {
@@ -214,40 +195,10 @@ export default {
             return rate
           })
         }
-
       ]
     }
   },
-  methods: {
-    loadRegionData: function() {
-      let region_data = new Map();
-      let regionJSON = JSON.parse(this.dataNow[0].area.replace(/\\/g, ''));
-      regionJSON.forEach(place => {
-        if (place.number != null)
-        {
-          if (place.number.toString().includes(','))
-            place.number = place.number.replace(/,/g, '');
-          region_data.set(place.location.trim(), parseInt(place.number.toString().trim()));
-        }
-      });
-      for (let key of region_data.keys())
-      {
-        let color = 'black';
-        if (region_data.get(key) < 50)
-          color = 'springgreen';
-        else if (region_data.get(key) > 200)
-          color = 'gold'
-        if (region_data.get(key) > 500)
-          color = 'red';
-        const singleData = {
-          place: key,
-          color: color,
-          number: region_data.get(key)
-        };
-        this.regionData.push(Object.create(singleData));
-      }
-    }
-  }
+
 };
 </script>
 

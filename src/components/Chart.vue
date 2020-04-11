@@ -65,7 +65,7 @@ export default {
           type: this.type?this.type:"line",
           stacked: this.stacked,
           zoom: {
-            enabled: false
+            enabled: window.innerWidth > 800
           }
         },
         colors: this.colors?this.colors: ["#3d0707", "#ff0000"],
