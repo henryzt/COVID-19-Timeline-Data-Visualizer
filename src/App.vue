@@ -64,7 +64,7 @@
         </ul>
       </div>
 
-      <div id="spy-target" v-scroll-spy="{data: 'section'}">
+      <div v-scroll-spy="{data: 'section'}">
         <div class="mSection" id="charts">
           <div class="title">确诊及死亡</div>
           <Chart
@@ -95,8 +95,13 @@
           ></Chart>
         </div>
 
-        <div class="mSection">
-            <div class="title" id="regionData">地区列表</div>
+          <div class="mSection" id="animation">
+              <div class="title">数据动画</div>
+
+          </div>
+
+        <div class="mSection" id="regionData">
+            <div class="title">地区列表</div>
             <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
         </div>
 

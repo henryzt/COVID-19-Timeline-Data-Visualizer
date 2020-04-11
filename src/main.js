@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import scrollSpy from 'vue2-scrollspy';
+import scrollSpy, {Easing} from 'vue2-scrollspy';
 
-Vue.use(scrollSpy);
+Vue.use(scrollSpy, {
+  easing: Easing.Quartic.InOut
+});
 
 Vue.config.productionTip = false
 

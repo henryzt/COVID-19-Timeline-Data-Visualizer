@@ -12,6 +12,10 @@ body {
     padding-bottom: 50px;
 }
 
+.nav-link{
+  transition: 0.5s;
+}
+
 
 .mNav {
   margin: 30px auto;
