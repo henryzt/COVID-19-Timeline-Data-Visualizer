@@ -4,8 +4,14 @@ body {
   margin: auto;
   font-family: "Titillium Web", sans-serif;
   background: #f5f5f5;
-  position: relative;
+
 }
+
+.mSection{
+    position: relative;
+    padding-bottom: 50px;
+}
+
 
 .mNav {
   margin: 30px auto;

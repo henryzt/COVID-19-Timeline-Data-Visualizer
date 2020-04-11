@@ -49,9 +49,9 @@
         </div>
       </div>
 
-      <div ref="navPlaceholder"></div>
-      <nav class="mNav" ref="nav" id="mNavbar">
-        <ul class="nav nav-pills nav-fill">
+      <div id="navPlaceholder" ref="navPlaceholder"></div>
+      <div class="mNav" ref="nav" id="mNavbar">
+        <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 50}" v-scroll-spy-link>
           <li class="nav-item">
             <a class="nav-link" href="#charts">当前数据</a>
           </li>
@@ -62,10 +62,10 @@
             <a class="nav-link" href="#regionData">地图列表</a>
           </li>
         </ul>
-      </nav>
+      </div>
 
-      <div id="spy-target" data-spy="scroll" data-target=".mNav" data-offset="0" style="position: relative;">
-        <div id="charts" style="overflow-y: auto">
+      <div id="spy-target" v-scroll-spy="{data: 'section'}">
+        <div class="mSection" id="charts">
           <div class="title">确诊及死亡</div>
           <Chart
                   id="confirmedAndDeathChart1"
@@ -95,9 +95,11 @@
           ></Chart>
         </div>
 
-        <br>
-        <div class="title" id="regionData">地区列表</div>
-        <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
+        <div class="mSection">
+            <div class="title" id="regionData">地区列表</div>
+            <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
+        </div>
+
 
       </div>
     </div>
@@ -107,6 +109,7 @@
 <script>
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
+
 
 export default {
   name: "App",
@@ -120,7 +123,8 @@ export default {
       dataHistory: null,
       dataUK: null,
       todayData: null,
-      yestData: null
+      yestData: null,
+      section: 0,
     };
   },
   mounted() {

@@ -19,7 +19,8 @@
     "fusioncharts": "^3.15.1-sr.1",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.3",
-    "vue-fusioncharts": "^3.0.4"
+    "vue-fusioncharts": "^3.0.4",
+    "vue2-scrollspy": "^2.3.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
