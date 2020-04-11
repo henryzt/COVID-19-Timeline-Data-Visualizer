@@ -50,53 +50,56 @@
       </div>
 
       <div ref="navPlaceholder"></div>
-      <div class="mNav" ref="nav">
+      <nav class="mNav" ref="nav" id="mNavbar">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
-            <a class="nav-link active" href="#charts">当前数据</a>
+            <a class="nav-link" href="#charts">当前数据</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">历史数据</a>
+            <a class="nav-link" href="#animation">数据动画</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#regionData">地图列表</a>
           </li>
         </ul>
+      </nav>
+
+      <div id="spy-target" data-spy="scroll" data-target=".mNav" data-offset="0" style="position: relative;">
+        <div id="charts" style="overflow-y: auto">
+          <div class="title">确诊及死亡</div>
+          <Chart
+                  id="confirmedAndDeathChart1"
+                  type="area"
+                  :dataHistory="dataHistory"
+                  :seriesData="confirmedAndDeathChart1"
+          ></Chart>
+
+
+          <div class="title">新增死亡</div>
+          <Chart
+                  id="deathChart2"
+                  type="bar"
+                  :stacked="true"
+                  :dataHistory="dataHistory"
+                  :seriesData="deathChart2"
+                  :colors='["#c40000","#3d000d","#2c9100"]'
+          ></Chart>
+
+          <div class="title">死亡率及治愈率</div>
+          <Chart
+                  id="rateChart3"
+                  type="area"
+                  :dataHistory="dataHistory"
+                  :seriesData="rateChart3"
+                  :colors='["#ca0011","#0088ff"]'
+          ></Chart>
+        </div>
+
+        <br>
+        <div class="title" id="regionData">地区列表</div>
+        <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
+
       </div>
-      <div id="charts">
-        <div class="title">确诊及死亡</div>
-        <Chart
-                id="confirmedAndDeathChart1"
-                type="area"
-                :dataHistory="dataHistory"
-                :seriesData="confirmedAndDeathChart1"
-        ></Chart>
-
-
-        <div class="title">新增死亡</div>
-        <Chart
-                id="deathChart2"
-                type="bar"
-                :stacked="true"
-                :dataHistory="dataHistory"
-                :seriesData="deathChart2"
-                :colors='["#c40000","#3d000d","#2c9100"]'
-        ></Chart>
-
-        <div class="title">死亡率及治愈率</div>
-        <Chart
-                id="rateChart3"
-                type="area"
-                :dataHistory="dataHistory"
-                :seriesData="rateChart3"
-                :colors='["#ca0011","#0088ff"]'
-        ></Chart>
-      </div>
-
-      <br>
-      <div class="title" id="regionData">地区列表</div>
-      <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
-
     </div>
   </div>
 </template>
@@ -140,11 +143,15 @@ export default {
 
     document.addEventListener('scroll', ()=>{
       if(window.scrollY > this.$refs["navPlaceholder"].offsetTop){
-        this.$refs["nav"].classList.add("fixed_nav")
+        this.$refs["nav"].classList.add("fixed_nav");
+        this.$refs["navPlaceholder"].classList.add("navPlaceholder");
       }else {
-        this.$refs["nav"].classList.remove("fixed_nav")
+        this.$refs["nav"].classList.remove("fixed_nav");
+        this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
       }
     })
+
+
 
   },
   computed: {
