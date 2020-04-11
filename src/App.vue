@@ -3,12 +3,12 @@
     <div class="mContent" v-if="dataNow && dataHistory && dataUK">
       <div class="title">今日概览</div>
       <div class="overview mBlock">
-        <div class="overview_item" style="color: #575757;">
+        <div class="overview_item" style="color: #ff5151;">
           <div class="overview_title">累计确诊</div>
           <div class="overview_number">{{ dataNow[0].confirmed }}</div>
           <div class="daily-increase">{{ '+' + dataUK.dailyConfirmed }}</div>
         </div>
-        <div class="overview_item" style="color: #ff5151;">
+        <div class="overview_item" style="color: #575757;">
           <div class="overview_title">累计死亡</div>
           <div class="overview_number">{{ dataNow[0].death }}</div>
           <div class="daily-increase">{{ '+' + (todayData.death - yestData.death)}}</div>
@@ -16,7 +16,7 @@
         <div class="overview_item" style="color: #0094b9;">
           <div class="overview_title">累计测试</div>
           <div class="overview_number">{{ dataNow[0].tested }}</div>
-          <div class="daily-increase"> -- </div>
+          <div class="daily-increase"> {{ '+' + (todayData.tested - yestData.tested)}} </div>
         </div>
         <div class="overview_item" style="color: #28ca00;">
           <div class="overview_title">累计治愈</div>
@@ -66,7 +66,7 @@
         <div class="title">确诊及死亡</div>
         <Chart
                 id="confirmedAndDeathChart1"
-                type="line"
+                type="area"
                 :dataHistory="dataHistory"
                 :seriesData="confirmedAndDeathChart1"
         ></Chart>
@@ -125,7 +125,7 @@ export default {
       this.$data.dataNow = data.data;
     });
 
-    fetch("https://api.covid19uk.live/historyfigures").then(async res => {
+    fetch("https://api.covid19uk.live/history").then(async res => {
       let data = await res.json();
       this.$data.dataHistory = data.data;
       this.todayData = this.dataHistory[this.dataHistory.length - 1];

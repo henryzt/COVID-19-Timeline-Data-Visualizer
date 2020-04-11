@@ -81,9 +81,9 @@ body {
   }
 }
 
-.btn-group-wrap {
-  text-align: center;
-}
+/*.btn-group-wrap {*/
+/*  text-align: center;*/
+/*}*/
 
 div.btn-group {
   margin: 0 auto;
@@ -94,7 +94,7 @@ div.btn-group {
 
 .country-death {
   padding-top: 5px;
-  font-size: 25px;
+  font-size: 18px;
   text-align: center;
   color: #ff4242;
 }
@@ -110,6 +110,6 @@ div.btn-group {
 
 .daily-increase {
   padding-top: 10px;
-  font-size: 25px;
+  font-size: 18px;
   text-align: center;
 }
