@@ -1,7 +1,7 @@
 <template>
   <div class="mBlock">
     <div class="btn-group-wrap">
-      <div class="btn-group" role="group" aria-label="date range">
+      <div class="btn-group btn-group-sm" role="group" aria-label="date range">
         <button type="button" class="btn btn-secondary" :class="{active: range===-7}" @click="updateRange(-7,true)">
           一周内
         </button>

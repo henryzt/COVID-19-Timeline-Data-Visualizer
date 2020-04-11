@@ -49,7 +49,8 @@
         </div>
       </div>
 
-      <div class="mNav" style="position: sticky;top: 0;z-index: 100;">
+      <div ref="navPlaceholder"></div>
+      <div class="mNav" ref="nav">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
             <a class="nav-link active" href="#charts">当前数据</a>
@@ -137,6 +138,14 @@ export default {
       this.$data.dataUK = data;
     });
 
+    document.addEventListener('scroll', ()=>{
+      if(window.scrollY > this.$refs["navPlaceholder"].offsetTop){
+        this.$refs["nav"].classList.add("fixed_nav")
+      }else {
+        this.$refs["nav"].classList.remove("fixed_nav")
+      }
+    })
+
   },
   computed: {
     confirmedAndDeathChart1: function () {
@@ -184,14 +193,14 @@ export default {
         {
           name: '死亡率',
           data: this.dataHistory.map(a => {
-            let rate = (a.death / a.confirmed).toPrecision(4) ;
+            let rate = (a.death / a.confirmed).toPrecision(2) ;
             return rate
           })
         },
         {
           name: '治愈率',
           data: this.dataHistory.map(a => {
-            let rate = (a.cured / a.confirmed).toPrecision(4) ;
+            let rate = (a.cured / a.confirmed).toPrecision(2) ;
             return rate
           })
         }
