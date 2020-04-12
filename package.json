@@ -10,7 +10,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "yarn build && git add dist && git commit -m 'Update Build' && yarn gh-pages",
+    "gh-pages": "git subtree push --prefix dist origin gh-pages"
   },
   "main": "index.js",
   "dependencies": {
