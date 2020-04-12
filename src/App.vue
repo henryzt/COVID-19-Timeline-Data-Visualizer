@@ -65,7 +65,7 @@
       </div>
 
       <div v-scroll-spy="{data: 'section'}">
-        <div class="mSection" id="charts">
+        <div class="mSection" id="charts" style="padding-top: 0">
           <div class="title">确诊及死亡</div>
           <Chart
                   id="confirmedAndDeathChart1"
