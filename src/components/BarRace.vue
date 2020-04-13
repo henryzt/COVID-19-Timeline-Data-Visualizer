@@ -1,5 +1,5 @@
 <template>
-    <div id="barRace" class="mBlock"></div>
+    <div :id="'barRace'+id"></div>
 </template>
 
 <script>
@@ -7,7 +7,11 @@
     export default {
         name: "BarRace",
         props: {
-            raceData: Array
+            raceData: Array,
+            title: String,
+            subtitle: String,
+            source: String,
+            id:String
         },
         data:function () {
             return {
@@ -18,6 +22,7 @@
             window.addEventListener("resize", this.myEventHandler);
         },
         destroyed() {
+            console.log("destoryed");
             window.removeEventListener("resize", this.myEventHandler);
         },
         methods: {
@@ -32,7 +37,7 @@
             const d3 = require('d3');
             //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f
             // Feel free to change or delete any of the code you see in this editor!
-            let svg = d3.select("#barRace").append("svg")
+            let svg = d3.select("#barRace"+this.id).append("svg")
                 .attr("width", this.width)
                 .attr("height", 500);
 
@@ -54,19 +59,19 @@
             let title = svg.append('text')
                 .attr('class', 'title')
                 .attr('y', 24)
-                .html('NHS地区确诊数量变化');
+                .html(this.title);
 
             let subTitle = svg.append("text")
                 .attr("class", "subTitle")
                 .attr("y", 55)
-                .html("确诊人数（例）");
+                .html(this.subtitle);
 
             let caption = svg.append('text')
                 .attr('class', 'caption')
                 .attr('x', width)
                 .attr('y', height-5)
                 .style('text-anchor', 'end')
-                .html('Source: isjeff.com');
+                .html(this.source);
 
             let day = this.raceData[0].day;
 
@@ -290,15 +295,15 @@
             loadData(this.raceData);
 
 
-            const halo = function(text, strokeWidth) {
-                text.select(function() { return this.parentNode.insertBefore(this.cloneNode(true), this); })
-                    .style('fill', '#ffffff')
-                    .style( 'stroke','#ffffff')
-                    .style('stroke-width', strokeWidth)
-                    .style('stroke-linejoin', 'round')
-                    .style('opacity', 1);
-
-            }
+            // const halo = function(text, strokeWidth) {
+            //     text.select(function() { return this.parentNode.insertBefore(this.cloneNode(true), this); })
+            //         .style('fill', '#ffffff')
+            //         .style( 'stroke','#ffffff')
+            //         .style('stroke-width', strokeWidth)
+            //         .style('stroke-linejoin', 'round')
+            //         .style('opacity', 1);
+            //
+            // }
         }
     }
 </script>

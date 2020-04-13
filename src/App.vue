@@ -95,9 +95,9 @@
           ></Chart>
         </div>
 
-          <div class="mSection" id="animation" v-if="golbalBarRaceData">
+          <div class="mSection" id="animation">
               <div class="title">数据动画</div>
-                <BarRace :raceData="golbalBarRaceData"></BarRace>
+                <BarRaceSection :bar-race-data="barRaceData"></BarRaceSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -121,7 +121,7 @@
 <script>
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
-import BarRace from "./components/BarRace.vue";
+import BarRaceSection from "./components/BarRaceSection.vue";
 import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
 
 export default {
@@ -129,7 +129,7 @@ export default {
   components: {
     Chart,
     RegionTable,
-      BarRace
+      BarRaceSection
   },
   data: () => {
     return {
@@ -139,7 +139,7 @@ export default {
       todayData: null,
       yestData: null,
       section: 0,
-      regionBarRaceData: null
+      barRaceData: {}
     };
   },
   mounted() {
@@ -153,7 +153,7 @@ export default {
       this.$data.dataHistory = data.data;
       this.todayData = this.dataHistory[this.dataHistory.length - 1];
       this.yestData = this.dataHistory[this.dataHistory.length - 2];
-      this.regionBarRaceData = getNHSRegionD3Data(data.data);
+      this.barRaceData.ukRegions = getNHSRegionD3Data(data.data);
     });
 
     fetch("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true").then(async res => {
@@ -166,7 +166,7 @@ export default {
       const csv = require('csvtojson');
       let result = await csv().fromString(data);
 
-      this.golbalBarRaceData = getD3GlobalData(result);
+      this.barRaceData.global = getD3GlobalData(result);
     });
 
 
