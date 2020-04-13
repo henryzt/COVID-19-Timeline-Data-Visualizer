@@ -51,7 +51,7 @@
 
       <div id="navPlaceholder" ref="navPlaceholder"></div>
       <div class="mNav" ref="nav" id="mNavbar">
-        <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 50}" v-scroll-spy-link>
+        <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 500}" v-scroll-spy-link>
           <li class="nav-item">
             <a class="nav-link" href="#charts">当前数据</a>
           </li>
@@ -96,7 +96,7 @@
         </div>
 
           <div class="mSection" id="animation">
-              <div class="title">数据动画</div>
+              <div class="title">历史确诊数据动画</div>
                 <BarRaceSection :bar-race-data="barRaceData"></BarRaceSection>
           </div>
 
@@ -105,8 +105,28 @@
             <RegionTable :dataNow="dataNow" :dataYesterday="dataHistory[dataHistory.length - 1]"></RegionTable>
         </div>
 
+      </div>
+
+      <div class="mSection">
+        <div class="title">数据来源</div>
+        <ul>
+          <li><a href="https://github.com/isjeffcom/coronvirusFigureUK">Coronavirus UK Data API - isjeffcom</a></li>
+          <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
+          <li>感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
+        </ul>
+
+        <div class="title">关于</div>
+        <ul>
+          <li>本应用开源于 <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>，欢迎提供任何建议及贡献！</li>
+          <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a> for UCLCSSA.</li>
+
+        </ul>
+
+        <div style="text-align: center;margin: 50px 0;"><img src="./assets/logo_grey.png" style="max-width: 200px;text-align: center;opacity: 0.5;"/></div>
 
       </div>
+
+
     </div>
     <div v-else>
       <div class="vertical-center">
@@ -257,5 +277,8 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+  }
+  h6{
+    padding-left: 20px;
   }
 </style>

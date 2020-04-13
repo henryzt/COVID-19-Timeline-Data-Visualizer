@@ -35,13 +35,13 @@
             window.addEventListener("resize", this.resizeEventHandler);
         },
         destroyed() {
-            console.log("destoryed");
+            // console.log("destoryed");
             window.removeEventListener("resize", this.resizeEventHandler);
         },
         methods: {
             resizeEventHandler(e) {
                 this.width = window.innerWidth>510?510: window.innerWidth-55;
-                console.log(this.width)
+                // console.log(this.width)
             },
             changeDate(e){
                 this.day = e;
@@ -98,7 +98,7 @@
             function loadData(data) {
                 //if (error) throw error;
 
-                console.log(data);
+                // console.log(data);
 
                 data.forEach(d => {
                     d.value = +d.value,
@@ -107,7 +107,7 @@
                         d.colour = d3.rgb(0, 195, 255)
                 });
 
-                console.log(data);
+                // console.log(data);
 
                 let daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
                     .sort((a,b) => b.value - a.value)
@@ -115,7 +115,7 @@
 
                 daySlice.forEach((d,i) => d.rank = i);
 
-                console.log('daySlice: ', daySlice)
+                // console.log('daySlice: ', daySlice)
 
 
                 const getClassName = (d)=>"bar_"+d.name.replace(/[^\w]/g, "_");

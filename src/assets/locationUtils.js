@@ -39,7 +39,7 @@ export function getD3Data(dailyLocationJson) {
         }
         lastDailyData = dailyData;
     }
-    console.log(locationData)
+    // console.log(locationData)
     return locationData;
 }
 
@@ -54,12 +54,12 @@ export function getNHSRegionD3Data(allHistory) {
         }
     }
 
-    console.log(dailyLocationJson);
+    // console.log(dailyLocationJson);
     return getD3Data(dailyLocationJson);
 }
 
 export function getD3GlobalData(raw) {
-    let dateMap = {}
+    let dateMap = {};
     for(let dayData of raw){
         let objArr = Object.entries(dayData);
         for(let i = 4; i<objArr.length;i++){
@@ -70,11 +70,11 @@ export function getD3GlobalData(raw) {
             dateMap[date].push(location)
         }
     }
-    console.log(dateMap);
+    // console.log(dateMap);
     let dailyLocationJson = [];
     for(let entry of Object.entries(dateMap)){
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
-    console.log(dailyLocationJson);
+    // console.log(dailyLocationJson);
     return getD3Data(dailyLocationJson);
 }
