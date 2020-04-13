@@ -4,8 +4,6 @@
 
 <script>
     /* eslint-disable */
-
-
     export default {
         name: "BarRace",
         props: {
@@ -38,7 +36,7 @@
                 .attr("width", this.width)
                 .attr("height", 500);
 
-            let tickDuration = 500;
+            let tickDuration = 1000;
 
             let top_n = 12;
             let height = 500;
@@ -70,8 +68,7 @@
                 .style('text-anchor', 'end')
                 .html('Source: isjeff.com');
 
-            let year = "06/03";
-            console.log(year)
+            let day = this.raceData[0].day;
 
             function loadData(data) {
                 //if (error) throw error;
@@ -82,22 +79,21 @@
                     d.value = +d.value,
                         d.lastValue = d.lastValue<0? 0: +d.lastValue,
                         d.value = isNaN(d.value) && d.value < 0 ? 0 : d.value,
-                        d.year = d.year,
                         d.colour = d3.rgb(0, 195, 255)
                 });
 
                 console.log(data);
 
-                let yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
+                let daySlice = data.filter(d => d.day == day && !isNaN(d.value))
                     .sort((a,b) => b.value - a.value)
                     .slice(0, top_n);
 
-                yearSlice.forEach((d,i) => d.rank = i);
+                daySlice.forEach((d,i) => d.rank = i);
 
-                console.log('yearSlice: ', yearSlice)
+                console.log('daySlice: ', daySlice)
 
                 let x = d3.scaleLinear()
-                    .domain([0, d3.max(yearSlice, d => d.value)])
+                    .domain([0, d3.max(daySlice, d => d.value)])
                     .range([margin.left, width-margin.right-65]);
 
                 let y = d3.scaleLinear()
@@ -118,7 +114,7 @@
                     .classed('origin', d => d == 0);
 
                 svg.selectAll('rect.bar')
-                    .data(yearSlice, d => d.name)
+                    .data(daySlice, d => d.name)
                     .enter()
                     .append('rect')
                     .attr('class', 'bar')
@@ -129,7 +125,7 @@
                     .style('fill', d => d.colour);
 
                 svg.selectAll('text.label')
-                    .data(yearSlice, d => d.name)
+                    .data(daySlice, d => d.name)
                     .enter()
                     .append('text')
                     .attr('class', 'label')
@@ -140,7 +136,7 @@
                     .html(d => d.name);
 
                 svg.selectAll('text.valueLabel')
-                    .data(yearSlice, d => d.name)
+                    .data(daySlice, d => d.name)
                     .enter()
                     .append('text')
                     .attr('class', 'valueLabel')
@@ -148,25 +144,25 @@
                     .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
                     .text(d => d3.format(',.0f')(d.lastValue));
 
-                let yearText = svg.append('text')
-                    .attr('class', 'yearText')
+                let dayText = svg.append('text')
+                    .attr('class', 'dayText')
                     .attr('x', width-margin.right)
                     .attr('y', height-25)
                     .style('text-anchor', 'end')
-                    .html(year)
+                    .html(day)
                     // .call(halo, 10);
 
                 let ticker = d3.interval(e => {
 
-                    yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
+                    daySlice = data.filter(d => d.day == day && !isNaN(d.value))
                         .sort((a,b) => b.value - a.value)
                         .slice(0,top_n);
 
-                    yearSlice.forEach((d,i) => d.rank = i);
+                    daySlice.forEach((d,i) => d.rank = i);
 
-                    // console.log('IntervalYear: ', yearSlice);
+                    // console.log('Intervalday: ', daySlice);
 
-                    x.domain([0, d3.max(yearSlice, d => d.value)]);
+                    x.domain([0, d3.max(daySlice, d => d.value)]);
 
                     svg.select('.xAxis')
                         .transition()
@@ -174,7 +170,7 @@
                         .ease(d3.easeLinear)
                         .call(xAxis);
 
-                    let bars = svg.selectAll('.bar').data(yearSlice, d => d.name);
+                    let bars = svg.selectAll('.bar').data(daySlice, d => d.name);
 
                     bars
                         .enter()
@@ -207,7 +203,7 @@
                         .remove();
 
                     let labels = svg.selectAll('.label')
-                        .data(yearSlice, d => d.name);
+                        .data(daySlice, d => d.name);
 
                     labels
                         .enter()
@@ -242,7 +238,7 @@
 
 
 
-                    let valueLabels = svg.selectAll('.valueLabel').data(yearSlice, d => d.name);
+                    let valueLabels = svg.selectAll('.valueLabel').data(daySlice, d => d.name);
 
                     valueLabels
                         .enter()
@@ -279,15 +275,15 @@
                         .attr('y', d => y(top_n+1)+5)
                         .remove();
 
-                    yearText.html(year);
+                    dayText.html(day);
 
-                    let currentMoment = moment(year+'/2020', 'DD/MM/YYYY');
-                    let endMoment = moment(data[data.length-1].year+'/2020', 'DD/MM/YYYY');
-                    // year = d3.format('.1f')((+year) + 0.1);
-                    year = currentMoment.add(1, 'days').format("DD/MM");
-                    if(currentMoment.isAfter(endMoment)) year="06/03";
-                    // console.log(year)
-                    // console.log(year)
+                    let currentMoment = moment(day+'/2020', 'DD/MM/YYYY');
+                    let endMoment = moment(data[data.length-1].day+'/2020', 'DD/MM/YYYY');
+                    // day = d3.format('.1f')((+day) + 0.1);
+                    day = currentMoment.add(1, 'days').format("DD/MM");
+                    if(currentMoment.isAfter(endMoment)) day= data[0].day;
+                    // console.log(day)
+                    // console.log(day)
                 },tickDuration);
 
             }
@@ -334,12 +330,12 @@
         font-weight: 300;
     }
 
-    text.yearText{
+    text.dayText{
         font-size: 64px;
         font-weight: 700;
         opacity: 0.25;
     }
-    yearText{
+    dayText{
         font-size: 80px !important;
         font-weight: 700;
         opacity: 0.25;
