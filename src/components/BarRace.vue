@@ -80,10 +80,10 @@
 
                 data.forEach(d => {
                     d.value = +d.value,
-                        d.lastValue = +d.lastValue,
-                        d.value = isNaN(d.value) ? 0 : d.value,
+                        d.lastValue = d.lastValue<0? 0: +d.lastValue,
+                        d.value = isNaN(d.value) && d.value < 0 ? 0 : d.value,
                         d.year = d.year,
-                        d.colour = d3.hsl(Math.random()*360,0.75,0.75)
+                        d.colour = d3.rgb(0, 195, 255)
                 });
 
                 console.log(data);
@@ -123,7 +123,7 @@
                     .append('rect')
                     .attr('class', 'bar')
                     .attr('x', x(0)+1)
-                    .attr('width', d => x(d.value)-x(0)-1)
+                    .attr('width', d => (x(d.value)-x(0)-1)<0?0:(x(d.value)-x(0)-1))
                     .attr('y', d => y(d.rank)+5)
                     .attr('height', y(1)-y(0)-barPadding)
                     .style('fill', d => d.colour);
@@ -136,6 +136,7 @@
                     .attr('x', d => x(d.value)-8)
                     .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
                     .style('text-anchor', 'end')
+                    .style('color', 'white')
                     .html(d => d.name);
 
                 svg.selectAll('text.valueLabel')
@@ -180,7 +181,7 @@
                         .append('rect')
                         .attr('class', d => `bar ${d.name.replace(/\s/g,'_')}`)
                         .attr('x', x(0)+1)
-                        .attr( 'width', d => x(d.value)-x(0)-1)
+                        .attr( 'width', d => (x(d.value)-x(0)-1)<0?0:(x(d.value)-x(0)-1))
                         .attr('y', d => y(top_n+1)+5)
                         .attr('height', y(1)-y(0)-barPadding)
                         .style('fill', d => d.colour)
@@ -193,7 +194,7 @@
                         .transition()
                         .duration(tickDuration)
                         .ease(d3.easeLinear)
-                        .attr('width', d => x(d.value)-x(0)-1)
+                        .attr('width', d => (x(d.value)-x(0)-1)<0?0:(x(d.value)-x(0)-1))
                         .attr('y', d => y(d.rank)+5);
 
                     bars
@@ -201,7 +202,7 @@
                         .transition()
                         .duration(tickDuration)
                         .ease(d3.easeLinear)
-                        .attr('width', d => x(d.value)-x(0)-1)
+                        .attr('width', d => (x(d.value)-x(0)-1)<0?0:(x(d.value)-x(0)-1))
                         .attr('y', d => y(top_n+1)+5)
                         .remove();
 
@@ -215,6 +216,7 @@
                         .attr('x', d => x(d.value)-8)
                         .attr('y', d => y(top_n+1)+5+((y(1)-y(0))/2))
                         .style('text-anchor', 'end')
+                        .style('color', 'white')
                         .html(d => d.name)
                         .transition()
                         .duration(tickDuration)
@@ -305,7 +307,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     text{
         font-size: 16px;
         font-family: Open Sans, sans-serif;
@@ -324,6 +326,7 @@
         fill: #777777;
     }
     text.label{
+        color: white !important;
         font-weight: 600;
     }
 
@@ -333,6 +336,11 @@
 
     text.yearText{
         font-size: 64px;
+        font-weight: 700;
+        opacity: 0.25;
+    }
+    yearText{
+        font-size: 80px !important;
         font-weight: 700;
         opacity: 0.25;
     }
