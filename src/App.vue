@@ -5,22 +5,22 @@
       <div class="overview mBlock">
         <div class="overview_item" style="color: #ff5151;">
           <div class="overview_title">累计确诊</div>
-          <div class="overview_number">{{ dataNow[0].confirmed }}</div>
+          <div class="overview_number"><ICountUp :endVal="dataNow[0].confirmed"/></div>
           <div class="daily-increase">{{ '+' + dataUK.dailyConfirmed }}</div>
         </div>
         <div class="overview_item" style="color: #575757;">
           <div class="overview_title">累计死亡</div>
-          <div class="overview_number">{{ dataNow[0].death }}</div>
+          <div class="overview_number"><ICountUp :endVal=" dataNow[0].death"/></div>
           <div class="daily-increase">{{ '+' + (todayData.death - yestData.death)}}</div>
         </div>
         <div class="overview_item" style="color: #0094b9;">
           <div class="overview_title">累计测试</div>
-          <div class="overview_number">{{ dataNow[0].tested }}</div>
+          <div class="overview_number"><ICountUp :endVal=" dataNow[0].tested "/></div>
           <div class="daily-increase"> {{ '+' + (todayData.tested - yestData.tested)}} </div>
         </div>
         <div class="overview_item" style="color: #28ca00;">
           <div class="overview_title">累计治愈</div>
-          <div class="overview_number">{{ dataNow[1].cured }}</div>
+          <div class="overview_number"><ICountUp :endVal=" dataNow[1].cured "/></div>
           <div class="daily-increase">{{ '+' + (todayData.cured - yestData.cured)}}</div>
         </div>
       </div>
@@ -29,22 +29,22 @@
       <div class="overview mBlock">
         <div class="overview_item">
           <div class="overview_title">英格兰</div>
-          <div class="overview_number">{{ dataNow[0].england }}</div>
+          <div class="overview_number"><ICountUp :endVal="dataNow[0].england "/></div>
           <div class="country-death">{{ dataUK.englandDeceased }}</div>
         </div>
         <div class="overview_item">
           <div class="overview_title">苏格兰</div>
-          <div class="overview_number">{{ dataNow[0].scotland }}</div>
+          <div class="overview_number"><ICountUp :endVal=" dataNow[0].scotland "/></div>
           <div class="country-death">{{ dataUK.scottlandDeceased }}</div>
         </div>
         <div class="overview_item">
           <div class="overview_title">威尔士</div>
-          <div class="overview_number">{{ dataNow[0].wales }}</div>
+          <div class="overview_number"><ICountUp :endVal="dataNow[0].wales "/></div>
           <div class="country-death">{{ dataUK.walesDeceased }}</div>
         </div>
         <div class="overview_item">
           <div class="overview_title">北爱尔兰</div>
-          <div class="overview_number">{{ dataNow[0].nireland }}</div>
+          <div class="overview_number"><ICountUp :endVal="dataNow[0].nireland "/></div>
           <div class="country-death">{{ dataUK.northenIrelandDeceased }}</div>
         </div>
       </div>
@@ -122,6 +122,7 @@
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
+import ICountUp from 'vue-countup-v2';
 import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
 
 export default {
@@ -129,7 +130,8 @@ export default {
   components: {
     Chart,
     RegionTable,
-      BarRaceSection
+    BarRaceSection,
+    ICountUp
   },
   data: () => {
     return {

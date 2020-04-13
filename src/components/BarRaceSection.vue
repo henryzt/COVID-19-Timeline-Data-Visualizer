@@ -8,8 +8,8 @@
                 英国
             </button>
         </div>
-        <BarRace v-show="tab===0" :raceData="barRaceData.global" title="全球确诊数据" subtitle="确诊人数（例）" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
-        <BarRace v-show="tab===1" :raceData="barRaceData.ukRegions" title="NHS地区确诊数据" subtitle="确诊人数（例）" source="Source: isjeff.com" id="1"></BarRace>
+        <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" title="全球确诊数据" subtitle="确诊人数（例）" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
+        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" title="NHS地区确诊数据" subtitle="确诊人数（例）" source="Source: isjeff.com" id="1"></BarRace>
 
 
     </div>
