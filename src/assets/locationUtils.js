@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 export function parseLocationData(areaData) {
     let locationJSON = JSON.parse(areaData.replace(/\\/g,""));
 
@@ -19,11 +21,10 @@ export function getD3Data(allHistory) {
     for(let history of allHistory){
         if(history.area){
             let data = parseLocationData(history.area);
-            data.date = history.date;
+            data.date = moment(history.date).format("DD/MM");
             dailyLocationJson.push(data);
         }
     }
-    console.log(dailyLocationJson);
 
     let locationData = [];
     let lastDailyData = null;

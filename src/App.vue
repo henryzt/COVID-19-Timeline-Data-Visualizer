@@ -95,9 +95,9 @@
           ></Chart>
         </div>
 
-          <div class="mSection" id="animation">
+          <div class="mSection" id="animation" v-if="regionBarRaceData">
               <div class="title">数据动画</div>
-                <BarRace></BarRace>
+                <BarRace :raceData="regionBarRaceData"></BarRace>
           </div>
 
         <div class="mSection" id="regionData">
@@ -139,6 +139,7 @@ export default {
       todayData: null,
       yestData: null,
       section: 0,
+      regionBarRaceData: null
     };
   },
   mounted() {
@@ -152,7 +153,7 @@ export default {
       this.$data.dataHistory = data.data;
       this.todayData = this.dataHistory[this.dataHistory.length - 1];
       this.yestData = this.dataHistory[this.dataHistory.length - 2];
-      console.log(getD3Data(data.data))
+      this.regionBarRaceData = getD3Data(data.data);
     });
 
     fetch("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true").then(async res => {

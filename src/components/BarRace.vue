@@ -8,6 +8,9 @@
 
     export default {
         name: "BarRace",
+        props: {
+            raceData: Array
+        },
         data:function () {
             return {
                 width:500
@@ -26,6 +29,7 @@
             }
         },
         mounted() {
+            const moment = require('moment');
             this.myEventHandler();
             const d3 = require('d3');
             //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f
@@ -33,8 +37,6 @@
             let svg = d3.select("#barRace").append("svg")
                 .attr("width", this.width)
                 .attr("height", 500);
-
-
 
             let tickDuration = 500;
 
@@ -54,24 +56,24 @@
             let title = svg.append('text')
                 .attr('class', 'title')
                 .attr('y', 24)
-                .html('18 years of Interbrand’s Top Global Brands');
+                .html('NHS地区确诊数量变化');
 
             let subTitle = svg.append("text")
                 .attr("class", "subTitle")
                 .attr("y", 55)
-                .html("Brand value, $m");
+                .html("确诊人数（例）");
 
             let caption = svg.append('text')
                 .attr('class', 'caption')
                 .attr('x', width)
                 .attr('y', height-5)
                 .style('text-anchor', 'end')
-                .html('Source: Interbrand');
+                .html('Source: isjeff.com');
 
-            let year = 2000;
+            let year = "06/03";
             console.log(year)
 
-            d3.csv('./brand_values.csv').then(function(data) {
+            function loadData(data) {
                 //if (error) throw error;
 
                 console.log(data);
@@ -80,7 +82,7 @@
                     d.value = +d.value,
                         d.lastValue = +d.lastValue,
                         d.value = isNaN(d.value) ? 0 : d.value,
-                        d.year = +d.year,
+                        d.year = d.year,
                         d.colour = d3.hsl(Math.random()*360,0.75,0.75)
                 });
 
@@ -150,8 +152,8 @@
                     .attr('x', width-margin.right)
                     .attr('y', height-25)
                     .style('text-anchor', 'end')
-                    .html(~~year)
-                    .call(halo, 10);
+                    .html(year)
+                    // .call(halo, 10);
 
                 let ticker = d3.interval(e => {
 
@@ -275,14 +277,20 @@
                         .attr('y', d => y(top_n+1)+5)
                         .remove();
 
-                    yearText.html(~~year);
+                    yearText.html(year);
 
-                    if(year == 2018) year=2000;
-                    year = d3.format('.1f')((+year) + 0.1);
+                    let currentMoment = moment(year+'/2020', 'DD/MM/YYYY');
+                    let endMoment = moment(data[data.length-1].year+'/2020', 'DD/MM/YYYY');
+                    // year = d3.format('.1f')((+year) + 0.1);
+                    year = currentMoment.add(1, 'days').format("DD/MM");
+                    if(currentMoment.isAfter(endMoment)) year="06/03";
+                    // console.log(year)
                     // console.log(year)
                 },tickDuration);
 
-            });
+            }
+            loadData(this.raceData);
+
 
             const halo = function(text, strokeWidth) {
                 text.select(function() { return this.parentNode.insertBefore(this.cloneNode(true), this); })
