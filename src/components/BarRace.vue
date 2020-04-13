@@ -1,11 +1,19 @@
 <template>
-    <div :id="'barRace'+id"></div>
+    <div>
+        <div :id="'barRace'+id"></div>
+        <SlideController></SlideController>
+    </div>
+
 </template>
 
 <script>
     /* eslint-disable */
+    import SlideController from './SlideController'
     export default {
         name: "BarRace",
+        components: {
+            SlideController
+        },
         props: {
             raceData: Array,
             title: String,
