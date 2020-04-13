@@ -19,21 +19,21 @@
             }
         },
         created() {
-            window.addEventListener("resize", this.myEventHandler);
+            window.addEventListener("resize", this.resizeEventHandler);
         },
         destroyed() {
             console.log("destoryed");
-            window.removeEventListener("resize", this.myEventHandler);
+            window.removeEventListener("resize", this.resizeEventHandler);
         },
         methods: {
-            myEventHandler(e) {
+            resizeEventHandler(e) {
                 this.width = window.innerWidth>510?510: window.innerWidth-55;
                 console.log(this.width)
             }
         },
         mounted() {
             const moment = require('moment');
-            this.myEventHandler();
+            this.resizeEventHandler();
             const d3 = require('d3');
             //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f
             // Feel free to change or delete any of the code you see in this editor!
@@ -97,6 +97,19 @@
 
                 console.log('daySlice: ', daySlice)
 
+
+                const getClassName = (d)=>"bar_"+d.name.replace(/[^\w]/g, "_");
+
+                const isTooSmall = (d)=>{
+                    let theBar = d3.select(`.${getClassName(d)}`);
+                    return theBar?.node()?.getBoundingClientRect().width < 100
+                };
+
+                const getLabelX = (d)=>isTooSmall(d)?x(d.value)+55: x(d.value)-8;
+                const getLabelAnchor = (d)=>isTooSmall(d)?'start':'end';
+
+
+
                 let x = d3.scaleLinear()
                     .domain([0, d3.max(daySlice, d => d.value)])
                     .range([margin.left, width-margin.right-65]);
@@ -122,7 +135,7 @@
                     .data(daySlice, d => d.name)
                     .enter()
                     .append('rect')
-                    .attr('class', 'bar')
+                    .attr('class', d =>  `bar ${getClassName(d)}`)
                     .attr('x', x(0)+1)
                     .attr('width', d => (x(d.value)-x(0)-1)<0?0:(x(d.value)-x(0)-1))
                     .attr('y', d => y(d.rank)+5)
@@ -134,9 +147,9 @@
                     .enter()
                     .append('text')
                     .attr('class', 'label')
-                    .attr('x', d => x(d.value)-8)
+                    .attr('x', d => getLabelX(d))
                     .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
-                    .style('text-anchor', 'end')
+                    .style('text-anchor',d =>  getLabelAnchor(d))
                     .style('color', 'white')
                     .html(d => d.name);
 
@@ -180,7 +193,7 @@
                     bars
                         .enter()
                         .append('rect')
-                        .attr('class', d => `bar ${d.name.replace(/\s/g,'_')}`)
+                        .attr('class', d => `bar ${getClassName(d)}`)
                         .attr('x', x(0)+1)
                         .attr( 'width', d => (x(d.value)-x(0)-1)<0?0:(x(d.value)-x(0)-1))
                         .attr('y', d => y(top_n+1)+5)
@@ -210,13 +223,15 @@
                     let labels = svg.selectAll('.label')
                         .data(daySlice, d => d.name);
 
+
+
                     labels
                         .enter()
                         .append('text')
                         .attr('class', 'label')
-                        .attr('x', d => x(d.value)-8)
+                        .attr('x', d => getLabelX(d))
                         .attr('y', d => y(top_n+1)+5+((y(1)-y(0))/2))
-                        .style('text-anchor', 'end')
+                        .style('text-anchor',  d => getLabelAnchor(d))
                         .style('color', 'white')
                         .html(d => d.name)
                         .transition()
@@ -229,7 +244,8 @@
                         .transition()
                         .duration(tickDuration)
                         .ease(d3.easeLinear)
-                        .attr('x', d => x(d.value)-8)
+                        .attr('x', d => getLabelX(d))
+                        .style('text-anchor',  d => getLabelAnchor(d))
                         .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
 
                     labels
@@ -237,7 +253,8 @@
                         .transition()
                         .duration(tickDuration)
                         .ease(d3.easeLinear)
-                        .attr('x', d => x(d.value)-8)
+                        .attr('x', d => getLabelX(d))
+                        .style('text-anchor',  d => getLabelAnchor(d))
                         .attr('y', d => y(top_n+1)+5)
                         .remove();
 
