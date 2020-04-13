@@ -56,3 +56,13 @@ export function getNHSRegionD3Data(allHistory) {
     console.log(dailyLocationJson);
     return getD3Data(dailyLocationJson);
 }
+
+export function getGlobalDataFromCSV(string) {
+    const csv = require('csvtojson');
+
+    csv()
+        .fromString(string)
+        .then(function(result){
+            console.log(result)
+        })
+}

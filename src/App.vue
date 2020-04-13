@@ -122,7 +122,7 @@
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRace from "./components/BarRace.vue";
-import {getNHSRegionD3Data} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getGlobalDataFromCSV} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -160,6 +160,13 @@ export default {
       let data = await res.json();
       this.$data.dataUK = data;
     });
+
+    fetch("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv").then(async res => {
+      let data = await res.text();
+      getGlobalDataFromCSV(data);
+    });
+
+
 
     document.addEventListener('scroll', ()=>{
       if(window.scrollY > this.$refs["navPlaceholder"].offsetTop){
