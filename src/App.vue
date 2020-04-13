@@ -95,9 +95,9 @@
           ></Chart>
         </div>
 
-          <div class="mSection" id="animation" v-if="regionBarRaceData">
+          <div class="mSection" id="animation" v-if="golbalBarRaceData">
               <div class="title">数据动画</div>
-                <BarRace :raceData="regionBarRaceData"></BarRace>
+                <BarRace :raceData="golbalBarRaceData"></BarRace>
           </div>
 
         <div class="mSection" id="regionData">
@@ -122,7 +122,7 @@
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRace from "./components/BarRace.vue";
-import {getNHSRegionD3Data, getGlobalDataFromCSV} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -163,7 +163,10 @@ export default {
 
     fetch("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv").then(async res => {
       let data = await res.text();
-      getGlobalDataFromCSV(data);
+      const csv = require('csvtojson');
+      let result = await csv().fromString(data);
+
+      this.golbalBarRaceData = getD3GlobalData(result);
     });
 
 

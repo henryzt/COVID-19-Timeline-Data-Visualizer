@@ -39,6 +39,7 @@ export function getD3Data(dailyLocationJson) {
         }
         lastDailyData = dailyData;
     }
+    console.log(locationData)
     return locationData;
 }
 
@@ -57,12 +58,23 @@ export function getNHSRegionD3Data(allHistory) {
     return getD3Data(dailyLocationJson);
 }
 
-export function getGlobalDataFromCSV(string) {
-    const csv = require('csvtojson');
-
-    csv()
-        .fromString(string)
-        .then(function(result){
-            console.log(result)
-        })
+export function getD3GlobalData(raw) {
+    let dateMap = {}
+    for(let dayData of raw){
+        let objArr = Object.entries(dayData);
+        for(let i = 4; i<objArr.length;i++){
+            let date =  moment(objArr[i][0]).format("DD/MM");
+            let value = objArr[i][1];
+            let location = {location: dayData["Country/Region"] +(dayData["Province/State"]?(" - "+ dayData["Province/State"]):""), number: value};
+            dateMap[date] = dateMap[date]? dateMap[date]: [];
+            dateMap[date].push(location)
+        }
+    }
+    console.log(dateMap);
+    let dailyLocationJson = [];
+    for(let entry of Object.entries(dateMap)){
+        dailyLocationJson.push({arr:entry[1], date:entry[0]})
+    }
+    console.log(dailyLocationJson);
+    return getD3Data(dailyLocationJson);
 }
