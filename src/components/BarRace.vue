@@ -1,7 +1,7 @@
 <template>
     <div>
         <div :id="'barRace'+id"></div>
-        <SlideController></SlideController>
+        <SlideController :start-date="startDate" :end-date="endDate" :current-date="day" @change="changeDate" @playPause="playing = $event"></SlideController>
     </div>
 
 </template>
@@ -26,7 +26,9 @@
             return {
                 width:500,
                 day:"",
-                playing: true
+                playing: true,
+                startDate: "",
+                endDate: "",
             }
         },
         created() {
@@ -40,11 +42,16 @@
             resizeEventHandler(e) {
                 this.width = window.innerWidth>510?510: window.innerWidth-55;
                 console.log(this.width)
+            },
+            changeDate(e){
+                this.day = e;
             }
         },
         mounted() {
             const moment = require('moment');
             this.resizeEventHandler();
+            this.startDate = this.raceData[0].day;
+            this.endDate = this.raceData[this.raceData.length-1].day;
             const d3 = require('d3');
             //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f
             // Feel free to change or delete any of the code you see in this editor!
