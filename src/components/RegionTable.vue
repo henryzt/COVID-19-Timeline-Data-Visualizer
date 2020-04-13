@@ -40,6 +40,7 @@
 </template>
 
 <script>
+    import {parseLocationData} from "../assets/locationUtils"
     export default {
         name: "RegionTable",
         props: ["dataNow", "dataYesterday"],
@@ -54,20 +55,10 @@
         },
         methods:{
             getRegionData: function() {
-                let regionJSON = JSON.parse(this.dataNow[0].area.replace(/\\/g,""));
-                let regionOldJSON = JSON.parse(this.dataYesterday.area.replace(/\\/g,""));
 
-                let filterNumber = place => {
-                    if (place.number != null)
-                    {
-                        if (place.number.toString().includes(','))
-                            place.number = place.number.replace(/,/g, '');
-                        place.location = place.location.trim();
-                        place.number = parseInt(place.number.toString().trim());
-                    }
-                };
-                regionJSON.forEach(filterNumber);
-                regionOldJSON.forEach(filterNumber);
+                let regionJSON = parseLocationData(this.dataNow[0].area);
+                let regionOldJSON = parseLocationData(this.dataYesterday.area);
+
                 let id = 0;
                 for (let region of regionJSON)
                 {

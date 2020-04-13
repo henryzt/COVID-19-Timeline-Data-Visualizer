@@ -122,7 +122,7 @@
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRace from "./components/BarRace.vue";
-
+import {getD3Data} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -152,6 +152,7 @@ export default {
       this.$data.dataHistory = data.data;
       this.todayData = this.dataHistory[this.dataHistory.length - 1];
       this.yestData = this.dataHistory[this.dataHistory.length - 2];
+      console.log(getD3Data(data.data))
     });
 
     fetch("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true").then(async res => {
