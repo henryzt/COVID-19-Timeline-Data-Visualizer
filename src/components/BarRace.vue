@@ -11,11 +11,14 @@
             title: String,
             subtitle: String,
             source: String,
-            id:String
+            id:String,
+            changeLabelPosition: Boolean
         },
         data:function () {
             return {
-                width:500
+                width:500,
+                day:"",
+                playing: true
             }
         },
         created() {
@@ -73,7 +76,9 @@
                 .style('text-anchor', 'end')
                 .html(this.source);
 
-            let day = this.raceData[0].day;
+            this.day = this.raceData[0].day;
+
+            let that = this;
 
             function loadData(data) {
                 //if (error) throw error;
@@ -89,7 +94,7 @@
 
                 console.log(data);
 
-                let daySlice = data.filter(d => d.day == day && !isNaN(d.value))
+                let daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
                     .sort((a,b) => b.value - a.value)
                     .slice(0, top_n);
 
@@ -104,9 +109,10 @@
                     let theBar = d3.select(`.${getClassName(d)}`);
                     return theBar?.node()?.getBoundingClientRect().width < 100
                 };
+                const getOutsideWidth = (d) => x(d.value)+15+(d.value+"").length*10;
 
-                const getLabelX = (d)=>isTooSmall(d)?x(d.value)+55: x(d.value)-8;
-                const getLabelAnchor = (d)=>isTooSmall(d)?'start':'end';
+                const getLabelX = (d)=>that.changeLabelPosition && isTooSmall(d)?getOutsideWidth(d): x(d.value)-8;
+                const getLabelAnchor = (d)=>that.changeLabelPosition && isTooSmall(d)?'start':'end';
 
 
 
@@ -167,12 +173,13 @@
                     .attr('x', width-margin.right)
                     .attr('y', height-25)
                     .style('text-anchor', 'end')
-                    .html(day)
+                    .html(that.day);
                     // .call(halo, 10);
 
                 let ticker = d3.interval(e => {
+                    if(!that.playing) return;
 
-                    daySlice = data.filter(d => d.day == day && !isNaN(d.value))
+                    daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
                         .sort((a,b) => b.value - a.value)
                         .slice(0,top_n);
 
@@ -297,13 +304,13 @@
                         .attr('y', d => y(top_n+1)+5)
                         .remove();
 
-                    dayText.html(day);
+                    dayText.html(that.day);
 
-                    let currentMoment = moment(day+'/2020', 'DD/MM/YYYY');
+                    let currentMoment = moment(that.day+'/2020', 'DD/MM/YYYY');
                     let endMoment = moment(data[data.length-1].day+'/2020', 'DD/MM/YYYY');
                     // day = d3.format('.1f')((+day) + 0.1);
-                    day = currentMoment.add(1, 'days').format("DD/MM");
-                    if(currentMoment.isAfter(endMoment)) day= data[0].day;
+                    that.day = currentMoment.add(1, 'days').format("DD/MM");
+                    if(currentMoment.isAfter(endMoment)) that.day= data[0].day;
                     // console.log(day)
                     // console.log(day)
                 },tickDuration);
