@@ -102,7 +102,7 @@
 
           <div class="mSection" id="animation">
               <div class="title">历史确诊数据动画</div>
-                <BarRaceSection :bar-race-data="barRaceData"></BarRaceSection>
+                <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -165,7 +165,9 @@ export default {
       todayData: null,
       yestData: null,
       section: 0,
-      barRaceData: {}
+      barRaceData: {
+        hasData: false
+      }
     };
   },
   mounted() {
@@ -181,20 +183,10 @@ export default {
       const csv = require('csvtojson');
       let confirmed = await csv().fromString(data.global.confirmed);
       this.barRaceData.global = getD3GlobalData(confirmed);
+      this.barRaceData.hasData = true;
+
+      this.getNavScrollAnchor()
     });
-
-
-    document.addEventListener('scroll', ()=>{
-      if(window.scrollY > this.$refs["navPlaceholder"].offsetTop){
-        this.$refs["nav"].classList.add("fixed_nav");
-        this.$refs["navPlaceholder"].classList.add("navPlaceholder");
-      }else {
-        this.$refs["nav"].classList.remove("fixed_nav");
-        this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
-      }
-    })
-
-
 
   },
   computed: {
@@ -257,6 +249,19 @@ export default {
       ]
     }
   },
+  methods: {
+    getNavScrollAnchor: function () {
+      document.addEventListener('scroll', ()=>{
+        if(window.scrollY > this.$refs["navPlaceholder"].offsetTop){
+          this.$refs["nav"].classList.add("fixed_nav");
+          this.$refs["navPlaceholder"].classList.add("navPlaceholder");
+        }else {
+          this.$refs["nav"].classList.remove("fixed_nav");
+          this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
+        }
+      })
+    }
+  }
 
 };
 </script>
