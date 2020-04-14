@@ -54,6 +54,14 @@
         </div>
       </div>
 
+      <div>
+        <div class="title">查询周边确诊</div>
+        <div class="mBlock">
+          <NearbyCasesFinder :regionData="sortedRegionData"></NearbyCasesFinder>
+        </div>
+
+      </div>
+
       <div id="navPlaceholder" ref="navPlaceholder"></div>
       <div class="mNav" ref="nav" id="mNavbar">
         <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 500}" v-scroll-spy-link>
@@ -107,7 +115,7 @@
 
         <div class="mSection" id="regionData">
             <div class="title">地区列表</div>
-            <RegionTable :dataNow="dataUk.now" :dataYesterday="dataUk.history[dataUk.history.length - 1]"></RegionTable>
+            <RegionTable :dataNow="dataUk.now" :dataYesterday="dataUk.history[dataUk.history.length - 1]" @onRegionalDataSorted="sortedRegionData = $event"></RegionTable>
         </div>
 
       </div>
@@ -148,6 +156,7 @@
 import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
+import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
 import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
 
@@ -157,6 +166,7 @@ export default {
     Chart,
     RegionTable,
     BarRaceSection,
+    NearbyCasesFinder,
     ICountUp
   },
   data: () => {
@@ -164,6 +174,7 @@ export default {
       dataUk: null,
       todayData: null,
       yestData: null,
+      sortedRegionData: null,
       section: 0,
       barRaceData: {
         hasData: false
@@ -174,7 +185,7 @@ export default {
     fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
       let data = await res.json();
       this.dataUk = data.uk;
-      console.log(data)
+      console.log(data);
       //history data
       this.todayData = data.uk.history[data.uk.history.length - 1];
       this.yestData = data.uk.history[data.uk.history.length - 2];

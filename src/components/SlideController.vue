@@ -64,10 +64,5 @@
 </script>
 
 <style scoped>
-    .circle{
-        border-radius: 30px;
-        padding: 10px;
-        width: 50px;
-        height: 50px;
-    }
+
 </style>

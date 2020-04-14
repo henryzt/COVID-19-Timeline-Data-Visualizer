@@ -53,7 +53,8 @@
             }
         },
         mounted(){
-          this.regionData = this.getRegionData()
+          this.regionData = this.getRegionData();
+          this.$emit('onRegionalDataSorted', [...this.regionData].sort((a, b) => b.change - a.change))
         },
         methods:{
             getRegionData: function() {
