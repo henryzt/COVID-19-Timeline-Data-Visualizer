@@ -18,17 +18,17 @@
         </div>
 
         <div style="max-height: 500px; overflow-y: scroll">
-            <table class="table table-striped table-hover">
-                <thead style="position: sticky">
+            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
+                <thead>
                 <tr>
                     <th scope="col">NHS地区</th>
-                    <th scope="col">确诊人数</th>
-                    <th scope="col">较上次更新</th>
+                    <th scope="col" nowrap>确诊人数</th>
+                    <th scope="col" nowrap>较上次</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="singleRegionData" v-for="singleRegion in regionData" :key="singleRegion.id">
-                    <th>{{ singleRegion.location }}</th>
+                    <td>{{ singleRegion.location }}</td>
                     <td>{{ singleRegion.number }}</td>
                     <td>{{ singleRegion.change }}</td>
                 </tr>
@@ -89,5 +89,13 @@
 </script>
 
 <style scoped>
-
+.table{
+    font-size: 14px;
+    border-collapse: collapse;
+}
+    th{
+        position: sticky;
+        top:-1px;
+        background: white;
+    }
 </style>
