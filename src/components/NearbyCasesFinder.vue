@@ -6,13 +6,9 @@
                 <div style="margin-top: -2px;"><LocateIcon/></div>
             </button>
 
-            <div class="form-inline" style="flex-grow: 1">
-                <div class="form-group col-sm-9" tyle="width: 100%;">
-                    <label for="postcode" class="sr-only">Postcode</label>
-                    <input class="form-control col-sm-12" id="postcode" placeholder="英国邮编 UK Postcode" v-model="inputValue">
-                </div>
-                <button type="submit" class="btn btn-primary col-sm-3" @click="find">查询</button>
-            </div>
+                    <input class="form-control" id="postcode" placeholder="UK Postcode" style="margin: 0 20px;" v-model="inputValue">
+
+                <button type="submit" class="btn btn-primary" style="width: 100px;" @click="find">查询</button>
 
         </div>
         <div class="displayInfo" style="margin-top: 20px; text-align: center;" v-html="displayInfo"></div>
@@ -54,6 +50,8 @@
                     let location = res[0];
                     let index = this.regionData.findIndex(obj=> obj.id === location.id);
                     this.displayInfo = `目前，<span>${location.location}</span>区共有<span>${location.number}</span>例确诊，在NHS地区中排名第<span>${index}</span>。`
+                }else {
+                    this.displayInfo = `抱歉，我们无法找到<span>${regionName}</span>的相关信息`
                 }
             },
             locateUserPostcode(){

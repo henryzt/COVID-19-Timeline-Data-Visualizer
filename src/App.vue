@@ -289,7 +289,7 @@ export default {
     padding-left: 20px;
   }
   .covid_header{
-    opacity: 0.5; padding: 30px 0;
+    opacity: 0.5; padding: 20px 10px;
     text-align: right;
   }
 </style>
