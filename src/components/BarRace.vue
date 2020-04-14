@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :id="'barRace'+id"></div>
+        <div class="bar_race" :id="'barRace'+id"></div>
         <SlideController :start-date="startDate" :end-date="endDate" :current-date="day" @change="changeDate" @playPause="playing = $event"></SlideController>
     </div>
 
@@ -348,33 +348,33 @@
 </script>
 
 <style>
-    text{
+    .bar_race text{
         font-size: 16px;
         font-family: Open Sans, sans-serif;
     }
-    text.title{
+    .bar_race text.title{
         font-size: 24px;
         font-weight: 500;
     }
-    text.subTitle{
+    .bar_race text.subTitle{
         font-weight: 500;
         fill: #777777;
     }
-    text.caption{
+    .bar_race text.caption{
         font-weight: 400;
         font-size: 14px;
         fill: #777777;
     }
-    text.label{
+    .bar_race text.label{
         color: white !important;
         font-weight: 600;
     }
 
-    text.valueLabel{
+    .bar_race text.valueLabel{
         font-weight: 300;
     }
 
-    text.dayText{
+    .bar_race text.dayText{
         font-size: 64px;
         font-weight: 700;
         opacity: 0.25;

@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <div class="mContent" v-if="dataNow && dataHistory && dataUK">
+      <div class="covid_header">
+        <h2>COVID-19</h2>
+        <h3>实时数据动态</h3>
+      </div>
+
       <div class="title">今日概览</div>
       <div class="overview mBlock">
         <div class="overview_item" style="color: #ff5151;">
@@ -281,5 +286,9 @@ export default {
   }
   h6{
     padding-left: 20px;
+  }
+  .covid_header{
+    opacity: 0.5; padding: 30px 0;
+    text-align: right;
   }
 </style>

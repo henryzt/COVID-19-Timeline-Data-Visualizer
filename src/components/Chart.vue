@@ -74,6 +74,9 @@ export default {
           textAnchor: 'middle',
           dropShadow: {
             enabled: true,
+          },
+          style:{
+            fontSize: "12px"
           }
         },
         stroke: {

@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div style="max-height: 500px; overflow-y: scroll">
+        <div>
             <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
                 <thead>
                 <tr>
@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="singleRegionData" v-for="singleRegion in regionData" :key="singleRegion.id">
+                <tr class="singleRegionData" v-for="singleRegion in regionData.slice(0, limit)" :key="singleRegion.id">
                     <td>{{ singleRegion.location }}</td>
                     <td>{{ singleRegion.number }}</td>
                     <td>{{ singleRegion.change }}</td>
@@ -35,6 +35,7 @@
                 <tr></tr>
                 </tbody>
             </table>
+            <div class="showAll" @click="limit=(limit===10)?regionData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
         </div>
     </div>
 </template>
@@ -47,7 +48,8 @@
         data: function (){
             return {
                 regionData: [],
-                sort: 0
+                sort: 0,
+                limit: 10,
             }
         },
         mounted(){
@@ -89,13 +91,18 @@
 </script>
 
 <style scoped>
-.table{
-    font-size: 14px;
-    border-collapse: collapse;
-}
+    .table{
+        font-size: 14px;
+        border-collapse: collapse;
+    }
     th{
         position: sticky;
-        top:-1px;
+        top:55px;
         background: white;
+    }
+    .showAll{
+        text-align: center;
+        cursor: pointer;
+        color: #0099db;
     }
 </style>
