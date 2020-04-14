@@ -2,7 +2,7 @@
     <div>
         <div style="display: flex;align-items: center;">
 
-            <button type="button" class="btn btn-secondary btn-lg circle">
+            <button type="button" class="btn btn-secondary btn-lg circle" @click="locateUserPostcode">
                 <div style="margin-top: -2px;"><LocateIcon/></div>
             </button>
 
@@ -15,7 +15,7 @@
             </div>
 
         </div>
-        <div class="displayInfo" style="margin-top: 20px; font-size: 14px;text-align: center;" v-html="displayInfo"></div>
+        <div class="displayInfo" style="margin-top: 20px; text-align: center;" v-html="displayInfo"></div>
     </div>
 
 </template>
@@ -31,7 +31,7 @@
         data: function(){
             return {
                 inputValue: "",
-                displayInfo: "<div style='opacity: 0.7;'>输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。</div>"
+                displayInfo: "<div style='opacity: 0.7; font-size: 14px;'>输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。</div>"
             }
         },
         methods:{
@@ -52,8 +52,28 @@
                 let res = this.regionData.filter(obj => obj.location == regionName || obj.location == district);
                 if(res && res[0]) {
                     let location = res[0];
-                    this.displayInfo = `目前，<span>${location.location}</span>区共有<span>${location.number}</span>例确诊，相较上次更新变化<span>${location.change}</span>例。`
+                    let index = this.regionData.findIndex(obj=> obj.id === location.id);
+                    this.displayInfo = `目前，<span>${location.location}</span>区共有<span>${location.number}</span>例确诊，在NHS地区中排名第<span>${index}</span>。`
                 }
+            },
+            locateUserPostcode(){
+                if (navigator.geolocation) {
+                    this.displayInfo = "定位中，请稍候...";
+                    navigator.geolocation.getCurrentPosition((position)=>{
+                        fetch(`https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}`).then( async res=>{
+                            let data = await res.json();
+                            if(data.result && data.result[0]){
+                                this.inputValue = data.result[0].postcode;
+                                this.find()
+                            }
+                        })
+                    },()=>{
+                        this.displayInfo = "很抱歉，我们无法定位，因为您已拒绝位置授权"
+                    });
+                } else {
+                    this.displayInfo = "Geolocation is not supported by this browser.";
+                }
+
             }
         }
     }
