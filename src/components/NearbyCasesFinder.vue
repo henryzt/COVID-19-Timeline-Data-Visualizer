@@ -51,7 +51,7 @@
                 if(res && res[0]) {
                     let location = res[0];
                     let index = this.regionData.findIndex(obj=> obj.id === location.id);
-                    this.displayInfo = `目前，<span>${location.location}</span>区共有<span>${location.number}</span>例确诊，在NHS地区中排名第<span>${index}</span>。`
+                    this.displayInfo = `目前，<span>${location.location}</span>区共有<span>${location.number}</span>例确诊，相较上次变化<span>${location.change}</span>例，在NHS地区中排名第<span>${index}</span>。`
                     window.ga('send', 'event', "nearby", "region-found", location.location+", "+regionName + ", "+ district);
                 }else {
                     this.displayInfo = `抱歉，我们无法找到<span>${regionName}</span>的相关信息`;

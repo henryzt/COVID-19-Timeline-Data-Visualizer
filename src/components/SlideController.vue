@@ -1,8 +1,11 @@
 <template>
     <div style="display: flex; align-items: center;padding-top: 20px">
-        <button type="button" class="btn btn-secondary btn-lg circle" @click="onPlayPause">
+        <button type="button" class="btn btn-secondary btn-lg circle" @click="onPlayPause" v-if="!hidePlayButton">
             <div style="margin-top: -2px;"><PauseIcon v-if="playPause"/><PlayIcon v-else/></div>
         </button>
+        <div style="font-size: 30px;font-weight: bold;opacity: 0.6;" v-else>
+            {{currentDate}}
+        </div>
         <div style="flex-grow: 1; margin-left: 30px">
             <VueSlider :value="currentDate" @change="onDateChange" :data="dateData" :disabled="!enableEvenIfPaused && !playPause"></VueSlider>
         </div>
@@ -17,7 +20,7 @@
 
     export default {
         name: "SlideController",
-        props: ["startDate","endDate","playing","currentDate","enableEvenIfPaused"],
+        props: ["startDate","endDate","playing","currentDate","enableEvenIfPaused","hidePlayButton"],
         data: function(){
             return {
                 playPause:true,
@@ -64,7 +67,7 @@
             },
             onDateChange: function (e) {
                 console.log(e);
-                this.$emit('change', e)
+                this.$emit('change', e);
             },
             onPlayPause: function () {
                 this.playPause = !this.playPause;

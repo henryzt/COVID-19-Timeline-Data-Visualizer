@@ -37,7 +37,7 @@
             </table>
             <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
         </div>
-        <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
+        <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
     </div>
 </template>
 
@@ -72,6 +72,7 @@
 
             changeDate: function(date){
                 let idx = this.currentData.findIndex(ele=>ele.date == date);
+                this.date = date;
                 this.updateTableData(idx)
             },
 
@@ -88,6 +89,24 @@
                     region.change = (change>0?"+":"") + change
                 }
                 this.tableData = current;
+                this.sortTable()
+            },
+
+            sortTable: function(){
+              switch (this.sort) {
+                  case 0:
+                      this.sortByDefault();
+                      break;
+                  case 1:
+                      this.sortByAlphabet();
+                      break;
+                  case 2:
+                      this.sortByNumber();
+                      break;
+                  case 3:
+                      this.sortByIncreaseNumber();
+                      break;
+              }
             },
 
             sortByDefault:function () {
