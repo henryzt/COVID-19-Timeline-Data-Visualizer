@@ -36,11 +36,7 @@ if ($cache) {
     $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
     $ukData->regional = json_decode(portal_curl_return("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true"));
 
-    $CSSEGIBaseUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/";
-
-    $globalData->confirmed = portal_curl_return($CSSEGIBaseUrl . "time_series_covid19_confirmed_global.csv");
-    $globalData->deaths = portal_curl_return($CSSEGIBaseUrl . "time_series_covid19_deaths_global.csv");
-    $globalData->recovered = portal_curl_return($CSSEGIBaseUrl . "time_series_covid19_recovered_global.csv");
+    $globalData = json_decode(portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all"));
 
     $res->uk = $ukData;
     $res->global = $globalData;
@@ -53,13 +49,24 @@ if ($cache) {
 
 echo $json;
 
+//save local copy
 if (strlen($json) > 1000) {
+
+    $CSSEGIBaseUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/";
+    $rawCSSEGI;
+
+    $rawCSSEGI->confirmed = portal_curl_return($CSSEGIBaseUrl . "time_series_covid19_confirmed_global.csv");
+    $rawCSSEGI->deaths = portal_curl_return($CSSEGIBaseUrl . "time_series_covid19_deaths_global.csv");
+    $rawCSSEGI->recovered = portal_curl_return($CSSEGIBaseUrl . "time_series_covid19_recovered_global.csv");
 
     $cacheFile = "cache/" . date("Y-m-d") . ".json";
 
     if (!file_exists($cacheFile)) {
         $fp = fopen($cacheFile, 'w');
         fwrite($fp, $json);
+        fclose($fp);
+        $fp = fopen("cache/CSSEGI-" . date("Y-m-d") . ".json", 'w');
+        fwrite($fp, json_encode($rawCSSEGI));
         fclose($fp);
     }
 

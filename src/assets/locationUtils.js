@@ -60,12 +60,12 @@ export function getNHSRegionD3Data(allHistory) {
 
 export function getD3GlobalData(raw) {
     let dateMap = {};
-    for(let dayData of raw){
-        let objArr = Object.entries(dayData);
-        for(let i = 4; i<objArr.length;i++){
+    for(let dayData of raw.locations){
+        let objArr = Object.entries(dayData.history);
+        for(let i = 0; i<objArr.length;i++){
             let date =  moment(objArr[i][0]).format("DD/MM");
             let value = objArr[i][1];
-            let location = {location: dayData["Country/Region"] +(dayData["Province/State"]?(" - "+ dayData["Province/State"]):""), number: value};
+            let location = {location: dayData["country"] +(dayData["province"]?(" - "+ dayData["province"]):""), number: value};
             dateMap[date] = dateMap[date]? dateMap[date]: [];
             dateMap[date].push(location)
         }

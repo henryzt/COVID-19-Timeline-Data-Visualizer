@@ -191,9 +191,7 @@ export default {
       this.yestData = data.uk.history[data.uk.history.length - 2];
       this.barRaceData.ukRegions = getNHSRegionD3Data(data.uk.history);
       //global data
-      const csv = require('csvtojson');
-      let confirmed = await csv().fromString(data.global.confirmed);
-      this.barRaceData.global = getD3GlobalData(confirmed);
+      this.barRaceData.global = getD3GlobalData(data.global.confirmed);
       this.barRaceData.hasData = true;
 
       this.getNavScrollAnchor()
