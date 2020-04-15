@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="title">确诊及死亡</div>
+        <div class="title">{{ $t('subtitles.confirmAndDeath') }}</div>
         <Chart
                 id="confirmedAndDeathChart1"
                 type="area"
@@ -9,7 +9,7 @@
         ></Chart>
 
 
-        <div class="title">新增死亡</div>
+        <div class="title">{{ $t('subtitles.newDeaths') }}</div>
         <Chart
                 id="deathChart2"
                 type="bar"
@@ -19,7 +19,7 @@
                 :colors='["#c40000","#3d000d","#2c9100"]'
         ></Chart>
 
-        <div class="title">死亡率及治愈率</div>
+        <div class="title">{{ $t('subtitles.rates') }}</div>
         <Chart
                 id="rateChart3"
                 type="area"

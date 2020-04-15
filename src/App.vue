@@ -3,10 +3,10 @@
     <div class="mContent" v-if="dataUk">
       <div class="covid_header">
         <h2>COVID-19</h2>
-        <h3>实时数据动态</h3>
+        <h3>{{ $t('title') }}</h3>
       </div>
 
-      <div class="title">今日概览</div>
+      <div class="title">{{ $t('subtitles.today') }}</div>
       <div class="overview mBlock">
         <div class="overview_item" style="color: #ff5151;">
           <div class="overview_title">累计确诊</div>
@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <div class="title">国家概览</div>
+      <div class="title">{{ $t('subtitles.country') }}</div>
       <div class="overview mBlock">
         <div class="overview_item">
           <div class="overview_title">英格兰</div>
@@ -55,7 +55,7 @@
       </div>
 
       <div>
-        <div class="title">查询周边确诊</div>
+        <div class="title">{{ $t('subtitles.nearby') }}</div>
         <div class="mBlock">
           <NearbyCasesFinder :regionData="sortedRegionData"></NearbyCasesFinder>
         </div>
@@ -83,12 +83,12 @@
         </div>
 
           <div class="mSection" id="animation">
-              <div class="title">历史确诊数据动画</div>
+              <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
           </div>
 
         <div class="mSection" id="regionData">
-            <div class="title">地区列表</div>
+            <div class="title">{{ $t('subtitles.regionList') }}</div>
             <RegionTable :regionData="tableData" v-if="tableData.hasData"></RegionTable>
         </div>
 
@@ -96,7 +96,7 @@
 
       <div class="mSection">
         <br>
-        <div class="title">数据来源</div>
+        <div class="title">{{ $t('subtitles.source') }}</div>
         <ul>
           <li><a href="https://github.com/isjeffcom/coronvirusFigureUK">Coronavirus UK Data API - isjeffcom</a></li>
           <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
@@ -105,7 +105,7 @@
           <li>感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
         </ul>
 
-        <div class="title">关于</div>
+        <div class="title">{{ $t('subtitles.about') }}</div>
         <ul>
           <li>本应用开源于 <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>，欢迎提供任何建议及贡献！</li>
           <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a> for UCLCSSA.</li>
