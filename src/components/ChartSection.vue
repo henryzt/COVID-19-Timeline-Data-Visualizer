@@ -42,13 +42,13 @@
             confirmedAndDeathChart1: function () {
                 return [
                     {
-                        name: '总确诊',
+                        name: this.$t('totalConfirmed'),
                         data: this.ChartData.map(a => {
                             return a.confirmed;
                         })
                     },
                     {
-                        name: '总死亡',
+                        name: this.$t('totalDeaths'),
                         data: this.ChartData.map(a => {
                             return a.death;
                         })
@@ -61,7 +61,7 @@
                 // let lastCured = 0;
                 return [
                     {
-                        name: '新增确诊',
+                        name:  this.$t('newCases'),
                         data: this.ChartData.map(a => {
                             let newConfirmed = a.confirmed - lastConfirmed;
                             lastConfirmed = a.confirmed;
@@ -69,7 +69,7 @@
                         })
                     },
                     {
-                        name: '新增死亡',
+                        name:  this.$t('newDeaths'),
                         data: this.ChartData.map(a => {
                             let newDeath = a.death - lastDeath;
                             lastDeath = a.death;
@@ -82,14 +82,14 @@
             rateChart3:function () {
                 return [
                     {
-                        name: '死亡率',
+                        name:  this.$t('deathRate'),
                         data: this.ChartData.map(a => {
                             let rate = (a.death / a.confirmed).toPrecision(2) ;
                             return rate
                         })
                     },
                     {
-                        name: '治愈率',
+                        name:  this.$t('cureRate'),
                         data: this.ChartData.map(a => {
                             let rate = (a.cured / a.confirmed).toPrecision(2) ;
                             return rate

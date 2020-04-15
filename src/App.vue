@@ -9,22 +9,22 @@
       <div class="title">{{ $t('subtitles.today') }}</div>
       <div class="overview mBlock">
         <div class="overview_item" style="color: #ff5151;">
-          <div class="overview_title">累计确诊</div>
+          <div class="overview_title">{{ $t('totalConfirmed') }}</div>
           <div class="overview_number"><ICountUp :endVal="dataUk.now[0].confirmed"/></div>
           <div class="daily-increase">{{ '+' + dataUk.regional.dailyConfirmed }}</div>
         </div>
         <div class="overview_item" style="color: #575757;">
-          <div class="overview_title">累计死亡</div>
+          <div class="overview_title">{{ $t('totalDeaths') }}</div>
           <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].death"/></div>
           <div class="daily-increase">{{ '+' + (todayData.death - yestData.death)}}</div>
         </div>
         <div class="overview_item" style="color: #0094b9;">
-          <div class="overview_title">累计测试</div>
+          <div class="overview_title">{{ $t('totalTests') }}</div>
           <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].tested "/></div>
           <div class="daily-increase"> {{ '+' + (todayData.tested - yestData.tested)}} </div>
         </div>
         <div class="overview_item" style="color: #28ca00;">
-          <div class="overview_title">累计治愈</div>
+          <div class="overview_title">{{ $t('totalCured') }}</div>
           <div class="overview_number"><ICountUp :endVal=" dataUk.now[1].cured "/></div>
           <div class="daily-increase">{{ '+' + (todayData.cured - yestData.cured)}}</div>
         </div>
@@ -33,22 +33,22 @@
       <div class="title">{{ $t('subtitles.country') }}</div>
       <div class="overview mBlock">
         <div class="overview_item">
-          <div class="overview_title">英格兰</div>
+          <div class="overview_title">{{ $t('england') }}</div>
           <div class="overview_number"><ICountUp :endVal="dataUk.now[0].england "/></div>
           <div class="country-death">{{ dataUk.regional.englandDeceased }}</div>
         </div>
         <div class="overview_item">
-          <div class="overview_title">苏格兰</div>
+          <div class="overview_title">{{ $t('scotland') }}</div>
           <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].scotland "/></div>
           <div class="country-death">{{ dataUk.regional.scottlandDeceased }}</div>
         </div>
         <div class="overview_item">
-          <div class="overview_title">威尔士</div>
+          <div class="overview_title">{{ $t('wales') }}</div>
           <div class="overview_number"><ICountUp :endVal="dataUk.now[0].wales "/></div>
           <div class="country-death">{{ dataUk.regional.walesDeceased }}</div>
         </div>
         <div class="overview_item">
-          <div class="overview_title">北爱尔兰</div>
+          <div class="overview_title">{{ $t('nIreland') }}</div>
           <div class="overview_number"><ICountUp :endVal="dataUk.now[0].nireland "/></div>
           <div class="country-death">{{ dataUk.regional.northenIrelandDeceased }}</div>
         </div>
@@ -66,13 +66,13 @@
       <div class="mNav" ref="nav" id="mNavbar">
         <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 500}" v-scroll-spy-link>
           <li class="nav-item">
-            <a class="nav-link" href="#charts">当前数据</a>
+            <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#animation">数据动画</a>
+            <a class="nav-link" href="#animation">{{ $t('nav.animation') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#regionData">地图列表</a>
+            <a class="nav-link" href="#regionData">{{ $t('nav.map') }}</a>
           </li>
         </ul>
       </div>
@@ -102,7 +102,7 @@
           <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
           <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API - ExpDev07</a></li>
           <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness Icons - iconfinder</a></li>
-          <li>感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
+          <li v-if="isLocaleCN">感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
         </ul>
 
         <div class="title">{{ $t('subtitles.about') }}</div>
@@ -112,7 +112,7 @@
 
         </ul>
 
-        <div style="text-align: center;margin: 50px 0;"><img src="./assets/logo_grey.png" style="max-width: 200px;text-align: center;opacity: 0.5;"/></div>
+        <div style="text-align: center;margin: 50px 0;"><img src="./assets/logo_grey.png" style="max-width: 200px;text-align: center;opacity: 0.5;" v-if="isLocaleCN"/></div>
 
       </div>
 
@@ -158,10 +158,12 @@ export default {
       },
       tableData:{
         hasData: false
-      }
+      },
+      isLocaleCN: false
     };
   },
   mounted() {
+    this.isLocaleCN = this.$i18n.locale === "zh";
     fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
       let data = await res.json();
       this.dataUk = data.uk;

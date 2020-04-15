@@ -16,7 +16,24 @@ const messages = {
             regionList: "Region List",
             source: "Source",
             about: "About",
-        }
+        },
+        totalConfirmed: "Confirmed",
+        totalDeaths: "Deaths",
+        totalTests: "Tested",
+        totalCured: "Cured",
+        england: "England",
+        scotland: "Scotland",
+        wales: "Wales",
+        nIreland: "N. Ireland",
+        nav: {
+            current: "Current Data",
+            animation: "History Animation",
+            map: "Map and Lists"
+        },
+        newCases: "New Cases",
+        newDeaths: "New Deaths",
+        deathRate: "Death Rate",
+        cureRate: "Cure Rate"
     },
     'zh': {
         title: "实时数据动态",
@@ -30,8 +47,25 @@ const messages = {
             historyAnimation: "历史确诊数据动画",
             regionList: "地域确诊列表",
             source: "数据来源",
-            about: "关于",
-        }
+            about: "关于"
+        },
+        totalConfirmed: "累计确诊",
+        totalDeaths: "累计死亡",
+        totalTests: "累计测试",
+        totalCured: "累计治愈",
+        england: "英格兰",
+        scotland: "苏格兰",
+        wales: "威尔士",
+        nIreland: "北爱尔兰",
+        nav: {
+            current: "当前数据",
+            animation: "历史动画",
+            map: "地图列表"
+        },
+        newCases: "新增确诊",
+        newDeaths: "新增死亡",
+        deathRate: "死亡率",
+        cureRate: "治愈率"
     }
 };
 
