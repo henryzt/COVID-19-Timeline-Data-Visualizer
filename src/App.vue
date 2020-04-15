@@ -79,33 +79,7 @@
 
       <div v-scroll-spy="{data: 'section'}">
         <div class="mSection" id="charts" style="padding-top: 0">
-          <div class="title">确诊及死亡</div>
-          <Chart
-                  id="confirmedAndDeathChart1"
-                  type="area"
-                  :dataHistory="dataUk.history"
-                  :seriesData="confirmedAndDeathChart1"
-          ></Chart>
-
-
-          <div class="title">新增死亡</div>
-          <Chart
-                  id="deathChart2"
-                  type="bar"
-                  :stacked="true"
-                  :dataHistory="dataUk.history"
-                  :seriesData="deathChart2"
-                  :colors='["#c40000","#3d000d","#2c9100"]'
-          ></Chart>
-
-          <div class="title">死亡率及治愈率</div>
-          <Chart
-                  id="rateChart3"
-                  type="area"
-                  :dataHistory="dataUk.history"
-                  :seriesData="rateChart3"
-                  :colors='["#ca0011","#0088ff"]'
-          ></Chart>
+            <ChartSection :chart-data="dataUk.history"></ChartSection>
         </div>
 
           <div class="mSection" id="animation">
@@ -153,9 +127,10 @@
 </template>
 
 <script>
-import Chart from "./components/Chart.vue";
+// import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
+import ChartSection from "./components/ChartSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
 import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
@@ -163,9 +138,9 @@ import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
 export default {
   name: "App",
   components: {
-    Chart,
     RegionTable,
     BarRaceSection,
+    ChartSection,
     NearbyCasesFinder,
     ICountUp
   },
@@ -197,66 +172,6 @@ export default {
       this.getNavScrollAnchor()
     });
 
-  },
-  computed: {
-    confirmedAndDeathChart1: function () {
-      return [
-        {
-          name: '总确诊',
-          data: this.dataUk.history.map(a => {
-            return a.confirmed;
-          })
-        },
-        {
-          name: '总死亡',
-          data: this.dataUk.history.map(a => {
-            return a.death;
-          })
-        }
-      ]
-    },
-    deathChart2:function () {
-      let lastConfirmed = 0;
-      let lastDeath = 0;
-      // let lastCured = 0;
-      return [
-        {
-          name: '新增确诊',
-          data: this.dataUk.history.map(a => {
-            let newConfirmed = a.confirmed - lastConfirmed;
-            lastConfirmed = a.confirmed;
-            return newConfirmed
-          })
-        },
-        {
-          name: '新增死亡',
-          data: this.dataUk.history.map(a => {
-            let newDeath = a.death - lastDeath;
-            lastDeath = a.death;
-            return newDeath
-          })
-        }
-
-      ]
-    },
-    rateChart3:function () {
-      return [
-        {
-          name: '死亡率',
-          data: this.dataUk.history.map(a => {
-            let rate = (a.death / a.confirmed).toPrecision(2) ;
-            return rate
-          })
-        },
-        {
-          name: '治愈率',
-          data: this.dataUk.history.map(a => {
-            let rate = (a.cured / a.confirmed).toPrecision(2) ;
-            return rate
-          })
-        }
-      ]
-    }
   },
   methods: {
     getNavScrollAnchor: function () {

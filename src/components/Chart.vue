@@ -61,7 +61,7 @@ export default {
       options:function (){ return  {
         chart: {
           id: this.id,
-          height: 350,
+          height: 320,
           type: this.type?this.type:"line",
           stacked: this.stacked,
           zoom: {
