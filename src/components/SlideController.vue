@@ -51,7 +51,7 @@
                 const moment = require('moment');
                 const dateFormat = 'DD/MM/YYYY';
 
-                console.log(this.startDate, this.endDate, this.dateData, this.enableEvenIfPaused)
+                // console.log(this.startDate, this.endDate, this.dateData, this.enableEvenIfPaused)
 
                 this.dateData=[];
                 let doContinue = true;

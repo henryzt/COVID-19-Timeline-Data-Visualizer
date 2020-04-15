@@ -133,7 +133,7 @@ import BarRaceSection from "./components/BarRaceSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -164,16 +164,17 @@ export default {
       let data = await res.json();
       this.dataUk = data.uk;
       console.log(data);
+      let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
       //history data
       this.todayData = data.uk.history[data.uk.history.length - 1];
       this.yestData = data.uk.history[data.uk.history.length - 2];
-      this.tableData.uk = getRegionHistoryTableData(data.uk.history, this.dataUk.now[0].area);
+      this.tableData.uk = getRegionHistoryTableData(data.uk.history, currentUkAreaData);
       this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
       //global data
       this.barRaceData.global = getD3GlobalData(data.global.confirmed);
       this.barRaceData.hasData = true;
 
-      this.sortedRegionData = [...this.tableData.uk].sort((a, b) => b.change - a.change);
+      this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
       this.tableData.hasData = true;
 
       this.getNavScrollAnchor();

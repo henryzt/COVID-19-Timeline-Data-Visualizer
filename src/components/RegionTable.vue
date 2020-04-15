@@ -37,7 +37,9 @@
             </table>
             <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
         </div>
-        <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
+        <div :class="(limit===10)?'':'stick'">
+            <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
+        </div>
     </div>
 </template>
 
@@ -143,5 +145,11 @@
         text-align: center;
         cursor: pointer;
         color: #0099db;
+    }
+    .stick{
+        position: sticky;bottom:0;
+        border-top: solid 1px whitesmoke;
+        background:white;padding: 0 10px;
+        padding-bottom: 50px;
     }
 </style>

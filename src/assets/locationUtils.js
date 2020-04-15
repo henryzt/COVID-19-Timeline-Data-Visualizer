@@ -58,7 +58,7 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
     // add current data
     let todayDate = moment().format("DD/MM");
     if(dailyLocationJson[dailyLocationJson.length-1].date != todayDate){
-        let today = {arr: parseLocationData(todayArr), date: todayDate};
+        let today = {arr: todayArr, date: todayDate};
         dailyLocationJson.push(today);
     }
 
