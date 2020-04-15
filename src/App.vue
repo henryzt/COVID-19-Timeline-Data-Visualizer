@@ -89,7 +89,7 @@
 
         <div class="mSection" id="regionData">
             <div class="title">地区列表</div>
-            <RegionTable :dataNow="dataUk.now" :dataYesterday="dataUk.history[dataUk.history.length - 1]" @onRegionalDataSorted="sortedRegionData = $event"></RegionTable>
+            <RegionTable :regionData="tableData" v-if="tableData.hasData"></RegionTable>
         </div>
 
       </div>
@@ -133,7 +133,7 @@ import BarRaceSection from "./components/BarRaceSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
-import {getNHSRegionD3Data, getD3GlobalData} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, filterRegionData} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -153,6 +153,9 @@ export default {
       section: 0,
       barRaceData: {
         hasData: false
+      },
+      tableData:{
+        hasData: false
       }
     };
   },
@@ -169,7 +172,10 @@ export default {
       this.barRaceData.global = getD3GlobalData(data.global.confirmed);
       this.barRaceData.hasData = true;
 
-      this.getNavScrollAnchor()
+      this.getNavScrollAnchor();
+      this.tableData.uk = filterRegionData(this.dataUk.now[0].area, this.dataUk.history[this.dataUk.history.length - 1].area);
+      this.sortedRegionData = [...this.tableData.uk].sort((a, b) => b.change - a.change);
+      this.tableData.hasData = true;
     });
 
   },

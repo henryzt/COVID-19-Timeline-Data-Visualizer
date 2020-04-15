@@ -78,3 +78,18 @@ export function getD3GlobalData(raw) {
     // console.log(dailyLocationJson);
     return getD3Data(dailyLocationJson);
 }
+
+export function filterRegionData(today, yesterday){
+        let regionJSON = parseLocationData(today);
+        let regionOldJSON = parseLocationData(yesterday);
+
+        let id = 0;
+        for (let region of regionJSON)
+        {
+            region.id = id++;
+            let change = regionOldJSON[id]? region.number - regionOldJSON[id].number : 0;
+            region.change = (change>0?"+":"") + change
+        }
+        return regionJSON;
+
+}

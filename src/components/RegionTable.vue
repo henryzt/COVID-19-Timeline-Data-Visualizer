@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="singleRegionData" v-for="singleRegion in regionData.slice(0, limit)" :key="singleRegion.id">
+                <tr class="singleRegionData" v-for="singleRegion in tableData.slice(0, limit)" :key="singleRegion.id">
                     <td>{{ singleRegion.location }}</td>
                     <td>{{ singleRegion.number }}</td>
                     <td>{{ singleRegion.change }}</td>
@@ -35,57 +35,43 @@
                 <tr></tr>
                 </tbody>
             </table>
-            <div class="showAll" @click="limit=(limit===10)?regionData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
+            <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
         </div>
     </div>
 </template>
 
 <script>
-    import {parseLocationData} from "../assets/locationUtils"
+    // import {filterRegionData} from "../assets/locationUtils"
     export default {
         name: "RegionTable",
-        props: ["dataNow", "dataYesterday"],
+        props: ["regionData"],
         data: function (){
             return {
-                regionData: [],
+                tableData: [],
                 sort: 0,
                 limit: 10,
             }
         },
         mounted(){
-          this.regionData = this.getRegionData();
-          this.$emit('onRegionalDataSorted', [...this.regionData].sort((a, b) => b.change - a.change))
+          this.tableData = this.regionData.uk;
         },
         methods:{
-            getRegionData: function() {
 
-                let regionJSON = parseLocationData(this.dataNow[0].area);
-                let regionOldJSON = parseLocationData(this.dataYesterday.area);
-
-                let id = 0;
-                for (let region of regionJSON)
-                {
-                   region.id = id++;
-                   let change = regionOldJSON[id]? region.number - regionOldJSON[id].number : 0
-                   region.change = (change>0?"+":"") + change
-                }
-                return regionJSON;
-            },
             sortByDefault:function () {
                 this.sort = 0;
-                this.regionData = [...this.regionData].sort((a, b) => b.id - a.id);
+                this.tableData = [...this.tableData].sort((a, b) => b.id - a.id);
             },
             sortByAlphabet:function () {
                 this.sort = 1;
-                this.regionData = [...this.regionData].sort((a, b) => a.location.localeCompare(b.location));
+                this.tableData = [...this.tableData].sort((a, b) => a.location.localeCompare(b.location));
             },
             sortByNumber:function () {
                 this.sort = 2;
-                this.regionData = [...this.regionData].sort((a, b) => b.number - a.number);
+                this.tableData = [...this.tableData].sort((a, b) => b.number - a.number);
             },
             sortByIncreaseNumber:function () {
                 this.sort = 3;
-                this.regionData = [...this.regionData].sort((a, b) => b.change - a.change);
+                this.tableData = [...this.tableData].sort((a, b) => b.change - a.change);
             }
         }
     }
