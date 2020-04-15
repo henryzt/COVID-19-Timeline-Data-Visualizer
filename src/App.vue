@@ -133,7 +133,7 @@ import BarRaceSection from "./components/BarRaceSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
-import {getNHSRegionD3Data, getD3GlobalData, filterRegionData} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -167,15 +167,16 @@ export default {
       //history data
       this.todayData = data.uk.history[data.uk.history.length - 1];
       this.yestData = data.uk.history[data.uk.history.length - 2];
-      this.barRaceData.ukRegions = getNHSRegionD3Data(data.uk.history);
+      this.tableData.uk = getRegionHistoryTableData(data.uk.history, this.dataUk.now[0].area);
+      this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
       //global data
       this.barRaceData.global = getD3GlobalData(data.global.confirmed);
       this.barRaceData.hasData = true;
 
-      this.getNavScrollAnchor();
-      this.tableData.uk = filterRegionData(this.dataUk.now[0].area, this.dataUk.history[this.dataUk.history.length - 1].area);
       this.sortedRegionData = [...this.tableData.uk].sort((a, b) => b.change - a.change);
       this.tableData.hasData = true;
+
+      this.getNavScrollAnchor();
     });
 
   },

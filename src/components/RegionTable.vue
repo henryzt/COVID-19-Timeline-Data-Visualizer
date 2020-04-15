@@ -18,7 +18,7 @@
         </div>
 
         <div>
-            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
+            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; " v-if="tableData">
                 <thead>
                 <tr>
                     <th scope="col">NHS地区</th>
@@ -37,25 +37,53 @@
             </table>
             <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
         </div>
+        <SlideController></SlideController>
     </div>
 </template>
 
 <script>
-    // import {filterRegionData} from "../assets/locationUtils"
+    // eslint-disable-next-line no-unused-vars
+    import {filterRegionDataHasData} from "../assets/locationUtils"
+    import SlideController from './SlideController'
     export default {
         name: "RegionTable",
         props: ["regionData"],
+        components: {
+            SlideController
+        },
         data: function (){
             return {
                 tableData: [],
                 sort: 0,
                 limit: 10,
+                date: null,
+                currentData: null
             }
         },
         mounted(){
-          this.tableData = this.regionData.uk;
+            this.getCurrentTableData(this.regionData.uk)
         },
         methods:{
+            getCurrentTableData: function(current){
+                this.date = this.date?this.date:current[current.length-1].date;
+                this.currentData = current;
+                this.updateTableData()
+            },
+
+            updateTableData: function(){
+                // const moment = require('moment');
+                let current = this.currentData[this.currentData.length-1].arr;
+                let last = this.currentData[this.currentData.length-2].arr;
+                let id = 0;
+                for (let region of current)
+                {
+                    let lastData = last.find(element => element.location == region.location);
+                    region.id = id++;
+                    let change = lastData? region.number - lastData.number : 0;
+                    region.change = (change>0?"+":"") + change
+                }
+                this.tableData = current;
+            },
 
             sortByDefault:function () {
                 this.sort = 0;

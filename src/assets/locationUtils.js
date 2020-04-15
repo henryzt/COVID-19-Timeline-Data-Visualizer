@@ -4,6 +4,7 @@
 const moment = require('moment');
 
 export function parseLocationData(areaData) {
+    if(!areaData) return null;
     let locationJSON = JSON.parse(areaData.replace(/\\/g,""));
 
     let filterNumber = place => {
@@ -43,7 +44,7 @@ export function getD3Data(dailyLocationJson) {
     return locationData;
 }
 
-export function getNHSRegionD3Data(allHistory) {
+export function getRegionHistoryTableData(allHistory, todayArr) {
     let dailyLocationJson = [];
     for(let history of allHistory){
         if(history.area){
@@ -54,8 +55,19 @@ export function getNHSRegionD3Data(allHistory) {
         }
     }
 
-    // console.log(dailyLocationJson);
-    return getD3Data(dailyLocationJson);
+    // add current data
+    let todayDate = moment().format("DD/MM");
+    if(dailyLocationJson[dailyLocationJson.length-1].date != todayDate){
+        let today = {arr: parseLocationData(todayArr), date: todayDate};
+        dailyLocationJson.push(today);
+    }
+
+    console.log(dailyLocationJson);
+    return dailyLocationJson;
+}
+
+export function getNHSRegionD3Data(historyTableData) {
+    return getD3Data(historyTableData);
 }
 
 export function getD3GlobalData(raw) {
@@ -77,19 +89,4 @@ export function getD3GlobalData(raw) {
     }
     // console.log(dailyLocationJson);
     return getD3Data(dailyLocationJson);
-}
-
-export function filterRegionData(today, yesterday){
-        let regionJSON = parseLocationData(today);
-        let regionOldJSON = parseLocationData(yesterday);
-
-        let id = 0;
-        for (let region of regionJSON)
-        {
-            region.id = id++;
-            let change = regionOldJSON[id]? region.number - regionOldJSON[id].number : 0;
-            region.change = (change>0?"+":"") + change
-        }
-        return regionJSON;
-
 }
