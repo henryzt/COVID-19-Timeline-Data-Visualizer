@@ -26,14 +26,38 @@ const messages = {
         wales: "Wales",
         nIreland: "N. Ireland",
         nav: {
-            current: "Current Data",
-            animation: "History Animation",
-            map: "Map and Lists"
+            current: "Current",
+            animation: "Animations",
+            map: "Maps"
         },
         newCases: "New Cases",
         newDeaths: "New Deaths",
         deathRate: "Death Rate",
-        cureRate: "Cure Rate"
+        cureRate: "Cure Rate",
+        chartTimes: {
+            oneWeek: "7 Days",
+            twoWeek: "14 Days",
+            oneMonth: "31 Days",
+            all: "All Data",
+        },
+        nearBy: {
+            default: "You can search for the number of cases in your nearest NHS region by postcode, or tap the left-side icon to locate the region you are currently at.",
+            postcodeErr: "Sorry, the UK postcode your entered is invalid.",
+            result: `Currently, there are<span>{1}</span>confirmed cases in<span>{0}</span>, with a change of <span>{2}</span> cases，it is ranked No.<span>{3}</span> in all NHS regions.`,
+            notFound: `Sorry, we cannot find any data on <span>{0}</span>`,
+            locating: "Locating, please wait...",
+            notUk: "Sorry, but we cannot locate you onto an UK region.",
+            rejected: "Sorry, but you have denied the GPS permission.",
+            unsupported: "Sorry, Geolocation is not supported by this browser.",
+            search: "Search"
+        },
+        barRace: {
+            global: "Global",
+            local: "Country",
+            globalTitle: "Global Case History",
+            localTitle: "NHS Region History",
+            unit: "Confirmed Cases"
+        }
     },
     'zh': {
         title: "实时数据动态",
@@ -65,13 +89,37 @@ const messages = {
         newCases: "新增确诊",
         newDeaths: "新增死亡",
         deathRate: "死亡率",
-        cureRate: "治愈率"
+        cureRate: "治愈率",
+        chartTimes: {
+            oneWeek: "一周内",
+            twoWeek: "两周内",
+            oneMonth: "一个月内",
+            all: "全部数据",
+        },
+        nearBy: {
+            default: "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+            postcodeErr: "抱歉，您输入的邮编有误",
+            result: `目前，<span>{0}</span>区共有<span>{1}</span>例确诊，相较上次变化<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。`,
+            notFound: `抱歉，我们无法找到<span>{0}</span>的相关信息`,
+            locating: "定位中，请稍候...",
+            notUk: "很抱歉，我们无法定位您到英国的地区",
+            rejected: "很抱歉，我们无法定位，因为您已拒绝位置授权",
+            unsupported: "很抱歉，您的浏览器不支持定位",
+            search: "查询"
+        },
+        barRace: {
+            global: "全球",
+            local: "本地",
+            globalTitle: "全球确诊数据",
+            localTitle: "NHS地区确诊数据",
+            unit: "确诊人数（例）"
+        }
     }
 };
 
 // eslint-disable-next-line no-unused-vars
 export const i18n = new VueI18n({
     locale: 'en', // set locale
-    fallbackLocale: 'es', // set fallback locale
+    fallbackLocale: 'zh', // set fallback locale
     messages, // set locale messages
 });

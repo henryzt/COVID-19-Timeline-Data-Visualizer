@@ -3,16 +3,16 @@
     <div class="btn-group-wrap">
       <div class="btn-group btn-group-sm" role="group" aria-label="date range">
         <button type="button" class="btn btn-secondary" :class="{active: range===-7}" @click="updateRange(-7,true)">
-          一周内
+          {{ $t('chartTimes.oneWeek') }}
         </button>
         <button type="button" class="btn btn-secondary" :class="{active: range===-14}" @click="updateRange(-14,true)">
-          两周内
+          {{ $t('chartTimes.twoWeek') }}
         </button>
         <button type="button" class="btn btn-secondary" :class="{active: range===-31}" @click="updateRange(-31,false)">
-          一个月内
+          {{ $t('chartTimes.oneMonth') }}
         </button>
         <button type="button" class="btn btn-secondary" :class="{active: range===0}" @click="updateRange(0,false)">
-          全部数据
+          {{ $t('chartTimes.all') }}
         </button>
       </div>
     </div>

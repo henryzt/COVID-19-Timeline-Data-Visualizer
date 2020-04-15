@@ -2,14 +2,14 @@
     <div class="mBlock">
         <div class="btn-group btn-group-sm" role="group" aria-label="date range" style="position: absolute;right: 20px;">
             <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
-                全球
+                {{$t('barRace.global')}}
             </button>
             <button type="button" class="btn btn-secondary" :class="{active: tab===1}" @click="changeTab(1)">
-                英国
+                {{$t('barRace.local')}}
             </button>
         </div>
-        <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" title="全球确诊数据" subtitle="确诊人数（例）" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
-        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" title="NHS地区确诊数据" subtitle="确诊人数（例）" source="Source: isjeff.com" id="1"></BarRace>
+        <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" :title="$t('barRace.unit')" :subtitle="$t('barRace.globalTitle')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
+        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.unit')" :subtitle="$t('barRace.globalTitle')" source="Source: GOV.UK" id="1"></BarRace>
 
 
     </div>
