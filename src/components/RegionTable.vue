@@ -1,5 +1,5 @@
 <template>
-    <div class="mBlock" >
+    <div class="mBlock" v-if="currentData">
         <div class="btn-group-wrap">
             <div class="btn-group btn-group-sm" role="group" aria-label="date range">
                 <button type="button" class="btn btn-secondary" :class="{active: sort===0}" @click="sortByDefault()">
@@ -18,7 +18,7 @@
         </div>
 
         <div>
-            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; " v-if="tableData">
+            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
                 <thead>
                 <tr>
                     <th scope="col">NHS地区</th>
@@ -37,7 +37,7 @@
             </table>
             <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
         </div>
-        <SlideController></SlideController>
+        <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
     </div>
 </template>
 
@@ -67,17 +67,22 @@
             getCurrentTableData: function(current){
                 this.date = this.date?this.date:current[current.length-1].date;
                 this.currentData = current;
-                this.updateTableData()
+                this.updateTableData(current.length-1)
             },
 
-            updateTableData: function(){
+            changeDate: function(date){
+                let idx = this.currentData.findIndex(ele=>ele.date == date);
+                this.updateTableData(idx)
+            },
+
+            updateTableData: function(currentIndex){
                 // const moment = require('moment');
-                let current = this.currentData[this.currentData.length-1].arr;
-                let last = this.currentData[this.currentData.length-2].arr;
+                let current = this.currentData[currentIndex]?.arr;
+                let last = this.currentData[currentIndex-1]?.arr;
                 let id = 0;
                 for (let region of current)
                 {
-                    let lastData = last.find(element => element.location == region.location);
+                    let lastData = last?.find(element => element.location == region.location);
                     region.id = id++;
                     let change = lastData? region.number - lastData.number : 0;
                     region.change = (change>0?"+":"") + change

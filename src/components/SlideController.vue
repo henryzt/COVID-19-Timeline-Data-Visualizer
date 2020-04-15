@@ -4,7 +4,7 @@
             <div style="margin-top: -2px;"><PauseIcon v-if="playPause"/><PlayIcon v-else/></div>
         </button>
         <div style="flex-grow: 1; margin-left: 30px">
-            <VueSlider :value="currentDate" @change="onDateChange" :data="data" :disabled="!playPause"></VueSlider>
+            <VueSlider :value="currentDate" @change="onDateChange" :data="dateData" :disabled="!enableEvenIfPaused && !playPause"></VueSlider>
         </div>
     </div>
 </template>
@@ -17,11 +17,11 @@
 
     export default {
         name: "SlideController",
-        props: ["startDate","endDate","playing","currentDate"],
+        props: ["startDate","endDate","playing","currentDate","enableEvenIfPaused"],
         data: function(){
             return {
                 playPause:true,
-                data:[],
+                dateData:[],
             }
         },
         components: {
@@ -30,27 +30,38 @@
             PauseIcon
         },
         watch: {
-            endDate: function () { // watch it
+            startDate: function () {
+                this.calculateDate();
+            },
+            endDate: function () {
+                this.calculateDate();
+            },
+            playing:function (val) {
+                this.playPause = val;
+            }
+        },
+        mounted(){
+            this.calculateDate();
+        },
+        methods: {
+            calculateDate: function(){
                 const moment = require('moment');
                 const dateFormat = 'DD/MM/YYYY';
 
-                this.data=[];
+                console.log(this.startDate, this.endDate, this.dateData, this.enableEvenIfPaused)
+
+                this.dateData=[];
                 let doContinue = true;
                 let dateNow = this.startDate;
                 let count = 0;
                 while(doContinue && count<10000){
-                    this.data.push(dateNow);
+                    this.dateData.push(dateNow);
                     let currentMoment = moment(dateNow+'/2020', dateFormat);
                     dateNow = currentMoment.add(1, 'days').format("DD/MM");
                     doContinue = currentMoment.isSameOrBefore(moment(this.endDate+'/2020', dateFormat));
                     count++;
                 }
             },
-            playing:function (val) {
-                this.playPause = val;
-            }
-        },
-        methods: {
             onDateChange: function (e) {
                 console.log(e);
                 this.$emit('change', e)
