@@ -8,8 +8,8 @@
                 {{$t('barRace.local')}}
             </button>
         </div>
-        <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" :title="$t('barRace.unit')" :subtitle="$t('barRace.globalTitle')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
-        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.unit')" :subtitle="$t('barRace.globalTitle')" source="Source: GOV.UK" id="1"></BarRace>
+        <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" :title="$t('barRace.globalTitle')" :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
+        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.localTitle')" :subtitle="$t('barRace.unit')" source="Source: GOV.UK" id="1"></BarRace>
 
 
     </div>

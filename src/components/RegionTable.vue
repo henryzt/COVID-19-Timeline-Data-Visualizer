@@ -3,16 +3,16 @@
         <div class="btn-group-wrap">
             <div class="btn-group btn-group-sm" role="group" aria-label="date range">
                 <button type="button" class="btn btn-secondary" :class="{active: sort===0}" @click="sortByDefault()">
-                    默认排序
+                    {{$t('table.default')}}
                 </button>
                 <button type="button" class="btn btn-secondary" :class="{active: sort===1}" @click="sortByAlphabet()">
-                    按地区
+                    {{$t('table.byRegion')}}
                 </button>
                 <button type="button" class="btn btn-secondary" :class="{active: sort===2}" @click="sortByNumber()">
-                    按人数
+                    {{$t('table.byCases')}}
                 </button>
                 <button type="button" class="btn btn-secondary" :class="{active: sort===3}" @click="sortByIncreaseNumber()">
-                    按变化
+                    {{$t('table.byChanges')}}
                 </button>
             </div>
         </div>
@@ -21,9 +21,9 @@
             <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
                 <thead>
                 <tr>
-                    <th scope="col">NHS地区</th>
-                    <th scope="col" nowrap>确诊人数</th>
-                    <th scope="col" nowrap>较上次</th>
+                    <th scope="col">{{$t('table.region')}}</th>
+                    <th scope="col" nowrap>{{$t('table.cases')}}</th>
+                    <th scope="col" nowrap>{{$t('table.changes')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@
                 <tr></tr>
                 </tbody>
             </table>
-            <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?"Show All":"Show Less"}}</div>
+            <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?$t('table.showAll'):$t('table.showLess')}}</div>
         </div>
         <div :class="(limit===10)?'':'stick'">
             <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>

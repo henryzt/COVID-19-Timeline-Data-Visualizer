@@ -107,12 +107,16 @@
 
         <div class="title">{{ $t('subtitles.about') }}</div>
         <ul>
-          <li>本应用开源于 <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>，欢迎提供任何建议及贡献！</li>
+          <li>This project is open sourced at <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>, pull requests and issues welcomed!</li>
           <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a> for UCLCSSA.</li>
 
         </ul>
 
-        <div style="text-align: center;margin: 50px 0;"><img src="./assets/logo_grey.png" style="max-width: 200px;text-align: center;opacity: 0.5;" v-if="isLocaleCN"/></div>
+        <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
+          <img src="./assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN"/>
+          <br><br>
+          <a href="#" @click="$i18n.locale = 'en'">English</a> | <a href="#" @click="$i18n.locale = 'zh'">中文</a>
+        </div>
 
       </div>
 

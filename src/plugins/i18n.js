@@ -41,7 +41,7 @@ const messages = {
             all: "All Data",
         },
         nearBy: {
-            default: "You can search for the number of cases in your nearest NHS region by postcode, or tap the left-side icon to locate the region you are currently at.",
+            default: "Search cases in NHS region by postcode, or tap the left-side icon to locate.",
             postcodeErr: "Sorry, the UK postcode your entered is invalid.",
             result: `Currently, there are<span>{1}</span>confirmed cases in<span>{0}</span>, with a change of <span>{2}</span> cases，it is ranked No.<span>{3}</span> in all NHS regions.`,
             notFound: `Sorry, we cannot find any data on <span>{0}</span>`,
@@ -57,6 +57,17 @@ const messages = {
             globalTitle: "Global Case History",
             localTitle: "NHS Region History",
             unit: "Confirmed Cases"
+        },
+        table: {
+            default: "Sort by",
+            byRegion: "Region",
+            byCases:"Cases",
+            byChanges:"Changes",
+            region: "Region",
+            cases:"Confirmed",
+            changes:"Changes",
+            showAll: "Show All",
+            showLess: "Show Less"
         }
     },
     'zh': {
@@ -113,13 +124,24 @@ const messages = {
             globalTitle: "全球确诊数据",
             localTitle: "NHS地区确诊数据",
             unit: "确诊人数（例）"
+        },
+        table: {
+            default: "默认排序",
+            byRegion: "按地区",
+            byCases:"按人数",
+            byChanges:"按变化",
+            region: "地区",
+            cases: "确诊人数",
+            changes: "较上次",
+            showAll: "显示全部",
+            showLess: "收起"
         }
     }
 };
 
 // eslint-disable-next-line no-unused-vars
 export const i18n = new VueI18n({
-    locale: 'en', // set locale
-    fallbackLocale: 'zh', // set fallback locale
+    locale: navigator.language.split('-')[0], // set locale
+    fallbackLocale: 'en', // set fallback locale
     messages, // set locale messages
 });
