@@ -98,6 +98,17 @@
       </div>
 
       <div class="mSection">
+
+        <!-- WeChat notification, for CN only -->
+        <div v-if="isLocaleCN">
+          <div class="title">实时更新订阅</div>
+          <div class="mBlock" style="text-align: center;padding:30px">
+            <div>微信长按下方二维码，或搜索"<span style="text-wrap: none">UCLCSSA学联社区</span>"</div>
+            <img src="./assets/qr.png" style="max-width: 260px;"/>
+            <div>订阅每日实时疫情数据更新通知</div>
+          </div>
+        </div>
+
         <br>
         <div class="title">{{ $t('subtitles.source') }}</div>
         <ul>
@@ -144,7 +155,7 @@ import MapSection from "./components/MapSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts} from "./js/locationUtils"
 
 export default {
   name: "App",

@@ -45,7 +45,7 @@
 
 <script>
     // eslint-disable-next-line no-unused-vars
-    import {filterRegionDataHasData} from "../assets/locationUtils"
+    import {filterRegionDataHasData} from "../js/locationUtils"
     import SlideController from './SlideController'
     export default {
         name: "RegionTable",

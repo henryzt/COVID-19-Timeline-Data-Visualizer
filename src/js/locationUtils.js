@@ -92,7 +92,7 @@ export function getD3GlobalData(raw) {
 }
 
 /* --------------------------------------------------------------------------------------- */
-import { ukmapData } from "../js/ukmap";
+import { ukmapData } from "./ukmap";
 
 export function combineHighCharts(currentUkAreaData){
     let  commonLocationsData = [];
