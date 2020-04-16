@@ -85,6 +85,9 @@
           <div class="mSection" id="animation">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
+            <br>
+              <div class="title">英国地区确诊地图</div>
+                <MapSection :commonLocationsData="commonLocationsData"></MapSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -100,6 +103,7 @@
         <ul>
           <li><a href="https://github.com/isjeffcom/coronvirusFigureUK">Coronavirus UK Data API - isjeffcom</a></li>
           <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
+<!--          <li><a href="https://apify.com/covid-19">COVID-19 Data APIs for statistics - APIFY</a></li>-->
           <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API - ExpDev07</a></li>
           <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness Icons - iconfinder</a></li>
           <li v-if="isLocaleCN">感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
@@ -136,10 +140,11 @@
 // import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
+import MapSection from "./components/MapSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData} from "./assets/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts} from "./assets/locationUtils"
 
 export default {
   name: "App",
@@ -148,7 +153,8 @@ export default {
     BarRaceSection,
     ChartSection,
     NearbyCasesFinder,
-    ICountUp
+    ICountUp,
+    MapSection
   },
   data: () => {
     return {
@@ -160,6 +166,7 @@ export default {
       barRaceData: {
         hasData: false
       },
+      commonLocationsData: [],
       tableData:{
         hasData: false
       },
@@ -178,6 +185,7 @@ export default {
       this.yestData = data.uk.history[data.uk.history.length - 2];
       this.tableData.uk = getRegionHistoryTableData(data.uk.history, currentUkAreaData);
       this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
+      this.commonLocationsData = combineHighCharts(currentUkAreaData);
       //global data
       this.barRaceData.global = getD3GlobalData(data.global.confirmed);
       this.barRaceData.hasData = true;
