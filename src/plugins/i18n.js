@@ -16,6 +16,7 @@ const messages = {
             regionList: "Region List",
             source: "Source",
             about: "About",
+            map: "UK Confirmed Cases Map"
         },
         totalConfirmed: "Confirmed",
         totalDeaths: "Deaths",
@@ -134,7 +135,8 @@ const messages = {
             cases: "确诊人数",
             changes: "较上次",
             showAll: "显示全部",
-            showLess: "收起"
+            showLess: "收起",
+            map: "英国地区确诊地图"
         }
     }
 };

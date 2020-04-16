@@ -86,7 +86,7 @@
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
             <br>
-              <div class="title">英国地区确诊地图</div>
+              <div class="title">{{ $t('subtitles.map') }}</div>
                 <MapSection :commonLocationsData="commonLocationsData"></MapSection>
           </div>
 
@@ -103,7 +103,7 @@
         <ul>
           <li><a href="https://github.com/isjeffcom/coronvirusFigureUK">Coronavirus UK Data API - isjeffcom</a></li>
           <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
-<!--          <li><a href="https://apify.com/covid-19">COVID-19 Data APIs for statistics - APIFY</a></li>-->
+          <li><a href="https://apify.com/covid-19">COVID-19 Data APIs for statistics - APIFY</a></li>
           <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API - ExpDev07</a></li>
           <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness Icons - iconfinder</a></li>
           <li v-if="isLocaleCN">感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>

@@ -13,7 +13,7 @@
                         map: 'UKmap'
                     },
                     title: {
-                        text: 'UK COVID19 Map'
+                        text: 'UK Confirmed Cases'
                     },
                     mapNavigation: {
                         enabled: true,

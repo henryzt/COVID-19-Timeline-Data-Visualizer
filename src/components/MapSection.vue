@@ -1,6 +1,7 @@
 <template>
     <div class="mBlock">
         <Map :locationsData="commonLocationsData"></Map>
+        <div style="text-align: left;opacity: 0.3;">*Data is incomplete, source: UK.gov and isjeffcom</div>
     </div>
 </template>
 
