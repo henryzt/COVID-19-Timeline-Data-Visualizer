@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="mContent" v-if="dataUk">
+    <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <h2>COVID-19</h2>
         <h3>{{ $t('title') }}</h3>
@@ -85,12 +85,12 @@
           <div class="mSection" id="animation">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
-            <br>
-              <div class="title">{{ $t('subtitles.map') }}</div>
-                <MapSection :commonLocationsData="commonLocationsData"></MapSection>
           </div>
 
         <div class="mSection" id="regionData">
+            <div class="title">{{ $t('subtitles.map') }}</div>
+            <MapSection :commonLocationsData="commonLocationsData"></MapSection>
+          <br>
             <div class="title">{{ $t('subtitles.regionList') }}</div>
             <RegionTable :regionData="tableData" v-if="tableData.hasData"></RegionTable>
         </div>
@@ -119,7 +119,7 @@
         <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
           <img src="./assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN"/>
           <br><br>
-          <a href="#" @click="$i18n.locale = 'en'">English</a> | <a href="#" @click="$i18n.locale = 'zh'">中文</a>
+          <a href="#" @click="changeLang('en')">English</a> | <a href="#" @click="changeLang('zh')">中文</a>
         </div>
 
       </div>
@@ -158,6 +158,7 @@ export default {
   },
   data: () => {
     return {
+      dataCurrent: null,
       dataUk: null,
       todayData: null,
       yestData: null,
@@ -174,10 +175,16 @@ export default {
     };
   },
   mounted() {
+    if(this.isWeChat()){
+      this.$i18n.locale = "zh";
+    }
     this.isLocaleCN = this.$i18n.locale === "zh";
+    document.title = this.$t('pageTitle');
+
     fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
       let data = await res.json();
       this.dataUk = data.uk;
+      this.dataCurrent = this.dataUk;
       console.log(data);
       let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
       //history data
@@ -198,6 +205,20 @@ export default {
 
   },
   methods: {
+    changeLang: function(lang){
+      this.$i18n.locale = lang;
+      this.isLocaleCN = this.$i18n.locale === "zh";
+      document.title = this.$t('pageTitle');
+      //force reload
+      this.dataCurrent = null;
+      this.$nextTick(() => {
+        this.dataCurrent = this.dataUk;
+      });
+    },
+    isWeChat: function(){
+      let ua = window.navigator.userAgent.toLowerCase();
+      return (ua.match(/MicroMessenger/i) == 'micromessenger');
+    },
     getNavScrollAnchor: function () {
       document.addEventListener('scroll', ()=>{
         if(window.scrollY > this.$refs["navPlaceholder"].offsetTop){

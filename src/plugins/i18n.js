@@ -4,6 +4,7 @@ Vue.use(VueI18n);
 
 const messages = {
     'en': {
+        pageTitle: "COVID-19 UK Realtime Data Visualization",
         title: "Realtime Data Tracking",
         subtitles: {
             today: "Today Overview",
@@ -72,6 +73,7 @@ const messages = {
         }
     },
     'zh': {
+        pageTitle: "COVID-19 英国实时疫情数据跟踪 - UCLCSSA 中国学联",
         title: "实时数据动态",
         subtitles: {
             today: "今日概览",
@@ -83,7 +85,8 @@ const messages = {
             historyAnimation: "历史确诊数据动画",
             regionList: "地域确诊列表",
             source: "数据来源",
-            about: "关于"
+            about: "关于",
+            map: "英国地区确诊地图"
         },
         totalConfirmed: "累计确诊",
         totalDeaths: "累计死亡",
@@ -135,8 +138,7 @@ const messages = {
             cases: "确诊人数",
             changes: "较上次",
             showAll: "显示全部",
-            showLess: "收起",
-            map: "英国地区确诊地图"
+            showLess: "收起"
         }
     }
 };
