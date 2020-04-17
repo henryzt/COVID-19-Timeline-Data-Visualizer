@@ -68,6 +68,7 @@
             onDateChange: function (e) {
                 console.log(e);
                 this.$emit('change', e);
+                this.$emit('changeIndex', this.dateData.findIndex(a=>a===e));
             },
             onPlayPause: function () {
                 this.playPause = !this.playPause;
