@@ -87,8 +87,14 @@ export function getD3GlobalData(raw) {
     for(let entry of Object.entries(dateMap)){
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
-    // console.log(dailyLocationJson);
+    console.log(dailyLocationJson);
     return getD3Data(dailyLocationJson);
+}
+
+export function getAllCountries(locations) {
+    let arr = locations.map(e=>e.country);
+    return ["United Kingdom", "Worldwide", ...new Set(arr)];
+    //ref https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 }
 
 /* --------------------------------------------------------------------------------------- */

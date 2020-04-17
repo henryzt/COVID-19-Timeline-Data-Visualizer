@@ -2,8 +2,11 @@
   <div id="app">
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
-        <h2>COVID-19</h2>
-        <h3>{{ $t('title') }}</h3>
+        <vSelect style="width: 170px;" :clearable="false" :value="'United Kingdom'" :options="countryList"></vSelect>
+        <div class="header_title">
+          <h2>COVID-19</h2>
+          <h3>{{ $t('title') }}</h3>
+        </div>
       </div>
 
       <div class="title">{{ $t('subtitles.today') }}</div>
@@ -150,7 +153,6 @@
 </template>
 
 <script>
-// import Chart from "./components/Chart.vue";
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
@@ -158,7 +160,9 @@ import ChartSection from "./components/ChartSection.vue";
 import PieSection from "./components/PieSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts} from "./js/locationUtils"
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts, getAllCountries} from "./js/locationUtils"
 
 export default {
   name: "App",
@@ -169,6 +173,7 @@ export default {
     PieSection,
     NearbyCasesFinder,
     ICountUp,
+    vSelect,
     MapSection
   },
   data: () => {
@@ -210,6 +215,7 @@ export default {
       this.commonLocationsData = combineHighCharts(currentUkAreaData);
       //global data
       this.barRaceData.global = getD3GlobalData(data.global.confirmed);
+      this.countryList = getAllCountries(data.global.confirmed.locations);
       this.barRaceData.hasData = true;
 
       this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
@@ -262,7 +268,28 @@ export default {
     padding-left: 20px;
   }
   .covid_header{
-    opacity: 0.5; padding: 20px 10px;
+    padding: 20px 10px;
     text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header_title{
+    opacity: 0.5;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .covid_header{
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-end;
+    }
+    .header_title h2{
+      font-size: 25px;
+    }
+    .header_title h3{
+      font-size: 20px;
+    }
   }
 </style>
