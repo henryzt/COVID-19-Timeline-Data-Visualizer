@@ -66,7 +66,7 @@
                 }
             },
             onDateChange: function (e) {
-                console.log(e);
+                // console.log(e);
                 this.$emit('change', e);
                 this.$emit('changeIndex', this.dateData.findIndex(a=>a===e));
             },

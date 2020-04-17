@@ -85,7 +85,7 @@
           <div class="mSection" id="animation">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
-            <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
+            <div class="title">{{ $t('subtitles.ratio') }}</div>
             <PieSection :allHistoryData="dataUk.history"></PieSection>
           </div>
 

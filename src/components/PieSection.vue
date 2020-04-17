@@ -33,7 +33,7 @@
         computed: {
             options: function () {
                 return {
-                    labels: ['Negative', 'Recovered', 'Active', 'Deaths']
+                    labels: [this.$t('negative'), this.$t('totalCured'), this.$t('active'), this.$t('totalDeaths')]
                 }
             },
             series: function () {
