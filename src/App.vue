@@ -85,6 +85,8 @@
           <div class="mSection" id="animation">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
+            <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
+            <PieSection :pieData="dataUk.now[0]"></PieSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -153,6 +155,7 @@ import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
 import ChartSection from "./components/ChartSection.vue";
+import PieSection from "./components/PieSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
 import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts} from "./js/locationUtils"
@@ -163,6 +166,7 @@ export default {
     RegionTable,
     BarRaceSection,
     ChartSection,
+    PieSection,
     NearbyCasesFinder,
     ICountUp,
     MapSection
