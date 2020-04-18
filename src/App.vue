@@ -3,7 +3,7 @@
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <div>
-          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
+<!--          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>-->
         </div>
         <div class="header_title">
           <h2>COVID-19</h2>
@@ -162,6 +162,7 @@
 </template>
 
 <script>
+    /* eslint-disable */
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
@@ -280,6 +281,7 @@ export default {
           let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
           //history data
           let todayData = this.dataUk.history[this.dataUk.history.length - 1];
+          let yesterData = this.dataUk.history[this.dataUk.history.length - 2];
           this.tableData.uk = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
           this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
           this.commonLocationsData = combineHighCharts(currentUkAreaData);
@@ -291,9 +293,9 @@ export default {
               confirmed: this.dataUk.now[0].confirmed,
               confirmedChange: this.dataUk.regional.dailyConfirmed,
               deaths: this.dataUk.now[0].death,
-              deathsChange: (this.dataUk.now[0].death - todayData.death),
+              deathsChange: (todayData.death - yesterData.death),
               tested: this.dataUk.now[0].tested,
-              testedChange: (this.dataUk.now[0].tested - todayData.tested),
+              testedChange: (todayData.tested - yesterData.tested),
               cured: this.dataUk.now[1].cured,
               curedChange: (this.dataUk.now[1].cured - todayData.cured)
           };
