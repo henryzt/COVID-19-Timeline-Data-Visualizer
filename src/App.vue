@@ -151,6 +151,11 @@
         </div>
       </div>
     </div>
+
+    <div class="fix_bottom" v-if="isWeChat" :class="{'hide-popup': !showPopup}">
+      将此页面设为微信浮窗，方便第一时间获取更新
+      <span style="margin-left: 5px" @click="showPopup=false">关闭</span>
+    </div>
   </div>
 </template>
 
@@ -194,7 +199,8 @@ export default {
       tableData:{
         hasData: false
       },
-      isLocaleCN: false
+      isLocaleCN: false,
+      showPopup: true,
     };
   },
   mounted() {
@@ -227,6 +233,10 @@ export default {
 
       this.getNavScrollAnchor();
     });
+
+    setTimeout(()=>{
+      this.showPopup = false
+    }, 2000)
 
   },
   methods: {
@@ -278,8 +288,26 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
   .header_title{
     opacity: 0.5;
+  }
+
+  .fix_bottom{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: deepskyblue;
+    color: white;
+    line-height: 40px;
+    text-align: center;
+    transition: 2s;
+  }
+
+  .hide-popup{
+    bottom: -40px;
+    opacity: 0;
   }
 
   @media only screen and (max-width: 600px) {
