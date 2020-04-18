@@ -66,14 +66,15 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
     return dailyLocationJson;
 }
 
-export function getGlobalHistoryTableData(allHistory) {
+export function getGlobalHistoryTableData(allHistory, hideCountryName) {
     let dateMap = {};
     for(let dayData of allHistory.locations){
         let objArr = Object.entries(dayData.history);
         for(let i = 0; i<objArr.length;i++){
             let date =  moment(objArr[i][0]).format("DD/MM");
             let value = objArr[i][1];
-            let location = {location: dayData["country"] +(dayData["province"]?(" - "+ dayData["province"]):""), number: value};
+            let name = hideCountryName && dayData["province"]? dayData["province"] : (dayData["country"] +(dayData["province"]?(" - "+ dayData["province"]):""));
+            let location = {location: name, number: value};
             dateMap[date] = dateMap[date]? dateMap[date]: [];
             dateMap[date].push(location)
         }
@@ -101,8 +102,15 @@ export function getAllCountries(locations) {
     //ref https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 }
 
-export function getCountryData(globalData) {
-    console.log(globalData)
+export function getCountryData(globalData, countryName) {
+    console.log(globalData);
+    let countryData = {confirmed:{}, deaths: {}, recovered: {}, latest: {}};
+    let countryFilter = e=>(e.country == countryName);
+    countryData.confirmed.locations = globalData.confirmed.locations.filter(countryFilter);
+    countryData.deaths.locations = globalData.deaths.locations.filter(countryFilter);
+    countryData.recovered.locations = globalData.recovered.locations.filter(countryFilter);
+    console.log(countryData)
+    return countryData;
 }
 
 /* --------------------------------------------------------------------------------------- */

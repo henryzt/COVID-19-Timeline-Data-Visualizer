@@ -35,6 +35,7 @@
         </div>
       </div>
 
+    <div v-if="dataCurrent.isUk">
       <div class="title">{{ $t('subtitles.country') }}</div>
       <div class="overview mBlock">
         <div class="overview_item">
@@ -59,7 +60,6 @@
         </div>
       </div>
 
-      <div>
         <div class="title">{{ $t('subtitles.nearby') }}</div>
         <div class="mBlock">
           <NearbyCasesFinder :regionData="sortedRegionData"></NearbyCasesFinder>
@@ -95,9 +95,11 @@
           </div>
 
         <div class="mSection" id="regionData">
-            <div class="title">{{ $t('subtitles.map') }}</div>
-            <MapSection :commonLocationsData="commonLocationsData"></MapSection>
-          <br>
+            <div v-if="dataCurrent.isUk">
+                <div class="title">{{ $t('subtitles.map') }}</div>
+                <MapSection :commonLocationsData="commonLocationsData"></MapSection>
+                <br>
+            </div>
             <div class="title">{{ $t('subtitles.regionList') }}</div>
             <RegionTable :regionData="tableData" v-if="tableData.hasData"></RegionTable>
         </div>
@@ -243,11 +245,34 @@ export default {
   methods: {
       switchCountry: function(e){
           console.log(e)
-          this.loadCountryData(e)
+          this.currentCountry = e;
+          if(e===this.countryList[0]){
+              this.loadUkData()
+          }else {
+              this.loadCountryData(e)
+          }
+          this.forceReload()
       },
       loadCountryData: function(countryName){
-          getCountryData(this.dataGlobal, countryName)
-
+          let countryData = getCountryData(this.dataGlobal, countryName);
+          this.dataCurrent = this.dataUk;
+          this.dataCurrent.isUk = false;
+          // //history data
+          // let todayData = this.dataUk.history[this.dataUk.history.length - 1];
+          this.tableData.uk = getGlobalHistoryTableData(countryData.confirmed);
+          this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
+          this.tableData.hasData = true;
+          //
+          // this.display = {
+          //     confirmed: this.dataUk.now[0].confirmed,
+          //     confirmedChange: this.dataUk.regional.dailyConfirmed,
+          //     deaths: this.dataUk.now[0].death,
+          //     deathsChange: (this.dataUk.now[0].death - todayData.death),
+          //     tested: this.dataUk.now[0].tested,
+          //     testedChange: (this.dataUk.now[0].tested - todayData.tested),
+          //     cured: this.dataUk.now[1].cured,
+          //     curedChange: (this.dataUk.now[1].cured - todayData.cured)
+          // };
       },
       loadUkData: function(){
           this.dataCurrent = this.dataUk;
@@ -277,12 +302,15 @@ export default {
       this.$i18n.locale = lang;
       this.isLocaleCN = this.$i18n.locale === "zh";
       document.title = this.$t('pageTitle');
-      //force reload
-      this.dataCurrent = null;
-      this.$nextTick(() => {
-        this.dataCurrent = this.dataUk;
-      });
+      this.forceReload()
     },
+      forceReload: function(){
+          //force reload
+          this.dataCurrent = null;
+          this.$nextTick(() => {
+              this.dataCurrent = this.dataUk;
+          });
+      },
     isWeChat: function(){
       let ua = window.navigator.userAgent.toLowerCase();
       return (ua.match(/MicroMessenger/i) == 'micromessenger');
