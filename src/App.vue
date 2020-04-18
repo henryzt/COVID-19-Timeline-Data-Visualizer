@@ -2,7 +2,7 @@
   <div id="app">
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
-        <vSelect style="width: 170px;" :clearable="false" :value="'United Kingdom'" :options="countryList"></vSelect>
+<!--        <vSelect style="width: 170px;" :clearable="false" :value="countryList[0]" :options="countryList"></vSelect>-->
         <div class="header_title">
           <h2>COVID-19</h2>
           <h3>{{ $t('title') }}</h3>
@@ -153,6 +153,7 @@
 </template>
 
 <script>
+  /* eslint-disable */
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
@@ -162,7 +163,7 @@ import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, parseLocationData, combineHighCharts, getAllCountries} from "./js/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, getGlobalHistoryTableData, parseLocationData, combineHighCharts, getAllCountries} from "./js/locationUtils"
 
 export default {
   name: "App",
@@ -211,10 +212,11 @@ export default {
       this.todayData = data.uk.history[data.uk.history.length - 1];
       this.yestData = data.uk.history[data.uk.history.length - 2];
       this.tableData.uk = getRegionHistoryTableData(data.uk.history, currentUkAreaData);
+      this.tableData.global = getGlobalHistoryTableData(data.global.confirmed);
       this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
       this.commonLocationsData = combineHighCharts(currentUkAreaData);
       //global data
-      this.barRaceData.global = getD3GlobalData(data.global.confirmed);
+      this.barRaceData.global = getD3GlobalData(this.tableData.global);
       this.countryList = getAllCountries(data.global.confirmed.locations);
       this.barRaceData.hasData = true;
 
@@ -286,10 +288,10 @@ export default {
       align-items: flex-end;
     }
     .header_title h2{
-      font-size: 25px;
+      font-size: 30px;
     }
     .header_title h3{
-      font-size: 20px;
+      font-size: 25px;
     }
   }
 </style>

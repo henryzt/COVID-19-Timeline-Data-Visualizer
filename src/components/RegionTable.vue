@@ -1,19 +1,32 @@
 <template>
     <div class="mBlock" v-if="currentData">
-        <div class="btn-group-wrap">
-            <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-                <button type="button" class="btn btn-secondary" :class="{active: sort===0}" @click="sortByDefault()">
-                    {{$t('table.default')}}
-                </button>
-                <button type="button" class="btn btn-secondary" :class="{active: sort===1}" @click="sortByAlphabet()">
-                    {{$t('table.byRegion')}}
-                </button>
-                <button type="button" class="btn btn-secondary" :class="{active: sort===2}" @click="sortByNumber()">
-                    {{$t('table.byCases')}}
-                </button>
-                <button type="button" class="btn btn-secondary" :class="{active: sort===3}" @click="sortByIncreaseNumber()">
-                    {{$t('table.byChanges')}}
-                </button>
+        <div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+            <div class="btn-group-wrap">
+                <div class="btn-group btn-group-sm" role="group" aria-label="date range">
+                    <button type="button" class="btn btn-secondary" :class="{active: sort===0}" @click="sortByDefault()">
+                        {{$t('table.default')}}
+                    </button>
+                    <button type="button" class="btn btn-secondary" :class="{active: sort===1}" @click="sortByAlphabet()">
+                        {{$t('table.byRegion')}}
+                    </button>
+                    <button type="button" class="btn btn-secondary" :class="{active: sort===2}" @click="sortByNumber()">
+                        {{$t('table.byCases')}}
+                    </button>
+                    <button type="button" class="btn btn-secondary" :class="{active: sort===3}" @click="sortByIncreaseNumber()">
+                        {{$t('table.byChanges')}}
+                    </button>
+                </div>
+            </div>
+
+            <div class="btn-group-wrap">
+                <div class="btn-group btn-group-sm" role="group" aria-label="date range">
+                    <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
+                        {{$t('barRace.global')}}
+                    </button>
+                    <button type="button" class="btn btn-secondary" :class="{active: tab===1}" @click="changeTab(1)">
+                        {{$t('barRace.local')}}
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -59,7 +72,8 @@
                 sort: 0,
                 limit: 10,
                 date: null,
-                currentData: null
+                currentData: null,
+                tab: 1
             }
         },
         mounted(){
@@ -67,7 +81,7 @@
         },
         methods:{
             getCurrentTableData: function(current){
-                this.date = this.date?this.date:current[current.length-1].date;
+                this.date = current[current.length-1].date;
                 this.currentData = current;
                 this.updateTableData(current.length-1)
             },
@@ -76,6 +90,15 @@
                 let idx = this.currentData.findIndex(ele=>ele.date == date);
                 this.date = date;
                 this.updateTableData(idx)
+            },
+
+            changeTab(tab){
+                if(tab===0){
+                    this.getCurrentTableData(this.regionData.global)
+                }else {
+                    this.getCurrentTableData(this.regionData.uk)
+                }
+                this.tab = tab;
             },
 
             updateTableData: function(currentIndex){

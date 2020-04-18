@@ -170,6 +170,7 @@ div.btn-group {
 }
   .btn-group-wrap {
     text-align: center;
+    margin: auto;
   }
   .overview_number {
     font-size: 1.2em;

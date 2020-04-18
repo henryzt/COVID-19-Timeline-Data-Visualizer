@@ -66,13 +66,9 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
     return dailyLocationJson;
 }
 
-export function getNHSRegionD3Data(historyTableData) {
-    return getD3Data(historyTableData);
-}
-
-export function getD3GlobalData(raw) {
+export function getGlobalHistoryTableData(allHistory) {
     let dateMap = {};
-    for(let dayData of raw.locations){
+    for(let dayData of allHistory.locations){
         let objArr = Object.entries(dayData.history);
         for(let i = 0; i<objArr.length;i++){
             let date =  moment(objArr[i][0]).format("DD/MM");
@@ -88,12 +84,20 @@ export function getD3GlobalData(raw) {
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
     console.log(dailyLocationJson);
-    return getD3Data(dailyLocationJson);
+    return dailyLocationJson;
+}
+
+export function getNHSRegionD3Data(historyTableData) {
+    return getD3Data(historyTableData);
+}
+
+export function getD3GlobalData(historyTableData) {
+    return getD3Data(historyTableData);
 }
 
 export function getAllCountries(locations) {
     let arr = locations.map(e=>e.country);
-    return ["United Kingdom", "Worldwide", ...new Set(arr)];
+    return ["UK Realtime", "Worldwide", ...new Set(arr)];
     //ref https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 }
 
