@@ -15,23 +15,23 @@
       <div class="overview mBlock">
         <div class="overview_item" style="color: #ff5151;">
           <div class="overview_title">{{ $t('totalConfirmed') }}</div>
-          <div class="overview_number"><ICountUp :endVal="dataUk.now[0].confirmed"/></div>
-          <div class="daily-increase">{{ '+' + dataUk.regional.dailyConfirmed }}</div>
+          <div class="overview_number"><ICountUp :endVal="display.confirmed"/></div>
+          <div class="daily-increase">{{ '+' + display.confirmedChange }}</div>
         </div>
         <div class="overview_item" style="color: #575757;">
           <div class="overview_title">{{ $t('totalDeaths') }}</div>
-          <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].death"/></div>
-          <div class="daily-increase">{{ '+' + (todayData.death - yestData.death)}}</div>
+          <div class="overview_number"><ICountUp :endVal="display.deaths "/></div>
+          <div class="daily-increase">{{ '+' + display.deathsChange}}</div>
         </div>
         <div class="overview_item" style="color: #0094b9;">
           <div class="overview_title">{{ $t('totalTests') }}</div>
-          <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].tested "/></div>
-          <div class="daily-increase"> {{ '+' + (todayData.tested - yestData.tested)}} </div>
+          <div class="overview_number"><ICountUp :endVal=" display.tested "/></div>
+          <div class="daily-increase"> {{ '+' + display.testedChange }} </div>
         </div>
         <div class="overview_item" style="color: #28ca00;">
           <div class="overview_title">{{ $t('totalCured') }}</div>
-          <div class="overview_number"><ICountUp :endVal=" dataUk.now[1].cured "/></div>
-          <div class="daily-increase">{{ '+' + (todayData.cured - yestData.cured)}}</div>
+          <div class="overview_number"><ICountUp :endVal=" display.cured "/></div>
+          <div class="daily-increase">{{ '+' + display.curedChange }}</div>
         </div>
       </div>
 
@@ -154,7 +154,7 @@
 
     <div class="fix_bottom" v-if="isWeChat" :class="{'hide-popup': !showPopup}">
       将此页面设为微信浮窗，方便第一时间获取更新
-      <span style="margin-left: 5px" @click="showPopup=false">关闭</span>
+<!--      <span style="margin-left: 5px" @click="showPopup=false">关闭</span>-->
     </div>
   </div>
 </template>
@@ -192,6 +192,16 @@ export default {
       yestData: null,
       sortedRegionData: null,
       section: 0,
+      display: {
+        confirmed: 0,
+        confirmedChange: 0,
+        deaths: 0,
+        deathsChange: 0,
+        tested: 0,
+        testedChange: 0,
+        cured: 0,
+        curedChange: 0
+      },
       barRaceData: {
         hasData: false
       },
@@ -217,8 +227,7 @@ export default {
       console.log(data);
       let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
       //history data
-      this.todayData = data.uk.history[data.uk.history.length - 1];
-      this.yestData = data.uk.history[data.uk.history.length - 2];
+      let todayData = data.uk.history[data.uk.history.length - 1];
       this.tableData.uk = getRegionHistoryTableData(data.uk.history, currentUkAreaData);
       this.tableData.global = getGlobalHistoryTableData(data.global.confirmed);
       this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
@@ -231,7 +240,19 @@ export default {
       this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
       this.tableData.hasData = true;
 
-      this.getNavScrollAnchor();
+      this.display = {
+          confirmed: this.dataUk.now[0].confirmed,
+          confirmedChange: this.dataUk.regional.dailyConfirmed,
+          deaths: this.dataUk.now[0].death,
+          deathsChange: (this.dataUk.now[0].death - todayData.death),
+          tested: this.dataUk.now[0].tested,
+          testedChange: (this.dataUk.now[0].tested - todayData.tested),
+          cured: this.dataUk.now[1].cured,
+          curedChange: (this.dataUk.now[1].cured - todayData.cured)
+      }
+
+
+            this.getNavScrollAnchor();
     });
 
     setTimeout(()=>{
