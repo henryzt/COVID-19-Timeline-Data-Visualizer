@@ -101,6 +101,10 @@ export function getAllCountries(locations) {
     //ref https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 }
 
+export function getCountryData(globalData) {
+    console.log(globalData)
+}
+
 /* --------------------------------------------------------------------------------------- */
 import { ukmapData } from "./ukmap";
 

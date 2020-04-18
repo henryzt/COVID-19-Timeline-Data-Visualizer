@@ -3,7 +3,7 @@
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <div>
-<!--          <vSelect style="width: 170px;" :clearable="false" :value="countryList[0]" :options="countryList"></vSelect>-->
+          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
         </div>
         <div class="header_title">
           <h2>COVID-19</h2>
@@ -152,7 +152,7 @@
       </div>
     </div>
 
-    <div class="fix_bottom" v-if="isWeChat" :class="{'hide-popup': !showPopup}">
+    <div class="fix_bottom" v-if="isLocaleCN && isWeChat()" :class="{'hide-popup': !showPopup}">
       将此页面设为微信浮窗，方便第一时间获取更新
 <!--      <span style="margin-left: 5px" @click="showPopup=false">关闭</span>-->
     </div>
@@ -160,7 +160,6 @@
 </template>
 
 <script>
-  /* eslint-disable */
 import RegionTable from "./components/RegionTable.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
@@ -170,7 +169,7 @@ import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, getGlobalHistoryTableData, parseLocationData, combineHighCharts, getAllCountries} from "./js/locationUtils"
+import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, getGlobalHistoryTableData, parseLocationData, combineHighCharts, getAllCountries, getCountryData} from "./js/locationUtils"
 
 export default {
   name: "App",
@@ -188,10 +187,10 @@ export default {
     return {
       dataCurrent: null,
       dataUk: null,
-      todayData: null,
-      yestData: null,
+      dataGlobal: null,
       sortedRegionData: null,
       section: 0,
+      currentCountry: null,
       display: {
         confirmed: 0,
         confirmedChange: 0,
@@ -223,36 +222,17 @@ export default {
     fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
       let data = await res.json();
       this.dataUk = data.uk;
-      this.dataCurrent = this.dataUk;
+      this.dataGlobal = data.global;
       console.log(data);
-      let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
-      //history data
-      let todayData = data.uk.history[data.uk.history.length - 1];
-      this.tableData.uk = getRegionHistoryTableData(data.uk.history, currentUkAreaData);
-      this.tableData.global = getGlobalHistoryTableData(data.global.confirmed);
-      this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
-      this.commonLocationsData = combineHighCharts(currentUkAreaData);
-      //global data
-      this.barRaceData.global = getD3GlobalData(this.tableData.global);
-      this.countryList = getAllCountries(data.global.confirmed.locations);
-      this.barRaceData.hasData = true;
+        //global data
+        this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed);
+        this.barRaceData.global = getD3GlobalData(this.tableData.global);
+        this.countryList = getAllCountries(this.dataGlobal.confirmed.locations);
+        this.currentCountry = this.countryList[0];
+        this.barRaceData.hasData = true;
+      this.loadUkData();
 
-      this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
-      this.tableData.hasData = true;
-
-      this.display = {
-          confirmed: this.dataUk.now[0].confirmed,
-          confirmedChange: this.dataUk.regional.dailyConfirmed,
-          deaths: this.dataUk.now[0].death,
-          deathsChange: (this.dataUk.now[0].death - todayData.death),
-          tested: this.dataUk.now[0].tested,
-          testedChange: (this.dataUk.now[0].tested - todayData.tested),
-          cured: this.dataUk.now[1].cured,
-          curedChange: (this.dataUk.now[1].cured - todayData.cured)
-      }
-
-
-            this.getNavScrollAnchor();
+      this.getNavScrollAnchor();
     });
 
     setTimeout(()=>{
@@ -261,6 +241,38 @@ export default {
 
   },
   methods: {
+      switchCountry: function(e){
+          console.log(e)
+          this.loadCountryData(e)
+      },
+      loadCountryData: function(countryName){
+          getCountryData(this.dataGlobal, countryName)
+
+      },
+      loadUkData: function(){
+          this.dataCurrent = this.dataUk;
+          this.dataCurrent.isUk = true;
+          let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
+          //history data
+          let todayData = this.dataUk.history[this.dataUk.history.length - 1];
+          this.tableData.uk = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
+          this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
+          this.commonLocationsData = combineHighCharts(currentUkAreaData);
+
+          this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
+          this.tableData.hasData = true;
+
+          this.display = {
+              confirmed: this.dataUk.now[0].confirmed,
+              confirmedChange: this.dataUk.regional.dailyConfirmed,
+              deaths: this.dataUk.now[0].death,
+              deathsChange: (this.dataUk.now[0].death - todayData.death),
+              tested: this.dataUk.now[0].tested,
+              testedChange: (this.dataUk.now[0].tested - todayData.tested),
+              cured: this.dataUk.now[1].cured,
+              curedChange: (this.dataUk.now[1].cured - todayData.cured)
+          };
+      },
     changeLang: function(lang){
       this.$i18n.locale = lang;
       this.isLocaleCN = this.$i18n.locale === "zh";
