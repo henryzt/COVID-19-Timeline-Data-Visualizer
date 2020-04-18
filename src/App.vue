@@ -2,7 +2,9 @@
   <div id="app">
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
-<!--        <vSelect style="width: 170px;" :clearable="false" :value="countryList[0]" :options="countryList"></vSelect>-->
+        <div>
+<!--          <vSelect style="width: 170px;" :clearable="false" :value="countryList[0]" :options="countryList"></vSelect>-->
+        </div>
         <div class="header_title">
           <h2>COVID-19</h2>
           <h3>{{ $t('title') }}</h3>
