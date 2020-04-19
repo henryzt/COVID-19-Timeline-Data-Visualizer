@@ -15,6 +15,14 @@
 
       <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk" :sortedRegionData="sortedRegionData"></UkRegionSection>
 
+        <div v-if="!dataCurrent.isUk">
+            <div class="title">{{ $t('subtitles.timeMachine') }}</div>
+            <div class="mBlock">
+                <SlideController style="padding: 0" :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :current-date="currentDate" @changeIndex="changeDate" :enableEvenIfPaused="true" :playing="false"></SlideController>
+                <div class="displayInfo" style="text-align: center; opacity:0.5;">Drag the slider to view historical data</div>
+            </div>
+        </div>
+
       <div id="navPlaceholder" ref="navPlaceholder"></div>
       <div class="mNav" ref="nav" id="mNavbar">
         <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 500}" v-scroll-spy-link>
@@ -117,6 +125,7 @@ import TodayNumberSection from "./components/TodayNumberSection.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
 import ChartSection from "./components/ChartSection.vue";
+import SlideController from "./components/SlideController.vue";
 import PieSection from "./components/PieSection.vue";
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
@@ -142,7 +151,8 @@ export default {
     TodayNumberSection,
     UkRegionSection,
     vSelect,
-    MapSection
+    MapSection,
+    SlideController
   },
   data: () => {
     return {
@@ -217,21 +227,25 @@ export default {
           this.forceReload()
       },
       loadCountryData: function(countryName){
+          const moment = require('moment');
           let countryData = getCountryData(this.dataGlobal, countryName);
           this.dataCurrent = {};
           this.dataCurrent.isUk = false;
           //history data
-        console.log("data loaded", countryData);
+          //console.log("data loaded", countryData);
           this.tableData.uk = countryName==="world" ? null : getGlobalHistoryTableData(countryData.confirmed, true);
           this.barRaceData.ukRegions = countryName==="world" ? null : getNHSRegionD3Data(this.tableData.uk);
           this.tableData.hasData = true;
           this.dataCurrent.history = getCountryHistoryData(countryData);
           console.log("country loaded", this.dataCurrent);
-          this.calculateDisplay()
+          this.startDate = moment(this.dataCurrent.history[0].date).format("DD/MM");
+          this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length-1].date).format("DD/MM");
+          this.currentDate = this.endDate;
+          this.calculateDisplay(this.dataCurrent.history.length-1)
       },
-      calculateDisplay: function(){
-        let current = this.dataCurrent.history[this.dataCurrent.history.length-1];
-        let last = this.dataCurrent.history[this.dataCurrent.history.length-2];
+      calculateDisplay: function(idx){
+        let current = this.dataCurrent.history[idx];
+        let last = this.dataCurrent.history[idx-1]?this.dataCurrent.history[idx-1]:current;
         this.display = {
             confirmed: current.confirmed,
             confirmedChange: current.confirmed - last.confirmed,
@@ -271,6 +285,9 @@ export default {
               cured: this.dataUk.now[1].cured,
               curedChange: (this.dataUk.now[1].cured - todayData.cured)
           };
+      },
+      changeDate: function(idx){
+          this.calculateDisplay(idx)
       },
     changeLang: function(lang){
       this.$i18n.locale = lang;

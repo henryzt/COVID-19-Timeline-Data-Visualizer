@@ -18,7 +18,8 @@ const messages = {
             source: "Source",
             about: "About",
             map: "UK Confirmed Cases Map",
-            ratio: "Ratio Animation"
+            ratio: "Ratio Animation",
+            timeMachine: "Time Machine"
         },
         totalConfirmed: "Confirmed",
         totalDeaths: "Deaths",
@@ -94,7 +95,8 @@ const messages = {
             source: "数据来源",
             about: "关于",
             map: "英国地区确诊地图",
-            ratio: "人数占比"
+            ratio: "人数占比",
+            timeMachine: "时光机"
         },
         totalConfirmed: "累计确诊",
         totalDeaths: "累计死亡",
