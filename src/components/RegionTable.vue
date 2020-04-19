@@ -62,7 +62,7 @@
     import SlideController from './SlideController'
     export default {
         name: "RegionTable",
-        props: ["regionData"],
+        props: ["regionData","mainDate"],
         components: {
             SlideController
         },
@@ -81,6 +81,12 @@
                 this.changeTab(1)
             }else {
                 this.changeTab(0)
+            }
+        },
+        watch: {
+            mainDate: function () {
+                if(this.mainDate)
+                    this.date = this.mainDate;
             }
         },
         methods:{

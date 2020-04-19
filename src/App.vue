@@ -19,7 +19,7 @@
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
                 <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate" @dragEnded="onTMDragEnd" :enableEvenIfPaused="true" :playing="false"></SlideController>
-                <div class="displayInfo" style="text-align: center; opacity:0.5;">Drag the slider to view historical data</div>
+                <div class="displayInfo" style="text-align: center; opacity:0.5;">{{ $t('tmHint') }}</div>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
             <div class="title">{{ $t('subtitles.ratio') }}</div>
-            <PieSection :allHistoryData="dataCurrent.history"></PieSection>
+            <PieSection :allHistoryData="dataCurrent.history" :mainDate="currentDate"></PieSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -57,7 +57,7 @@
                 <br>
             </div>
             <div class="title">{{ $t('subtitles.regionList') }}</div>
-            <RegionTable :regionData="tableData" v-if="tableData.hasData"></RegionTable>
+            <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="currentDate"></RegionTable>
         </div>
 
       </div>
@@ -182,6 +182,7 @@ export default {
       chartData: null,
       isLocaleCN: false,
       showPopup: true,
+      currentDate: null
     };
   },
   mounted() {
@@ -273,6 +274,7 @@ export default {
 
           this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
           this.tableData.hasData = true;
+          this.currentDate = null;
 
           let confirmedChange = this.dataUk.now[0].confirmed - todayData.confirmed;
           let deathsChange = this.dataUk.now[0].death - todayData.death;

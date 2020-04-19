@@ -21,6 +21,7 @@ const messages = {
             ratio: "Ratio Animation",
             timeMachine: "Time Machine"
         },
+        tmHint: "Drag the slider to view historical data",
         totalConfirmed: "Confirmed",
         totalDeaths: "Deaths",
         totalTests: "Tested",
@@ -98,6 +99,7 @@ const messages = {
             ratio: "人数占比",
             timeMachine: "时光机"
         },
+        tmHint: "滑动进度条以查看历史数据",
         totalConfirmed: "累计确诊",
         totalDeaths: "累计死亡",
         totalTests: "累计测试",

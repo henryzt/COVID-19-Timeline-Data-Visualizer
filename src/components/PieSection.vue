@@ -10,7 +10,7 @@
     import SlideController from "./SlideController";
     export default {
         name: "PieSection",
-        props: ['allHistoryData'],
+        props: ['allHistoryData', 'mainDate'],
         components:{
             VueApexCharts,
             SlideController
@@ -21,6 +21,12 @@
                 currentData: null,
                 startDate: null,
                 endDate: null,
+            }
+        },
+        watch: {
+            mainDate: function () {
+                if(this.mainDate)
+                    this.date = this.mainDate;
             }
         },
         mounted(){
