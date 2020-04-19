@@ -18,7 +18,7 @@
         <div v-if="!dataCurrent.isUk">
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
-                <SlideController style="padding: 0" :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :current-date="currentDate" @changeIndex="changeDate" :enableEvenIfPaused="true" :playing="false"></SlideController>
+                <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate" @dragEnded="onTMDragEnd" :enableEvenIfPaused="true" :playing="false"></SlideController>
                 <div class="displayInfo" style="text-align: center; opacity:0.5;">Drag the slider to view historical data</div>
             </div>
         </div>
@@ -40,7 +40,7 @@
 
       <div v-scroll-spy="{data: 'section'}">
         <div class="mSection" id="charts" style="padding-top: 0">
-            <ChartSection :chart-data="dataCurrent.history"></ChartSection>
+            <ChartSection :chart-data="chartData ? chartData : dataCurrent.history"></ChartSection>
         </div>
 
           <div class="mSection" id="animation">
@@ -179,6 +179,7 @@ export default {
       tableData:{
         hasData: false
       },
+      chartData: null,
       isLocaleCN: false,
       showPopup: true,
     };
@@ -215,6 +216,7 @@ export default {
   methods: {
       switchCountry: function(e){
           console.log(e);
+          this.chartData = null;
           this.currentCountry = e;
           window.ga('send', 'event', "country", "country-changed", e);
           if(e===this.countryList[0]){
@@ -256,6 +258,7 @@ export default {
             cured: current.cured,
             curedChange: (current.cured - last.cured)
         };
+
       },
       loadUkData: function(){
           this.dataCurrent = this.dataUk;
@@ -286,8 +289,15 @@ export default {
               curedChange: (this.dataUk.now[1].cured - todayData.cured)
           };
       },
-      changeDate: function(idx){
+      changeDateIdx: function(idx){
           this.calculateDisplay(idx)
+      },
+      changeDate: function(date){
+          this.currentDate = date;
+      },
+      onTMDragEnd: function(idx){
+         console.log(idx);
+         this.chartData = this.dataCurrent.history.slice(0, idx);
       },
     changeLang: function(lang){
       this.$i18n.locale = lang;

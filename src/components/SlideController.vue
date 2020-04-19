@@ -7,7 +7,7 @@
             {{currentDate}}
         </div>
         <div style="flex-grow: 1; margin-left: 30px">
-            <VueSlider :value="currentDate" @change="onDateChange" :data="dateData" :disabled="!enableEvenIfPaused && !playPause"></VueSlider>
+            <VueSlider :value="currentDate" @change="onDateChange" @drag-end="$emit('dragEnded', idx)" :data="dateData" :disabled="!enableEvenIfPaused && !playPause"></VueSlider>
         </div>
     </div>
 </template>
@@ -25,6 +25,7 @@
             return {
                 playPause:true,
                 dateData:[],
+                idx:0
             }
         },
         components: {
@@ -45,6 +46,7 @@
         },
         mounted(){
             this.calculateDate();
+            this.idx = this.dateData.findIndex(a=>a===this.currentDate);
         },
         methods: {
             calculateDate: function(){
@@ -68,7 +70,8 @@
             onDateChange: function (e) {
                 // console.log(e);
                 this.$emit('change', e);
-                this.$emit('changeIndex', this.dateData.findIndex(a=>a===e));
+                this.idx = this.dateData.findIndex(a=>a===e);
+                this.$emit('changeIndex', this.idx);
             },
             onPlayPause: function () {
                 this.playPause = !this.playPause;
