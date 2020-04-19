@@ -22,6 +22,8 @@ const messages = {
             timeMachine: "Time Machine"
         },
         tmHint: "Drag the slider to view historical data",
+        tmSticky: "Viewing historical data",
+        tmRevert: "Revert",
         totalConfirmed: "Confirmed",
         totalDeaths: "Deaths",
         totalTests: "Tested",
@@ -100,6 +102,8 @@ const messages = {
             timeMachine: "时光机"
         },
         tmHint: "滑动进度条以查看历史数据",
+        tmSticky: "正在查看历史数据",
+        tmRevert: "回到今日",
         totalConfirmed: "累计确诊",
         totalDeaths: "累计死亡",
         totalTests: "累计测试",

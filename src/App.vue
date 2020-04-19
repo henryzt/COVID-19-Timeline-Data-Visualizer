@@ -19,13 +19,17 @@
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
                 <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate" @dragEnded="onTMDragEnd" :enableEvenIfPaused="true" :playing="false"></SlideController>
-                <div class="displayInfo" style="text-align: center; opacity:0.5;">{{ $t('tmHint') }}</div>
+                <div class="displayInfo" style="text-align: center; opacity:0.5;padding-top:6px">{{ $t('tmHint') }}</div>
+            </div>
+            <div class="fix_bottom" style="background: orange;" :class="{'hide-popup': (currentDate === endDate || section)}">
+                {{ $t('tmSticky') }} ({{currentDate}})
+                <span style="margin-left: 5px;text-decoration: underline;cursor: pointer;" @click="revertTM">{{ $t('tmRevert') }}</span>
             </div>
         </div>
 
       <div id="navPlaceholder" ref="navPlaceholder"></div>
       <div class="mNav" ref="nav" id="mNavbar">
-        <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active', offset: 500}" v-scroll-spy-link>
+        <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}" v-scroll-spy-link>
           <li class="nav-item">
             <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
           </li>
@@ -38,7 +42,7 @@
         </ul>
       </div>
 
-      <div v-scroll-spy="{data: 'section'}">
+      <div v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
         <div class="mSection" id="charts" style="padding-top: 0">
             <ChartSection :chart-data="chartData ? chartData : dataCurrent.history"></ChartSection>
         </div>
@@ -110,7 +114,7 @@
       </div>
     </div>
 
-    <div class="fix_bottom" v-if="isLocaleCN && isWeChat()" :class="{'hide-popup': !showPopup}">
+    <div class="fix_bottom" v-if="isLocaleCN && isWeChat()" :class="{'hide-popup': !showWechatPopup}">
       将此页面设为微信浮窗，方便第一时间获取更新
 <!--      <span style="margin-left: 5px" @click="showPopup=false">关闭</span>-->
     </div>
@@ -181,7 +185,7 @@ export default {
       },
       chartData: null,
       isLocaleCN: false,
-      showPopup: true,
+      showWechatPopup: true,
       currentDate: null
     };
   },
@@ -210,7 +214,7 @@ export default {
     });
 
     setTimeout(()=>{
-      this.showPopup = false
+      this.showWechatPopup = false
     }, 2000)
 
   },
@@ -301,6 +305,11 @@ export default {
          console.log(idx);
          this.chartData = this.dataCurrent.history.slice(0, idx);
       },
+      revertTM: function(){
+          this.currentDate = this.endDate
+          this.chartData = this.dataCurrent.history;
+          this.calculateDisplay(this.dataCurrent.history.length-1)
+      },
     changeLang: function(lang){
       this.$i18n.locale = lang;
       this.isLocaleCN = this.$i18n.locale === "zh";
@@ -371,6 +380,7 @@ export default {
     line-height: 40px;
     text-align: center;
     transition: 2s;
+      z-index: 100;
   }
 
   .hide-popup{

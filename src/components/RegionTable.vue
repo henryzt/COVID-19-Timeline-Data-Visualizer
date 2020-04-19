@@ -77,7 +77,7 @@
             }
         },
         mounted(){
-            if(this.regionData.uk){
+            if(this.regionData.uk && this.regionData.uk[0].arr.length>1){
                 this.changeTab(1)
             }else {
                 this.changeTab(0)
