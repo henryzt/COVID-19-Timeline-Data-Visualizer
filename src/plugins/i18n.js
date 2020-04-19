@@ -4,7 +4,7 @@ Vue.use(VueI18n);
 
 const messages = {
     'en': {
-        pageTitle: "COVID-19 UK Realtime Data Visualization and Timeline",
+        pageTitle: "COVID-19 Realtime Data Visualization and Timeline",
         title: "Realtime Data Tracking<br>& Timeline",
         subtitles: {
             today: "Today Overview",
@@ -59,8 +59,8 @@ const messages = {
         barRace: {
             global: "Global",
             local: "Country",
-            globalTitle: "Global Case History",
-            localTitle: "NHS Region History",
+            globalTitle: "Global History",
+            localTitle: "Region History",
             unit: "Confirmed Cases"
         },
         table: {
@@ -73,10 +73,14 @@ const messages = {
             changes:"Changes",
             showAll: "Show All",
             showLess: "Show Less"
+        },
+        selector:{
+            uk: "🇬🇧 UK Realtime",
+            world: "🌎 Worldwide"
         }
     },
     'zh': {
-        pageTitle: "COVID-19 英国实时疫情数据跟踪 - UCLCSSA 中国学联",
+        pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
         title: "实时数据动态",
         subtitles: {
             today: "今日概览",
@@ -145,6 +149,10 @@ const messages = {
             changes: "较上次",
             showAll: "显示全部",
             showLess: "收起"
+        },
+        selector:{
+            uk: "🇬🇧英国实时数据",
+            world: "🌎世界实时数据"
         }
     }
 };

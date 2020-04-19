@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="btn-group-wrap">
+            <div class="btn-group-wrap" v-if="regionData.uk">
                 <div class="btn-group btn-group-sm" role="group" aria-label="date range">
                     <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
                         {{$t('barRace.global')}}
@@ -77,7 +77,11 @@
             }
         },
         mounted(){
-            this.getCurrentTableData(this.regionData.uk)
+            if(this.regionData.uk){
+                this.changeTab(1)
+            }else {
+                this.changeTab(0)
+            }
         },
         methods:{
             getCurrentTableData: function(current){

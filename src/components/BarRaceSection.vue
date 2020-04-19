@@ -1,6 +1,6 @@
 <template>
     <div class="mBlock">
-        <div class="btn-group btn-group-sm" role="group" aria-label="date range" style="position: absolute;right: 20px;">
+        <div class="btn-group btn-group-sm" role="group" aria-label="date range" style="position: absolute;right: 20px;" v-if="barRaceData.ukRegions">
             <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
                 {{$t('barRace.global')}}
             </button>
@@ -9,7 +9,7 @@
             </button>
         </div>
         <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" :title="$t('barRace.globalTitle')" :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
-        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.localTitle')" :subtitle="$t('barRace.unit')" source="Source: GOV.UK" id="1"></BarRace>
+        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.localTitle')" :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk"  id="1"></BarRace>
 
 
     </div>
@@ -25,6 +25,7 @@
         },
         props: {
             barRaceData: Object,
+            isUk: Boolean
         },
         data: function () {
             return {

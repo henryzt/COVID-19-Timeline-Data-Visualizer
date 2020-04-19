@@ -164,6 +164,10 @@ div.btn-group {
   height: 50px;
 }
 
+.vs__selected-options {
+  flex-wrap: nowrap !important;
+}
+
 @media only screen and (max-width: 600px) {
 .mBlock {
   padding: 15px;

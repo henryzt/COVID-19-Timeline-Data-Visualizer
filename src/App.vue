@@ -80,7 +80,7 @@
         <div class="title">{{ $t('subtitles.about') }}</div>
         <ul>
           <li>This project is open sourced at <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>, pull requests and issues welcomed!</li>
-          <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a> for UCLCSSA.</li>
+          <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a> <span>{{isLocaleCN ? "| UCLCSSA 伦敦大学学院中国学联" : "at University College London."}}</span></li>
 
         </ul>
 
@@ -188,7 +188,8 @@ export default {
         //global data
       this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed);
       this.barRaceData.global = getD3GlobalData(this.tableData.global);
-      this.countryList = getAllCountries(this.dataGlobal.confirmed.locations);
+      let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
+      this.countryList = [this.$t('selector.uk'), this.$t('selector.world'), ...countryArr];
       this.currentCountry = this.countryList[0];
       this.barRaceData.hasData = true;
       this.loadUkData();
@@ -218,9 +219,10 @@ export default {
           let countryData = getCountryData(this.dataGlobal, countryName);
           this.dataCurrent = {};
           this.dataCurrent.isUk = false;
-          // //history data
-          this.tableData.uk = getGlobalHistoryTableData(countryData.confirmed);
-          this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
+          //history data
+        console.log("data loaded", countryData);
+          this.tableData.uk = countryName==="world" ? null : getGlobalHistoryTableData(countryData.confirmed, true);
+          this.barRaceData.ukRegions = countryName==="world" ? null : getNHSRegionD3Data(this.tableData.uk);
           this.tableData.hasData = true;
           this.dataCurrent.history = getCountryHistoryData(countryData);
           console.log("country loaded", this.dataCurrent);
@@ -273,6 +275,9 @@ export default {
       this.$i18n.locale = lang;
       this.isLocaleCN = this.$i18n.locale === "zh";
       document.title = this.$t('pageTitle');
+      this.countryList[0] = this.$t('selector.uk');
+      this.countryList[1] = this.$t('selector.world');
+      this.currentCountry = this.countryList[0];
       this.forceReload()
     },
       forceReload: function(){
@@ -344,8 +349,10 @@ export default {
   }
 
   .select{
-    width: 170px;
+    width: 190px;
+
   }
+
 
   @media only screen and (max-width: 600px) {
     .covid_header{

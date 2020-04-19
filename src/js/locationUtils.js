@@ -107,7 +107,7 @@ export function getD3GlobalData(historyTableData) {
 
 export function getAllCountries(locations) {
     let arr = locations.map(e=>e.country);
-    return ["UK Realtime", "Worldwide", ...new Set(arr)];
+    return new Set(arr);
     //ref https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 }
 
@@ -123,6 +123,7 @@ export function getCountryData(globalData, countryName) {
 }
 
 export function getCountryHistoryData(countryData) {
+
     let historyKeys = Object.keys(countryData.confirmed.locations[0].history);
     let historyData = []
     //create empty history data
@@ -140,11 +141,11 @@ export function getCountryHistoryData(countryData) {
         for(let dateKey of historyKeys){
             let confirmed = countryData.confirmed.locations[idx].history[dateKey];
             let deaths = countryData.deaths.locations[idx].history[dateKey];
-            let recovered = countryData.recovered.locations[idx].history[dateKey];
+            let recovered = countryData.recovered.locations[idx]? countryData.recovered.locations[idx].history[dateKey] : 0;
             let dateEntry = historyData.find(e=>e.date===dateKey);
             dateEntry.confirmed += confirmed;
             dateEntry.death += deaths;
-            dateEntry.cured += recovered;
+            dateEntry.cured += recovered?recovered:0;
         }
     }
 
