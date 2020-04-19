@@ -11,61 +11,9 @@
         </div>
       </div>
 
-      <div class="title">{{ $t('subtitles.today') }}</div>
-      <div class="overview mBlock">
-        <div class="overview_item" style="color: #ff5151;">
-          <div class="overview_title">{{ $t('totalConfirmed') }}</div>
-          <div class="overview_number"><ICountUp :endVal="display.confirmed"/></div>
-          <div class="daily-increase">{{ '+' + display.confirmedChange }}</div>
-        </div>
-        <div class="overview_item" style="color: #575757;">
-          <div class="overview_title">{{ $t('totalDeaths') }}</div>
-          <div class="overview_number"><ICountUp :endVal="display.deaths "/></div>
-          <div class="daily-increase">{{ '+' + display.deathsChange}}</div>
-        </div>
-        <div class="overview_item" style="color: #0094b9;">
-          <div class="overview_title">{{ $t('totalTests') }}</div>
-          <div class="overview_number"><ICountUp :endVal=" display.tested "/></div>
-          <div class="daily-increase"> {{ '+' + display.testedChange }} </div>
-        </div>
-        <div class="overview_item" style="color: #28ca00;">
-          <div class="overview_title">{{ $t('totalCured') }}</div>
-          <div class="overview_number"><ICountUp :endVal=" display.cured "/></div>
-          <div class="daily-increase">{{ '+' + display.curedChange }}</div>
-        </div>
-      </div>
+      <TodayNumberSection :display="display"></TodayNumberSection>
 
-    <div v-if="dataCurrent.isUk">
-      <div class="title">{{ $t('subtitles.country') }}</div>
-      <div class="overview mBlock">
-        <div class="overview_item">
-          <div class="overview_title">{{ $t('england') }}</div>
-          <div class="overview_number"><ICountUp :endVal="dataUk.now[0].england "/></div>
-          <div class="country-death">{{ dataUk.regional.englandDeceased }}</div>
-        </div>
-        <div class="overview_item">
-          <div class="overview_title">{{ $t('scotland') }}</div>
-          <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].scotland "/></div>
-          <div class="country-death">{{ dataUk.regional.scottlandDeceased }}</div>
-        </div>
-        <div class="overview_item">
-          <div class="overview_title">{{ $t('wales') }}</div>
-          <div class="overview_number"><ICountUp :endVal="dataUk.now[0].wales "/></div>
-          <div class="country-death">{{ dataUk.regional.walesDeceased }}</div>
-        </div>
-        <div class="overview_item">
-          <div class="overview_title">{{ $t('nIreland') }}</div>
-          <div class="overview_number"><ICountUp :endVal="dataUk.now[0].nireland "/></div>
-          <div class="country-death">{{ dataUk.regional.northenIrelandDeceased }}</div>
-        </div>
-      </div>
-
-        <div class="title">{{ $t('subtitles.nearby') }}</div>
-        <div class="mBlock">
-          <NearbyCasesFinder :regionData="sortedRegionData"></NearbyCasesFinder>
-        </div>
-
-      </div>
+      <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk" :sortedRegionData="sortedRegionData"></UkRegionSection>
 
       <div id="navPlaceholder" ref="navPlaceholder"></div>
       <div class="mNav" ref="nav" id="mNavbar">
@@ -164,12 +112,12 @@
 <script>
     /* eslint-disable */
 import RegionTable from "./components/RegionTable.vue";
+import UkRegionSection from "./components/UkRegionSection.vue";
+import TodayNumberSection from "./components/TodayNumberSection.vue";
 import BarRaceSection from "./components/BarRaceSection.vue";
 import MapSection from "./components/MapSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import PieSection from "./components/PieSection.vue";
-import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
-import ICountUp from 'vue-countup-v2';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import {
@@ -191,8 +139,8 @@ export default {
     BarRaceSection,
     ChartSection,
     PieSection,
-    NearbyCasesFinder,
-    ICountUp,
+    TodayNumberSection,
+    UkRegionSection,
     vSelect,
     MapSection
   },
