@@ -113,6 +113,36 @@ export function getCountryData(globalData, countryName) {
     return countryData;
 }
 
+export function getCountryHistoryData(countryData) {
+    let historyKeys = Object.keys(countryData.confirmed.locations[0].history);
+    let historyData = []
+    //create empty history data
+    for(let dateKey of historyKeys){
+        let entry = {
+            confirmed: 0,
+            cured: 0,
+            death: 0,
+            date: dateKey
+        };
+        historyData.push(entry);
+    }
+
+    for(let idx in countryData.confirmed.locations){
+        for(let dateKey of historyKeys){
+            let confirmed = countryData.confirmed.locations[idx].history[dateKey];
+            let deaths = countryData.deaths.locations[idx].history[dateKey];
+            let recovered = countryData.recovered.locations[idx].history[dateKey];
+            let dateEntry = historyData.find(e=>e.date===dateKey);
+            dateEntry.confirmed += confirmed;
+            dateEntry.death += deaths;
+            dateEntry.cured += recovered;
+        }
+    }
+
+    console.log(historyData);
+    return historyData;
+}
+
 /* --------------------------------------------------------------------------------------- */
 import { ukmapData } from "./ukmap";
 

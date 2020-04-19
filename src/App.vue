@@ -3,7 +3,7 @@
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <div>
-<!--          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>-->
+          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
         </div>
         <div class="header_title">
           <h2>COVID-19</h2>
@@ -84,14 +84,14 @@
 
       <div v-scroll-spy="{data: 'section'}">
         <div class="mSection" id="charts" style="padding-top: 0">
-            <ChartSection :chart-data="dataUk.history"></ChartSection>
+            <ChartSection :chart-data="dataCurrent.history"></ChartSection>
         </div>
 
           <div class="mSection" id="animation">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
             <div class="title">{{ $t('subtitles.ratio') }}</div>
-            <PieSection :allHistoryData="dataUk.history"></PieSection>
+            <PieSection :allHistoryData="dataCurrent.history"></PieSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -172,7 +172,17 @@ import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import ICountUp from 'vue-countup-v2';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
-import {getNHSRegionD3Data, getD3GlobalData, getRegionHistoryTableData, getGlobalHistoryTableData, parseLocationData, combineHighCharts, getAllCountries, getCountryData} from "./js/locationUtils"
+import {
+  getNHSRegionD3Data,
+  getD3GlobalData,
+  getRegionHistoryTableData,
+  getGlobalHistoryTableData,
+  parseLocationData,
+  combineHighCharts,
+  getAllCountries,
+  getCountryData,
+  getCountryHistoryData
+} from "./js/locationUtils"
 
 export default {
   name: "App",
@@ -228,11 +238,11 @@ export default {
       this.dataGlobal = data.global;
       console.log(data);
         //global data
-        this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed);
-        this.barRaceData.global = getD3GlobalData(this.tableData.global);
-        this.countryList = getAllCountries(this.dataGlobal.confirmed.locations);
-        this.currentCountry = this.countryList[0];
-        this.barRaceData.hasData = true;
+      this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed);
+      this.barRaceData.global = getD3GlobalData(this.tableData.global);
+      this.countryList = getAllCountries(this.dataGlobal.confirmed.locations);
+      this.currentCountry = this.countryList[0];
+      this.barRaceData.hasData = true;
       this.loadUkData();
 
       this.getNavScrollAnchor();
@@ -263,6 +273,7 @@ export default {
           this.tableData.uk = getGlobalHistoryTableData(countryData.confirmed);
           this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
           this.tableData.hasData = true;
+          this.dataCurrent.history = getCountryHistoryData(countryData);
           //
           // this.display = {
           //     confirmed: this.dataUk.now[0].confirmed,
