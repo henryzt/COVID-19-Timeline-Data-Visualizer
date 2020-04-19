@@ -322,9 +322,10 @@ export default {
          window.ga('send', 'event', "time-machine", "drag-end", idx);
       },
       revertTM: function(){
-          this.currentDate = this.endDate
+          this.currentDate = this.endDate;
           this.chartData = this.dataCurrent.history;
-          this.calculateDisplay(this.dataCurrent.history.length-1)
+          this.calculateDisplay(this.dataCurrent.history.length-1);
+          window.ga('send', 'event', "time-machine", "reverted", this.endDate);
       },
     changeLang: function(lang){
       this.$i18n.locale = lang;
