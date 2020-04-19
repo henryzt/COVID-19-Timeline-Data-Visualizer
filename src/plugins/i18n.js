@@ -4,8 +4,8 @@ Vue.use(VueI18n);
 
 const messages = {
     'en': {
-        pageTitle: "COVID-19 UK Realtime Data Visualization",
-        title: "Realtime Data Tracking",
+        pageTitle: "COVID-19 UK Realtime Data Visualization and Timeline",
+        title: "Realtime Data Tracking<br>& Timeline",
         subtitles: {
             today: "Today Overview",
             country: "Country Overview",

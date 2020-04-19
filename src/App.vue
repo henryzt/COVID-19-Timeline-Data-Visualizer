@@ -3,11 +3,11 @@
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <div>
-          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
+          <vSelect class="select" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
         </div>
         <div class="header_title">
           <h2>COVID-19</h2>
-          <h3>{{ $t('title') }}</h3>
+          <h3 v-html="$t('title')"></h3>
         </div>
       </div>
 
@@ -207,6 +207,8 @@ export default {
           this.currentCountry = e;
           if(e===this.countryList[0]){
               this.loadUkData()
+          }else if(e===this.countryList[1]){
+              this.loadCountryData("world")
           }else {
               this.loadCountryData(e)
           }
@@ -217,23 +219,26 @@ export default {
           this.dataCurrent = {};
           this.dataCurrent.isUk = false;
           // //history data
-          // let todayData = this.dataUk.history[this.dataUk.history.length - 1];
           this.tableData.uk = getGlobalHistoryTableData(countryData.confirmed);
           this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
           this.tableData.hasData = true;
           this.dataCurrent.history = getCountryHistoryData(countryData);
-          console.log(this.dataCurrent)
-          //
-          // this.display = {
-          //     confirmed: this.dataUk.now[0].confirmed,
-          //     confirmedChange: this.dataUk.regional.dailyConfirmed,
-          //     deaths: this.dataUk.now[0].death,
-          //     deathsChange: (this.dataUk.now[0].death - todayData.death),
-          //     tested: this.dataUk.now[0].tested,
-          //     testedChange: (this.dataUk.now[0].tested - todayData.tested),
-          //     cured: this.dataUk.now[1].cured,
-          //     curedChange: (this.dataUk.now[1].cured - todayData.cured)
-          // };
+          console.log("country loaded", this.dataCurrent);
+          this.calculateDisplay()
+      },
+      calculateDisplay: function(){
+        let current = this.dataCurrent.history[this.dataCurrent.history.length-1];
+        let last = this.dataCurrent.history[this.dataCurrent.history.length-2];
+        this.display = {
+            confirmed: current.confirmed,
+            confirmedChange: current.confirmed - last.confirmed,
+            deaths: current.death,
+            deathsChange: (current.death - last.death),
+            tested: current.tested,
+            testedChange: current.tested??(current.tested - last.tested),
+            cured: current.cured,
+            curedChange: (current.cured - last.cured)
+        };
       },
       loadUkData: function(){
           this.dataCurrent = this.dataUk;
@@ -336,6 +341,10 @@ export default {
   .hide-popup{
     bottom: -40px;
     opacity: 0;
+  }
+
+  .select{
+    width: 170px;
   }
 
   @media only screen and (max-width: 600px) {

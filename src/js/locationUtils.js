@@ -114,7 +114,7 @@ export function getAllCountries(locations) {
 export function getCountryData(globalData, countryName) {
     console.log(globalData);
     let countryData = {confirmed:{}, deaths: {}, recovered: {}, latest: {}};
-    let countryFilter = e=>(e.country == countryName);
+    let countryFilter = countryName == "world"? ()=>{return true} : e=>(e.country == countryName);
     countryData.confirmed.locations = globalData.confirmed.locations.filter(countryFilter);
     countryData.deaths.locations = globalData.deaths.locations.filter(countryFilter);
     countryData.recovered.locations = globalData.recovered.locations.filter(countryFilter);
