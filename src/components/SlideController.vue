@@ -7,7 +7,7 @@
             {{currentDate}}
         </div>
         <div style="flex-grow: 1; margin-left: 30px">
-            <VueSlider :value="currentDate" @change="onDateChange" @drag-end="$emit('dragEnded', idx)" :data="dateData" :disabled="!enableEvenIfPaused && !playPause" :clickable="!disableClick"></VueSlider>
+            <VueSlider :value="currentDate" @change="onDateChange" @drag-end="onDragEnd" :data="dateData" :disabled="!enableEvenIfPaused && !playPause" :clickable="!disableClick"></VueSlider>
         </div>
     </div>
 </template>
@@ -72,6 +72,10 @@
                 this.$emit('change', e);
                 this.idx = this.dateData.findIndex(a=>a===e);
                 this.$emit('changeIndex', this.idx);
+            },
+            onDragEnd: function(){
+                this.$emit('dragEnded', this.idx);
+                window.ga('send', 'event', "slider", "drag-end", this.idx);
             },
             onPlayPause: function () {
                 this.playPause = !this.playPause;

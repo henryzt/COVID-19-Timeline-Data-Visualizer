@@ -200,8 +200,10 @@ export default {
     this.isLocaleCN = this.$i18n.locale === "zh";
     document.title = this.$t('pageTitle');
 
+    let performanceTimeStart = performance.now();
     fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
       let data = await res.json();
+      let resTime = Math.round(performance.now() - performanceTimeStart);
       this.dataUk = data.uk;
       this.dataGlobal = data.global;
       console.log(data);
@@ -215,6 +217,9 @@ export default {
       this.loadUkData();
 
       this.getNavScrollAnchor();
+      let performanceTime = Math.round(performance.now() - performanceTimeStart);
+      console.log("Data loaded", resTime, performanceTime);
+      window.ga('send', 'event', "net-request", "initial-fetch-loaded", `loaded-${resTime}ms;calculated-${performanceTime}ms;`);
     });
 
     setTimeout(()=>{
@@ -308,6 +313,7 @@ export default {
       onTMDragEnd: function(idx){
          console.log(idx);
          this.chartData = this.dataCurrent.history.slice(0, idx);
+         window.ga('send', 'event', "time-machine", "drag-end", idx);
       },
       revertTM: function(){
           this.currentDate = this.endDate
