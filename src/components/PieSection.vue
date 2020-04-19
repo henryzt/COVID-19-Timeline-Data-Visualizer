@@ -33,12 +33,16 @@
         computed: {
             options: function () {
                 return {
-                    labels: [this.$t('negative'), this.$t('totalCured'), this.$t('active'), this.$t('totalDeaths')]
+                    labels: this.currentData.negative?
+                        [this.$t('negative'), this.$t('totalCured'), this.$t('active'), this.$t('totalDeaths')]:
+                        [this.$t('active'), this.$t('totalCured'), this.$t('totalDeaths')],
                 }
             },
             series: function () {
                 let d = this.currentData;
-                return [d.negative, d.cured, d.confirmed - d.death - d.cured, d.death];
+                return d.negative?
+                    [d.negative, d.cured, d.confirmed - d.death - d.cured, d.death]:
+                    [d.confirmed - d.death - d.cured, d.cured, d.death];
             }
         },
         methods:{

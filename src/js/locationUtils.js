@@ -81,7 +81,16 @@ export function getGlobalHistoryTableData(allHistory, hideCountryName) {
     }
     // console.log(dateMap);
     let dailyLocationJson = [];
+    let checkAllZero = true;
+    let allZeroChecker = (total, num) => {return total + num.number};
     for(let entry of Object.entries(dateMap)){
+        if(checkAllZero) {
+            if (entry[1].reduce(allZeroChecker, 0) === 0) {
+                continue;
+            } else {
+                checkAllZero = false;
+            }
+        }
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
     console.log(dailyLocationJson);
@@ -137,6 +146,10 @@ export function getCountryHistoryData(countryData) {
             dateEntry.death += deaths;
             dateEntry.cured += recovered;
         }
+    }
+
+    while(historyData[0].confirmed===0){
+        historyData.shift();
     }
 
     console.log(historyData);

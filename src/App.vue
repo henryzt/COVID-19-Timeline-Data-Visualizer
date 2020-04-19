@@ -3,7 +3,7 @@
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <div>
-<!--          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>-->
+          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
         </div>
         <div class="header_title">
           <h2>COVID-19</h2>
@@ -203,7 +203,7 @@ export default {
   },
   methods: {
       switchCountry: function(e){
-          console.log(e)
+          console.log(e);
           this.currentCountry = e;
           if(e===this.countryList[0]){
               this.loadUkData()
@@ -214,7 +214,7 @@ export default {
       },
       loadCountryData: function(countryName){
           let countryData = getCountryData(this.dataGlobal, countryName);
-          this.dataCurrent = this.dataUk;
+          this.dataCurrent = {};
           this.dataCurrent.isUk = false;
           // //history data
           // let todayData = this.dataUk.history[this.dataUk.history.length - 1];
@@ -222,6 +222,7 @@ export default {
           this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
           this.tableData.hasData = true;
           this.dataCurrent.history = getCountryHistoryData(countryData);
+          console.log(this.dataCurrent)
           //
           // this.display = {
           //     confirmed: this.dataUk.now[0].confirmed,
@@ -271,10 +272,11 @@ export default {
     },
       forceReload: function(){
           //force reload
-          this.dataCurrent = null;
-          this.$nextTick(() => {
-              this.dataCurrent = this.dataUk;
-          });
+        let cache = this.dataCurrent;
+        this.dataCurrent = null;
+        this.$nextTick(() => {
+            this.dataCurrent = cache;
+        });
       },
     isWeChat: function(){
       let ua = window.navigator.userAgent.toLowerCase();
