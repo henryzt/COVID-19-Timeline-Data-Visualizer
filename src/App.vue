@@ -60,9 +60,9 @@
         <div v-if="isLocaleCN">
           <div class="title">实时更新订阅</div>
           <div class="mBlock" style="text-align: center;padding:30px">
-            <div>微信长按下方二维码，或搜索"<span style="text-wrap: none">UCLCSSA学联社区</span>"</div>
+            <div>微信扫描或长按下方二维码，或搜索"<span style="text-wrap: none">UCLCSSA学联社区</span>"</div>
             <img src="./assets/qr.png" style="max-width: 260px;"/>
-            <div>订阅每日实时疫情数据更新通知</div>
+            <div>订阅每日实时数据更新及重要预警通知</div>
           </div>
         </div>
 
@@ -206,6 +206,7 @@ export default {
       switchCountry: function(e){
           console.log(e);
           this.currentCountry = e;
+          window.ga('send', 'event', "country", "country-changed", e);
           if(e===this.countryList[0]){
               this.loadUkData()
           }else if(e===this.countryList[1]){

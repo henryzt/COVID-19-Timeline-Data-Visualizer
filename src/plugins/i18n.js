@@ -136,7 +136,7 @@ const messages = {
             global: "全球",
             local: "本地",
             globalTitle: "全球确诊数据",
-            localTitle: "NHS地区确诊数据",
+            localTitle: "国家确诊数据",
             unit: "确诊人数（例）"
         },
         table: {
