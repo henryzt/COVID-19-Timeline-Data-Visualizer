@@ -88,6 +88,7 @@
           <li><a href="https://apify.com/covid-19">COVID-19 Data APIs for statistics - APIFY</a></li>
           <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API - ExpDev07</a></li>
           <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness Icons - iconfinder</a></li>
+          <li>{{lastUpdated}}</li>
           <li v-if="isLocaleCN">感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
         </ul>
 
@@ -95,7 +96,7 @@
         <ul>
           <li>This project is open sourced at <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>, pull requests and issues welcomed!</li>
           <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a>
-              <span>{{isLocaleCN ? "| UCLCSSA 伦敦大学学院中国学联" : "at University College London."}}</span>
+              <span>{{isLocaleCN ? " | UCLCSSA 伦敦大学学院中国学联" : "at University College London."}}</span>
           </li>
 
         </ul>
@@ -149,6 +150,8 @@ import {
   getCountryHistoryData
 } from "./js/locationUtils"
 
+const moment = require('moment');
+
 export default {
   name: "App",
   components: {
@@ -190,7 +193,8 @@ export default {
       chartData: null,
       isLocaleCN: false,
       showWechatPopup: true,
-      currentDate: null
+      currentDate: null,
+      lastUpdated: "NEVER"
     };
   },
   mounted() {
@@ -207,6 +211,9 @@ export default {
       this.dataUk = data.uk;
       this.dataGlobal = data.global;
       console.log(data);
+      this.lastUpdated = `Global data updated ${moment(data.global.confirmed.last_updated).fromNow()},
+                          UK data updated ${moment(data.uk.now[0].ts).fromNow()}, data is ${data.isUpToDate?"":"NOT"} up to date.
+                          Data might not reflect the real number, and might be delayed.`;
         //global data
       this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed);
       this.barRaceData.global = getD3GlobalData(this.tableData.global);
@@ -243,7 +250,6 @@ export default {
           this.forceReload()
       },
       loadCountryData: function(countryName){
-          const moment = require('moment');
           let countryData = getCountryData(this.dataGlobal, countryName);
           this.dataCurrent = {};
           this.dataCurrent.isUk = false;
