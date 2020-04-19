@@ -77,8 +77,16 @@
             <div>微信扫描或长按下方二维码，或搜索"<span style="text-wrap: none">UCLCSSA学联社区</span>"</div>
             <img src="./assets/qr.png" style="max-width: 260px;"/>
             <div>订阅每日实时数据更新及重要预警通知</div>
+            <div v-if="isLocaleCN && isWeChat()" style="margin-top: 20px;text-align:center;user-select: none;">
+            <hr>
+              <div style="font-size: 20px;">本应用地址</div>
+              <div style="font-size: 25px;font-weight:bold;padding: 10px 0;user-select: text;">covid19.uclcssa.cn</div>
+              长按复制即可分享给其他人
+            </div>
           </div>
+
         </div>
+
 
         <br>
         <div class="title">{{ $t('subtitles.source') }}</div>
@@ -92,7 +100,9 @@
           <li v-if="isLocaleCN">感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
         </ul>
 
+
         <div class="title">{{ $t('subtitles.about') }}</div>
+
         <ul>
           <li>This project is open sourced at <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>, pull requests and issues welcomed!</li>
           <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a>
@@ -121,7 +131,6 @@
 
     <div class="fix_bottom" v-if="isLocaleCN && isWeChat()" :class="{'hide-popup': !showWechatPopup}">
       将此页面设为微信浮窗，方便第一时间获取更新
-<!--      <span style="margin-left: 5px" @click="showPopup=false">关闭</span>-->
     </div>
   </div>
 </template>
