@@ -18,7 +18,9 @@
         <div v-if="!dataCurrent.isUk">
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
-                <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate" @dragEnded="onTMDragEnd" :enableEvenIfPaused="true" :playing="false"></SlideController>
+                <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true" :disableClick="true"
+                                 :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate" @dragEnded="onTMDragEnd"
+                                 :enableEvenIfPaused="true" :playing="false"></SlideController>
                 <div class="displayInfo" style="text-align: center; opacity:0.5;padding-top:6px">{{ $t('tmHint') }}</div>
             </div>
             <div class="fix_bottom" style="background: orange;" :class="{'hide-popup': (currentDate === endDate || section)}">
@@ -92,7 +94,9 @@
         <div class="title">{{ $t('subtitles.about') }}</div>
         <ul>
           <li>This project is open sourced at <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>, pull requests and issues welcomed!</li>
-          <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a> <span>{{isLocaleCN ? "| UCLCSSA 伦敦大学学院中国学联" : "at University College London."}}</span></li>
+          <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a>
+              <span>{{isLocaleCN ? "| UCLCSSA 伦敦大学学院中国学联" : "at University College London."}}</span>
+          </li>
 
         </ul>
 
