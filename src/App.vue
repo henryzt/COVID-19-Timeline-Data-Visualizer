@@ -3,7 +3,7 @@
     <div class="mContent" v-if="dataCurrent">
       <div class="covid_header">
         <div>
-          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>
+<!--          <vSelect style="width: 170px;" :clearable="false" :value="currentCountry" :options="countryList" @input="switchCountry"></vSelect>-->
         </div>
         <div class="header_title">
           <h2>COVID-19</h2>
@@ -248,13 +248,17 @@ export default {
           this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
           this.tableData.hasData = true;
 
+          let confirmedChange = this.dataUk.now[0].confirmed - todayData.confirmed;
+          let deathsChange = this.dataUk.now[0].death - todayData.death;
+          let testedChange = this.dataUk.now[0].tested - todayData.tested;
+
           this.display = {
               confirmed: this.dataUk.now[0].confirmed,
-              confirmedChange: this.dataUk.regional.dailyConfirmed,
+              confirmedChange: confirmedChange!=0?confirmedChange:(todayData.confirmed - yesterData.confirmed),
               deaths: this.dataUk.now[0].death,
-              deathsChange: (todayData.death - yesterData.death),
+              deathsChange: deathsChange!=0?deathsChange:(todayData.death - yesterData.death),
               tested: this.dataUk.now[0].tested,
-              testedChange: (todayData.tested - yesterData.tested),
+              testedChange: testedChange!=0?testedChange:(todayData.tested - yesterData.tested),
               cured: this.dataUk.now[1].cured,
               curedChange: (this.dataUk.now[1].cured - todayData.cured)
           };
