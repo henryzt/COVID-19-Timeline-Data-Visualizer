@@ -33,7 +33,7 @@ const messages = {
         nav: {
             current: "Current",
             animation: "Animations",
-            map: "Maps"
+            map: "Regional"
         },
         newCases: "New Cases",
         newDeaths: "New Deaths",
@@ -109,7 +109,7 @@ const messages = {
         nav: {
             current: "当前数据",
             animation: "历史动画",
-            map: "地图列表"
+            map: "地区概况"
         },
         newCases: "新增确诊",
         newDeaths: "新增死亡",
