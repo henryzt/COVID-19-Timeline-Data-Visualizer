@@ -10,7 +10,7 @@
             <div class="overview_item">
                 <div class="overview_title">{{ $t('scotland') }}</div>
                 <div class="overview_number"><ICountUp :endVal=" dataUk.now[0].scotland "/></div>
-                <div class="country-death">{{ dataUk.regional.scottlandDeceased }}</div>
+                <div class="country-death">{{ dataUk.regional.scotlandDeceased }}</div>
             </div>
             <div class="overview_item">
                 <div class="overview_title">{{ $t('wales') }}</div>
