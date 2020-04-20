@@ -85,8 +85,9 @@
         },
         watch: {
             mainDate: function () {
-                if(this.mainDate)
-                    this.date = this.mainDate;
+                if(this.mainDate) {
+                    this.changeDate(this.mainDate)
+                }
             }
         },
         methods:{

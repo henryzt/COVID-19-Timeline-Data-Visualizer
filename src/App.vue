@@ -53,7 +53,7 @@
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
             <div class="title">{{ $t('subtitles.ratio') }}</div>
-            <PieSection :allHistoryData="dataCurrent.history" :mainDate="currentDate"></PieSection>
+            <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -63,7 +63,7 @@
                 <br>
             </div>
             <div class="title">{{ $t('subtitles.regionList') }}</div>
-            <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="currentDate"></RegionTable>
+            <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate"></RegionTable>
         </div>
 
       </div>
@@ -106,7 +106,7 @@
         <ul>
           <li>This project is open sourced at <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>, pull requests and issues welcomed!</li>
           <li>© 2020 <a href="https://github.com/henryz00">@henryz00</a> and <a href="https://github.com/DaviesXue">@DaviesXue</a>
-              <span>{{isLocaleCN ? " | UCLCSSA 伦敦大学学院中国学联" : "at University College London."}}</span>
+              <span>{{isLocaleCN ? " | UCLCSSA 伦敦大学学院中国学联" : " at University College London."}}</span>
           </li>
 
         </ul>
@@ -203,6 +203,7 @@ export default {
       isLocaleCN: false,
       showWechatPopup: true,
       currentDate: null,
+      mainDate: null,
       lastUpdated: "NEVER"
     };
   },
@@ -328,6 +329,7 @@ export default {
       onTMDragEnd: function(idx){
          console.log(idx);
          this.chartData = this.dataCurrent.history.slice(0, idx);
+         this.mainDate = this.currentDate
          window.ga('send', 'event', "time-machine", "drag-end", idx);
       },
       revertTM: function(){

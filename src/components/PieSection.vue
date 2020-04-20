@@ -1,13 +1,14 @@
 <template>
     <div class="mBlock" v-if="currentData">
         <VueApexCharts width="100%" type="donut" :options="options" :series="series"></VueApexCharts>
-        <SlideController v-if="date" :start-date="startDate" :end-date="endDate" :doNotFormat="true" :hidePlayButton="true" :current-date="date" @changeIndex="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
+        <SlideController v-if="date" :start-date="startDate" :end-date="endDate" :doNotFormat="true" :hidePlayButton="true" :current-date="date" @changeIndex="changeDateIdx" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
     </div>
 </template>
 
 <script>
     import VueApexCharts from "vue-apexcharts";
     import SlideController from "./SlideController";
+    const moment = require('moment');
     export default {
         name: "PieSection",
         props: ['allHistoryData', 'mainDate'],
@@ -25,8 +26,9 @@
         },
         watch: {
             mainDate: function () {
-                if(this.mainDate)
-                    this.date = this.mainDate;
+                if(this.mainDate) {
+                    this.changeDate(this.mainDate)
+                }
             }
         },
         mounted(){
@@ -52,8 +54,12 @@
             }
         },
         methods:{
-            changeDate(e){
-                const moment = require('moment');
+            changeDate: function(date){
+                let idx = this.allHistoryData.findIndex(ele=> moment(ele.date).format('DD/MM') == date);
+                this.date = date;
+                this.changeDateIdx(idx)
+            },
+            changeDateIdx(e){
                 this.currentData = this.allHistoryData[e];
                 this.date = moment(this.currentData.date).format('DD/MM');
             }
