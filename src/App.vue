@@ -54,6 +54,8 @@
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
             <div class="title">{{ $t('subtitles.ratio') }}</div>
             <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
+            <div class="title">Counrty Comparison</div>
+            <CountryCompareSection :global-data="dataGlobal"></CountryCompareSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -145,6 +147,7 @@ import MapSection from "./components/MapSection.vue";
 import ChartSection from "./components/ChartSection.vue";
 import SlideController from "./components/SlideController.vue";
 import PieSection from "./components/PieSection.vue";
+import CountryCompareSection from "./components/CountryCompareSection.vue";
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import {
@@ -172,7 +175,8 @@ export default {
     UkRegionSection,
     vSelect,
     MapSection,
-    SlideController
+    SlideController,
+    CountryCompareSection
   },
   data: () => {
     return {
