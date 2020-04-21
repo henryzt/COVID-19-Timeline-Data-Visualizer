@@ -53,11 +53,13 @@
                 selectedCountries: ["United Kingdom", "Spain", "France", "Italy", "Germany"],
                 dates: null,
                 dataType: "confirmed",
-                calculatedCountryData: {},
                 series: null
             }
         },
         mounted(){
+            if(!window.calculatedCountryData){
+                window.calculatedCountryData = {}
+            }
             this.countryListFiltered = this.countryList.slice(2);
             this.getSeries();
         },
@@ -74,11 +76,11 @@
                 if(this.selectedCountries.length===0) return [];
                 let data = this.selectedCountries.map(country=>{
                     let countryData;
-                    if(this.calculatedCountryData[country]){
-                        countryData = this.calculatedCountryData[country]
+                    if(window.calculatedCountryData[country]){
+                        countryData = window.calculatedCountryData[country]
                     }else{
                         countryData = getCountryCompareData(this.globalData, country);
-                        this.calculatedCountryData[country] = countryData
+                        window.calculatedCountryData[country] = countryData
                     }
                     return {
                         name: country,
