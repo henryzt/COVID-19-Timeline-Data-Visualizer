@@ -55,7 +55,7 @@
             <div class="title">{{ $t('subtitles.ratio') }}</div>
             <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
             <div class="title">Counrty Comparison</div>
-            <CountryCompareSection :global-data="dataGlobal"></CountryCompareSection>
+            <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
           </div>
 
         <div class="mSection" id="regionData">
@@ -186,6 +186,7 @@ export default {
       sortedRegionData: null,
       section: 0,
       currentCountry: null,
+      countryList: [],
       display: {
         confirmed: 0,
         confirmedChange: 0,

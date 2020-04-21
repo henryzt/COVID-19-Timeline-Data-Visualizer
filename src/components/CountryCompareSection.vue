@@ -1,6 +1,15 @@
 <template>
     <div v-if="series && dates" class="mBlock">
-        <VueApexCharts width="100%" type="line" :options="options" :series="series" ></VueApexCharts>
+        <VueApexCharts width="100%" type="line" :options="options" :series="series" v-if="selectedCountries.length>0"></VueApexCharts>
+
+        <v-select
+                multiple
+                placeholder="Select countries to compare"
+                label="countries"
+                v-model="selectedCountries"
+                :options="countryListFiltered"
+                :selectable="() => selectedCountries.length < 10"
+        />
     </div>
 </template>
 
@@ -12,24 +21,28 @@
     } from "../js/locationUtils"
     export default {
         name: "CountryCompareSection",
-        props: ["globalData"],
+        props: ["globalData", "countryList"],
         components:{
             VueApexCharts,
-            // eslint-disable-next-line vue/no-unused-components
             vSelect
         },
         data: function () {
             return {
+                countryListFiltered: [],
+                selectedCountries: ["United Kingdom", "Spain", "France", "Italy", "Germany"],
                 dates: null
             }
         },
+        mounted(){
+            this.countryListFiltered = this.countryList.slice(2)
+        },
         computed:{
             series: function () {
-                let countryArray = ["United Kingdom", "Spain", "France", "Italy"];
-                let data = countryArray.map(country=>{
+                if(this.selectedCountries.length===0) return [];
+                let data = this.selectedCountries.map(country=>{
                     return {
                         name: country,
-                        data: getCountryCompareData(this.globalData, country).map(a => {
+                        data: getCountryCompareData(this.globalData, country)?.map(a => {
                             return a.confirmed;
                         })
                     }});
@@ -41,6 +54,7 @@
                 this.dates = dateArr.map((d) => {
                                 return "D" + d;
                             });
+                window.ga('send', 'event', "compare", "countries-loaded", this.selectedCountries);
                 return data;
             },
             options:function () { return  {

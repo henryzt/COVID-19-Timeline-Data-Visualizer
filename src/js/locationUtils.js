@@ -149,7 +149,7 @@ export function getCountryHistoryData(countryData) {
         }
     }
 
-    while(historyData[0].confirmed===0){
+    while(historyData[0] && historyData[0].confirmed===0){
         historyData.shift();
     }
 
@@ -159,7 +159,7 @@ export function getCountryHistoryData(countryData) {
 
 export function getCountryCompareData(globalData, countryName) {
     let historyData = getCountryHistoryData(getCountryData(globalData, countryName));
-    while(historyData[0].confirmed<=50){
+    while(historyData[0] && historyData[0].confirmed<=50){
         historyData.shift();
     }
     return historyData;
