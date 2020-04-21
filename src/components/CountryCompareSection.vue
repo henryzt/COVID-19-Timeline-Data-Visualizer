@@ -52,19 +52,37 @@
                 countryListFiltered: [],
                 selectedCountries: ["United Kingdom", "Spain", "France", "Italy", "Germany"],
                 dates: null,
-                dataType: "confirmed"
+                dataType: "confirmed",
+                calculatedCountryData: {},
+                series: null
             }
         },
         mounted(){
-            this.countryListFiltered = this.countryList.slice(2)
+            this.countryListFiltered = this.countryList.slice(2);
+            this.getSeries();
         },
-        computed:{
-            series: function () {
+        watch:{
+          selectedCountries:function () {
+              this.getSeries();
+          },
+          dataType:function () {
+              this.getSeries();
+          }
+        },
+        methods:{
+            getSeries: function () {
                 if(this.selectedCountries.length===0) return [];
                 let data = this.selectedCountries.map(country=>{
+                    let countryData;
+                    if(this.calculatedCountryData[country]){
+                        countryData = this.calculatedCountryData[country]
+                    }else{
+                        countryData = getCountryCompareData(this.globalData, country);
+                        this.calculatedCountryData[country] = countryData
+                    }
                     return {
                         name: country,
-                        data: getCountryCompareData(this.globalData, country)?.map(a => {
+                        data: countryData?.map(a => {
                             if(this.dataType==="active"){
                                 return a.confirmed - a.death - a.cured;
                             }else {
@@ -78,11 +96,13 @@
                 // ref https://stackoverflow.com/questions/3746725/
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                 this.dates = dateArr.map((d) => {
-                                return "D" + d;
-                            });
+                    return "D" + d;
+                });
                 window.ga('send', 'event', "compare", "countries-loaded", this.selectedCountries);
-                return data;
+                this.series = data;
             },
+        },
+        computed:{
             options:function () { return  {
                 chart: {
                     id: "cc",
