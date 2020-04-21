@@ -25,19 +25,21 @@
         },
         computed:{
             series: function () {
-                let countryArray = ["United Kingdom", "US"];
+                let countryArray = ["United Kingdom", "Spain", "France", "Italy"];
                 let data = countryArray.map(country=>{
                     return {
                         name: country,
                         data: getCountryCompareData(this.globalData, country).map(a => {
                             return a.confirmed;
                         })
-                    }})
+                    }});
                 console.log(data);
-                let dayCounter = 0;
+                let maxLen = Math.max.apply(Math, data.map(a => a.data.length));
+                let dateArr = Array.from(Array(maxLen).keys());
+                // ref https://stackoverflow.com/questions/3746725/
                 // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.dates = data[0].data.map(() => {
-                                return "D" + (++dayCounter);
+                this.dates = dateArr.map((d) => {
+                                return "D" + d;
                             });
                 return data;
             },
