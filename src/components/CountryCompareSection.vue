@@ -20,7 +20,7 @@
 
         <div style="padding-bottom: 10px;font-size: 12px;">*{{$t("compareNote")}}</div>
 
-        <VueApexCharts width="100%" type="line" :options="options" :series="series" v-if="selectedCountries.length>0"></VueApexCharts>
+        <VueApexCharts width="100%" height="320" type="line" :options="options" :series="series" v-if="selectedCountries.length>0"></VueApexCharts>
 
         {{$t("compareSelect")}}
         <v-select
@@ -92,6 +92,9 @@
                     zoom: {
                         enabled: window.innerWidth > 800
                     }
+                },
+                stroke: {
+                    width: 3
                 },
                 grid: {
                     row: {

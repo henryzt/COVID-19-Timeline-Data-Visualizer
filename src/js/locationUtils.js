@@ -62,7 +62,7 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
         dailyLocationJson.push(today);
     }
 
-    console.log(dailyLocationJson);
+    // console.log(dailyLocationJson);
     return dailyLocationJson;
 }
 
@@ -93,7 +93,7 @@ export function getGlobalHistoryTableData(allHistory, hideCountryName) {
         }
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
-    console.log(dailyLocationJson);
+    console.log("daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
 
@@ -112,13 +112,13 @@ export function getAllCountries(locations) {
 }
 
 export function getCountryData(globalData, countryName) {
-    console.log(globalData);
+    // console.log(globalData);
     let countryData = {confirmed:{}, deaths: {}, recovered: {}, latest: {}};
     let countryFilter = countryName == "world"? ()=>{return true} : e=>(e.country == countryName);
     countryData.confirmed.locations = globalData.confirmed.locations.filter(countryFilter);
     countryData.deaths.locations = globalData.deaths.locations.filter(countryFilter);
     countryData.recovered.locations = globalData.recovered.locations.filter(countryFilter);
-    console.log(countryData)
+    console.log("country data",countryData);
     return countryData;
 }
 
@@ -153,7 +153,7 @@ export function getCountryHistoryData(countryData) {
         historyData.shift();
     }
 
-    console.log(historyData);
+    // console.log(historyData);
     return historyData;
 }
 

@@ -103,7 +103,7 @@ const messages = {
             map: "英国地区确诊地图",
             ratio: "人数占比",
             timeMachine: "时光机",
-            countryCompare: "国家和地区数据对比"
+            countryCompare: "国家和地区数据分析"
         },
         tmHint: "滑动进度条以查看历史数据",
         tmSticky: "正在查看历史数据",
@@ -166,7 +166,7 @@ const messages = {
             uk: "🇬🇧英国实时数据",
             world: "🌎世界实时数据"
         },
-        compareNote: "数据以国家首次确诊50列作为起点对齐",
+        compareNote: "数据以国家确诊首次超过50例作为起点对齐",
         compareSelect: "从下列输入框可选择其他任何国家进行对比"
     }
 };

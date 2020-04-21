@@ -54,7 +54,7 @@
                 <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
             <div class="title">{{ $t('subtitles.ratio') }}</div>
             <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
-            <div class="title">Counrty Comparison</div>
+            <div class="title">{{ $t('subtitles.countryCompare') }}</div>
             <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
           </div>
 
