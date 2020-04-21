@@ -45,7 +45,7 @@ if ($ttl && $cache) {
     $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
     $ukData->regional = json_decode(portal_curl_return("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true"));
 
-    $globalData = json_decode(portal_curl_return("https://covid-tracker-us.herokuapp.com/all"));
+    $globalData = json_decode(portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all"));
 
     $res->isUpToDate = $ukData->now && $globalData;
     $res->uk = $ukData;
