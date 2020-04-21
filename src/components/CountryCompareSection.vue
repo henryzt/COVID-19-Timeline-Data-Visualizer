@@ -1,7 +1,28 @@
 <template>
-    <div v-if="series && dates" class="mBlock">
+    <div v-if="series && dates" class="mBlock" style="color: grey">
+
+        <div class="btn-group-wrap">
+            <div class="btn-group btn-group-sm" role="group" aria-label="date range">
+                <button type="button" class="btn btn-secondary" :class="{active: dataType==='confirmed'}" @click="dataType='confirmed'">
+                    {{ $t('totalConfirmed') }}
+                </button>
+                <button type="button" class="btn btn-secondary" :class="{active: dataType==='active'}" @click=" dataType='active'">
+                    {{ $t('active') }}
+                </button>
+                <button type="button" class="btn btn-secondary" :class="{active: dataType==='death'}" @click=" dataType='death'">
+                    {{ $t('totalDeaths') }}
+                </button>
+                <button type="button" class="btn btn-secondary" :class="{active: dataType==='cured'}" @click="dataType='cured'">
+                    {{ $t('totalCured') }}
+                </button>
+            </div>
+        </div>
+
+        <div style="padding-bottom: 10px;font-size: 12px;">*{{$t("compareNote")}}</div>
+
         <VueApexCharts width="100%" type="line" :options="options" :series="series" v-if="selectedCountries.length>0"></VueApexCharts>
 
+        {{$t("compareSelect")}}
         <v-select
                 multiple
                 placeholder="Select countries to compare"
@@ -30,7 +51,8 @@
             return {
                 countryListFiltered: [],
                 selectedCountries: ["United Kingdom", "Spain", "France", "Italy", "Germany"],
-                dates: null
+                dates: null,
+                dataType: "confirmed"
             }
         },
         mounted(){
@@ -43,7 +65,11 @@
                     return {
                         name: country,
                         data: getCountryCompareData(this.globalData, country)?.map(a => {
-                            return a.confirmed;
+                            if(this.dataType==="active"){
+                                return a.confirmed - a.death - a.cured;
+                            }else {
+                                return a[this.dataType];
+                            }
                         })
                     }});
                 console.log(data);
