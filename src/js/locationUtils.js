@@ -157,6 +157,15 @@ export function getCountryHistoryData(countryData) {
     return historyData;
 }
 
+export function getCountryCompareData(globalData, countryName) {
+    let historyData = getCountryHistoryData(getCountryData(globalData, countryName));
+    while(historyData[0].confirmed<=50){
+        historyData.shift();
+    }
+    return historyData;
+
+}
+
 /* --------------------------------------------------------------------------------------- */
 import { ukmapData } from "./ukmap";
 
