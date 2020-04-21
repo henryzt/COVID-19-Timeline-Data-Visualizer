@@ -160,7 +160,31 @@ export function getCountryHistoryData(countryData) {
 /* --------------------------------------------------------------------------------------- */
 import { ukmapData } from "./ukmap";
 
-export function combineHighCharts(currentUkAreaData){
+export function combineUKHighCharts(currentUkAreaData){
+    let  commonLocationsData = [];
+    let names = [];
+    let keys = [];
+    for (let region of ukmapData.features)
+    {
+        names.push(region.properties.name);
+        keys.push(region.properties["hc-key"]);
+    }
+    // console.log(keys);
+
+    for (let jeffArea of currentUkAreaData){
+        if(names.includes(jeffArea.location)) {
+            const index = names.indexOf(jeffArea.location);
+            if (index > -1)
+                //names.splice(i1, 1);
+                commonLocationsData.push([keys[index], jeffArea.number]);
+        }
+    }
+    // console.log(this.commonLocationsData);
+
+    return commonLocationsData;
+}
+
+export function combineWorldHighCharts(currentUkAreaData){
     let  commonLocationsData = [];
     let names = [];
     let keys = [];

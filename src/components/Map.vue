@@ -4,16 +4,17 @@
 <script>
     export default {
         props: {
-            locationsData: {}
+            locationsData: {},
+            countryName: null
         },
         data () {
             return {
                 mapOptions: {
                     chart: {
-                        map: 'UKmap'
+                        map:'UK'
                     },
-                    title: {
-                        text: 'UK Confirmed Cases'
+                    title:{
+                        text:"COVID Map"
                     },
                     mapNavigation: {
                         enabled: true,
@@ -41,6 +42,16 @@
                     }]
                 }
             }
+        },
+        mounted() {
+            this.mapOptions.chart = {
+                map: this.countryName
+            };
+            this.mapOptions.title = {
+                text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
+            };
+            // if(this.countryName === "world")
+            //     this.mapOptions.title
         }
     }
 </script>
