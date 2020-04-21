@@ -87,9 +87,19 @@
             </div>
           </div>
 
+            <div v-if="isMiniApp">
+                <br>
+                <div class="title">{{ $t('subtitles.about') }}</div>
+                <ul>
+                    <li>请使用浏览器访问 covid19.uclcssa.cn 以获取本页面数据来源及更新时间</li>
+                    <li>本页面开源于Github，欢迎提供任何建议及贡献！</li>
+                    <li>作者：©2020 Henry (@henryz00), Davies (@DaviesXue) | UCLCSSA 伦敦大学学院中国学联</li>
+                </ul>
+            </div>
+
         </div>
 
-
+        <div v-if="!isLocaleCN || !isMiniApp">
         <br>
         <div class="title">{{ $t('subtitles.source') }}</div>
         <ul>
@@ -112,6 +122,8 @@
           </li>
 
         </ul>
+
+        </div>
 
         <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
           <img src="./assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN"/>
@@ -215,6 +227,10 @@ export default {
   mounted() {
     if(this.isWeChat()){
       this.$i18n.locale = "zh";
+    }
+    if(this.isMiniApp){
+        window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
+        return;
     }
     this.isLocaleCN = this.$i18n.locale === "zh";
     document.title = this.$t('pageTitle');
@@ -375,7 +391,15 @@ export default {
         }
       })
     }
-  }
+  },
+    computed: {
+      isMiniApp: function () {
+          // WeChat Mini app
+          let url = new URL(window.location.href);
+          let query = url.searchParams.get("source");
+          return query === "apptab";
+      }
+    }
 
 };
 </script>

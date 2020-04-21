@@ -115,6 +115,11 @@
                         enabled: window.innerWidth > 800
                     }
                 },
+                tooltip:{
+                    shared: true,
+                    intersect: false,
+                    x: { formatter: (val) => { return "Day "+val; } }
+                },
                 stroke: {
                     width: 3
                 },
