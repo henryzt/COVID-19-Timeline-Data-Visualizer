@@ -1,60 +1,71 @@
 <template>
-    <highcharts :constructor-type="'mapChart'" :options="mapOptions" class="map"></highcharts>
+    <div v-if="renderComponent">
+        <highcharts :constructor-type="'mapChart'" :options="mapOptions" class="map"></highcharts>
+    </div>
 </template>
 <script>
     export default {
         props: {
             locationsData: {},
-            countryName: null
+            countryName: String
         },
-        data () {
+        data: function(){
             return {
-                mapOptions: {
-                    chart: {
-                        map:'UK',
-                        height: 500
-                    },
-                    title:{
-                        text:"COVID Map"
-                    },
-                    mapNavigation: {
-                        enabled: true,
-                        enableDoubleClickZoomTo: true,
-                        buttonOptions: {
-                            alignTo: 'spacingBox'
-                        }
-                    },
-                    colorAxis: {
-                        enables: true,
-                        min: 0
-                    },
-                    series: [{
-                        name: 'data',
-                        states: {
-                            hover: {
-                                color: '#BADA55'
-                            }
-                        },
-                        dataLabels: {
-                            enabled: false,
-                            format: '{point.name}'
-                        },
-                        allAreas: this.countryName=="UK",
-                        data: this.locationsData
-                    }]
-                }
+                renderComponent: true
             }
         },
+        computed: {
+                mapOptions: function () {
+                    let isUK = this.countryName === "UK";
+                    this.forceRerender();
+                    return {
+                        chart: {
+                            map: this.countryName,
+                            height: 500
+                        },
+                        title: {
+                            text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
+                        },
+                        mapNavigation: {
+                            enabled: true,
+                            enableDoubleClickZoomTo: true,
+                            buttonOptions: {
+                                alignTo: 'spacingBox'
+                            }
+                        },
+                        colorAxis: {
+                            enables: true,
+                            min: 0
+                        },
+                        series: [{
+                            name: 'data',
+                            states: {
+                                hover: {
+                                    color: '#BADA55'
+                                }
+                            },
+                            dataLabels: {
+                                enabled: false,
+                                format: '{point.name}'
+                            },
+                            allAreas: isUK,
+                            data: this.locationsData
+                        }]
+                    }
+                }
+        },
         mounted() {
-            this.mapOptions.chart = {
-                map: this.countryName
-            };
-            this.mapOptions.title = {
-                text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
-            };
             // console.log(this.locationsData);
             // if(this.countryName === "world")
             //     this.mapOptions.title
+        },
+        methods: {
+            forceRerender() {
+                this.renderComponent = false;
+                this.$nextTick(() => {
+                    this.renderComponent = true;
+                });
+            }
         }
     }
 </script>

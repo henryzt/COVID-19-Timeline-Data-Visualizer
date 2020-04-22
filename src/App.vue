@@ -211,7 +211,10 @@ export default {
       barRaceData: {
         hasData: false
       },
-      commonLocationsData: [],
+      locationsData: {
+          world: null,
+          country: null
+      },
       tableData:{
         hasData: false
       },
@@ -253,6 +256,7 @@ export default {
         this.countryList = [this.$t('selector.uk'), this.$t('selector.world'), ...countryArr];
         this.currentCountry = this.countryList[0];
         this.barRaceData.hasData = true;
+        this.locationsData.world = combineWorldHighCharts(getCountryData(this.dataGlobal, "world"));
         this.loadUkData();
 
         this.getNavScrollAnchor();
@@ -291,8 +295,7 @@ export default {
         //console.log("data loaded", countryData);
         this.tableData.uk = countryName==="world" ? null : getGlobalHistoryTableData(countryData.confirmed, true);
         this.barRaceData.ukRegions = countryName==="world" ? null : getNHSRegionD3Data(this.tableData.uk);
-        if(countryName==="world")
-          this.locationsData = combineWorldHighCharts(countryData);
+        this.locationsData.country = null;
         this.tableData.hasData = true;
         this.dataCurrent.history = getCountryHistoryData(countryData);
         console.log("country loaded", this.dataCurrent);
@@ -326,7 +329,7 @@ export default {
         let yesterData = this.dataUk.history[this.dataUk.history.length - 2];
         this.tableData.uk = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
         this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
-        this.locationsData = combineUKHighCharts(currentUkAreaData);
+        this.locationsData.country = combineUKHighCharts(currentUkAreaData);
         console.log(currentUkAreaData);
 
         this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
