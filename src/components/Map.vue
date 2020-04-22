@@ -39,7 +39,7 @@
                             enabled: false,
                             format: '{point.name}'
                         },
-                        allAreas: false,
+                        allAreas: this.countryName=="UK",
                         data: this.locationsData
                     }]
                 }
