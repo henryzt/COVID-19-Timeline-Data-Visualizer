@@ -164,7 +164,7 @@ div.btn-group {
   height: 50px;
 }
 
-.vs__selected-options {
+.select .vs__selected-options {
   flex-wrap: nowrap !important;
 }
 

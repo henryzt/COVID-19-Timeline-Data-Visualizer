@@ -19,7 +19,8 @@ const messages = {
             about: "About",
             map: "UK Confirmed Cases Map",
             ratio: "Ratio Animation",
-            timeMachine: "Time Machine"
+            timeMachine: "Time Machine",
+            countryCompare: "Country and Region Analysis"
         },
         tmHint: "Drag the slider to view historical data",
         tmSticky: "Viewing historical data",
@@ -81,7 +82,9 @@ const messages = {
         selector:{
             uk: "🇬🇧 UK Realtime",
             world: "🌎 Worldwide"
-        }
+        },
+        compareNote: "Data is aligned by the date when confirmed cases reaches 50 in each region",
+        compareSelect: "Select any countries below to add for comparision"
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -99,7 +102,8 @@ const messages = {
             about: "关于",
             map: "英国地区确诊地图",
             ratio: "人数占比",
-            timeMachine: "时光机"
+            timeMachine: "时光机",
+            countryCompare: "国家和地区数据分析"
         },
         tmHint: "滑动进度条以查看历史数据",
         tmSticky: "正在查看历史数据",
@@ -161,7 +165,9 @@ const messages = {
         selector:{
             uk: "🇬🇧英国实时数据",
             world: "🌎世界实时数据"
-        }
+        },
+        compareNote: "数据以国家确诊首次超过50例作为起点对齐",
+        compareSelect: "从下列输入框可选择其他任何国家进行对比"
     }
 };
 

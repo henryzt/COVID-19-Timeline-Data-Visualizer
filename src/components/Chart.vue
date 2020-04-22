@@ -79,9 +79,6 @@ export default {
             fontSize: "12px"
           }
         },
-        stroke: {
-          curve: "smooth"
-        },
 
         grid: {
           row: {

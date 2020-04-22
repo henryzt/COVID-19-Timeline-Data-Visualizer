@@ -49,12 +49,14 @@
           <ChartSection :chart-data="chartData ? chartData : dataCurrent.history"></ChartSection>
         </div>
 
-        <div class="mSection" id="animation">
-          <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
-          <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
-          <div class="title">{{ $t('subtitles.ratio') }}</div>
-          <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
-        </div>
+          <div class="mSection" id="animation">
+              <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
+                <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
+            <div class="title">{{ $t('subtitles.ratio') }}</div>
+            <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
+            <div class="title">{{ $t('subtitles.countryCompare') }}</div>
+            <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
+          </div>
 
         <div class="mSection" id="regionData">
           <div class="title">{{ $t('subtitles.map') }}</div>
@@ -83,9 +85,19 @@
             </div>
           </div>
 
+            <div v-if="isMiniApp">
+                <br>
+                <div class="title">{{ $t('subtitles.about') }}</div>
+                <ul>
+                    <li>请使用浏览器访问 covid19.uclcssa.cn 以获取本页面数据来源及更新时间</li>
+                    <li>本页面开源于Github，欢迎提供任何建议及贡献！</li>
+                    <li>作者：©2020 Henry (@henryz00), Davies (@DaviesXue) | UCLCSSA 伦敦大学学院中国学联</li>
+                </ul>
+            </div>
+
         </div>
 
-
+        <div v-if="!isLocaleCN || !isMiniApp">
         <br>
         <div class="title">{{ $t('subtitles.source') }}</div>
         <ul>
@@ -108,6 +120,8 @@
           </li>
 
         </ul>
+
+        </div>
 
         <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
           <img src="./assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN"/>
@@ -134,94 +148,100 @@
 </template>
 
 <script>
-  /* eslint-disable */
-  import RegionTable from "./components/RegionTable.vue";
-  import UkRegionSection from "./components/UkRegionSection.vue";
-  import TodayNumberSection from "./components/TodayNumberSection.vue";
-  import BarRaceSection from "./components/BarRaceSection.vue";
-  import MapSection from "./components/MapSection.vue";
-  import ChartSection from "./components/ChartSection.vue";
-  import SlideController from "./components/SlideController.vue";
-  import PieSection from "./components/PieSection.vue";
-  import vSelect from 'vue-select'
-  import 'vue-select/dist/vue-select.css';
-  import {
-    getNHSRegionD3Data,
-    getD3GlobalData,
-    getRegionHistoryTableData,
-    getGlobalHistoryTableData,
-    parseLocationData,
-    combineUKHighCharts,
-    combineWorldHighCharts,
-    getAllCountries,
-    getCountryData,
-    getCountryHistoryData
-  } from "./js/locationUtils"
+    /* eslint-disable */
+import RegionTable from "./components/RegionTable.vue";
+import UkRegionSection from "./components/UkRegionSection.vue";
+import TodayNumberSection from "./components/TodayNumberSection.vue";
+import BarRaceSection from "./components/BarRaceSection.vue";
+import MapSection from "./components/MapSection.vue";
+import ChartSection from "./components/ChartSection.vue";
+import SlideController from "./components/SlideController.vue";
+import PieSection from "./components/PieSection.vue";
+import CountryCompareSection from "./components/CountryCompareSection.vue";
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+import {
+  getNHSRegionD3Data,
+  getD3GlobalData,
+  getRegionHistoryTableData,
+  getGlobalHistoryTableData,
+  parseLocationData,
+  combineHighCharts,
+  combineWorldHighCharts,
+  getAllCountries,
+  getCountryData,
+  getCountryHistoryData
+} from "./js/locationUtils"
 
-  const moment = require('moment');
+const moment = require('moment');
 
-  export default {
-    name: "App",
-    components: {
-      RegionTable,
-      BarRaceSection,
-      ChartSection,
-      PieSection,
-      TodayNumberSection,
-      UkRegionSection,
-      vSelect,
-      MapSection,
-      SlideController
-    },
-    data: () => {
-      return {
-        countryName: null,
-        dataCurrent: null,
-        dataUk: null,
-        dataGlobal: null,
-        sortedRegionData: null,
-        section: 0,
-        currentCountry: null,
-        display: {
-          confirmed: 0,
-          confirmedChange: 0,
-          deaths: 0,
-          deathsChange: 0,
-          tested: 0,
-          testedChange: 0,
-          cured: 0,
-          curedChange: 0
-        },
-        barRaceData: {
-          hasData: false
-        },
-        locationsData: [],
-        tableData:{
-          hasData: false
-        },
-        chartData: null,
-        isLocaleCN: false,
-        showWechatPopup: true,
-        currentDate: null,
-        mainDate: null,
-        lastUpdated: "NEVER"
-      };
-    },
-    mounted() {
-      if(this.isWeChat()){
-        this.$i18n.locale = "zh";
-      }
-      this.isLocaleCN = this.$i18n.locale === "zh";
-      document.title = this.$t('pageTitle');
+export default {
+  name: "App",
+  components: {
+    RegionTable,
+    BarRaceSection,
+    ChartSection,
+    PieSection,
+    TodayNumberSection,
+    UkRegionSection,
+    vSelect,
+    MapSection,
+    SlideController,
+    CountryCompareSection
+  },
+  data: () => {
+    return {
+      dataCurrent: null,
+      dataUk: null,
+      dataGlobal: null,
+      sortedRegionData: null,
+      section: 0,
+      currentCountry: null,
+      countryList: [],
+      display: {
+        confirmed: 0,
+        confirmedChange: 0,
+        deaths: 0,
+        deathsChange: 0,
+        tested: 0,
+        testedChange: 0,
+        cured: 0,
+        curedChange: 0
+      },
+      barRaceData: {
+        hasData: false
+      },
+      commonLocationsData: [],
+      tableData:{
+        hasData: false
+      },
+      chartData: null,
+      isLocaleCN: false,
+      showWechatPopup: true,
+      currentDate: null,
+      mainDate: null,
+      lastUpdated: "NEVER"
+    };
+  },
+  mounted() {
+    if(this.isWeChat()){
+      this.$i18n.locale = "zh";
+    }
+    if(this.isMiniApp){
+        window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
+        return;
+    }
+    this.isLocaleCN = this.$i18n.locale === "zh";
+    document.title = this.$t('pageTitle');
 
-      let performanceTimeStart = performance.now();
-      fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
-        let data = await res.json();
-        let resTime = Math.round(performance.now() - performanceTimeStart);
-        this.dataUk = data.uk;
-        this.dataGlobal = data.global;
-        console.log(data);
-        this.lastUpdated = `Global data updated ${moment(data.global.confirmed.last_updated).fromNow()},
+    let performanceTimeStart = performance.now();
+    fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
+      let data = await res.json();
+      let resTime = Math.round(performance.now() - performanceTimeStart);
+      this.dataUk = data.uk;
+      this.dataGlobal = data.global;
+      console.log(data);
+      this.lastUpdated = `Global data updated ${moment(data.global.confirmed.last_updated).fromNow()},
                           UK data updated ${moment(data.uk.now[0].ts).fromNow()}, data is ${data.isUpToDate?"":"NOT"} up to date.
                           Data might not reflect the real number, and might be delayed.`;
         //global data
@@ -375,6 +395,15 @@
             this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
           }
         })
+      }
+    }
+  },
+    computed: {
+      isMiniApp: function () {
+          // WeChat Mini app
+          let url = new URL(window.location.href);
+          let query = url.searchParams.get("source");
+          return query === "apptab";
       }
     }
 
