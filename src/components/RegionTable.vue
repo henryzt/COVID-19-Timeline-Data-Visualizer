@@ -3,9 +3,6 @@
         <div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
             <div class="btn-group-wrap">
                 <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-                    <button type="button" class="btn btn-secondary" :class="{active: sort===0}" @click="sortByDefault()">
-                        {{$t('table.default')}}
-                    </button>
                     <button type="button" class="btn btn-secondary" :class="{active: sort===1}" @click="sortByAlphabet()">
                         {{$t('table.byRegion')}}
                     </button>
@@ -71,7 +68,7 @@
         data: function (){
             return {
                 tableData: [],
-                sort: 0,
+                sort: 1,
                 limit: 10,
                 date: null,
                 currentData: null,
