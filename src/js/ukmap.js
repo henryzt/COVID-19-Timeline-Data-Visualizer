@@ -11,6 +11,6 @@ var ukmapData ={"title":"United Kingdom",
 export { ukmapData }
 
 export default function map (Highcharts) {
-    Highcharts.maps['UKmap'] = ukmapData
+    Highcharts.maps['UK'] = ukmapData
 }
 

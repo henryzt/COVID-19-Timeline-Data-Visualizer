@@ -50,6 +50,7 @@
             this.mapOptions.title = {
                 text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
             };
+            console.log(this.locationsData);
             // if(this.countryName === "world")
             //     this.mapOptions.title
         }

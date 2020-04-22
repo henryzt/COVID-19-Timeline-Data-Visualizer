@@ -264,6 +264,7 @@
       loadCountryData: function(countryName){
         this.countryName = countryName;
         let countryData = getCountryData(this.dataGlobal, countryName);
+        console.log(countryData.confirmed.locations);
         this.dataCurrent = {};
         this.dataCurrent.isUk = false;
         //history data
@@ -271,8 +272,7 @@
         this.tableData.uk = countryName==="world" ? null : getGlobalHistoryTableData(countryData.confirmed, true);
         this.barRaceData.ukRegions = countryName==="world" ? null : getNHSRegionD3Data(this.tableData.uk);
         if(countryName==="world")
-                // this.locationsData = combineWorldHighCharts(countryData);
-          this.locationsData = [];
+          this.locationsData = combineWorldHighCharts(countryData);
         this.tableData.hasData = true;
         this.dataCurrent.history = getCountryHistoryData(countryData);
         console.log("country loaded", this.dataCurrent);
