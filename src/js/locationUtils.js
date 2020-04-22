@@ -169,7 +169,7 @@ export function getCountryCompareData(globalData, countryName) {
 /* --------------------------------------------------------------------------------------- */
 import { ukmapData } from "./ukmap";
 
-export function combineHighCharts(currentUkAreaData){
+export function combineUKHighCharts(currentUkAreaData){
     let  commonLocationsData = [];
     let names = [];
     let keys = [];
@@ -191,4 +191,64 @@ export function combineHighCharts(currentUkAreaData){
     // console.log(this.commonLocationsData);
 
     return commonLocationsData;
+}
+
+import { worldmapData } from "./worldmap";
+export function combineWorldHighCharts(currentWorldAreaData){
+    let codeMap = new Map();
+    let nameMap = new Map();
+    let allMap = new Map();
+    for (let region of worldmapData.features)
+    {
+        nameMap.set(region.properties.name, region.properties["hc-key"]);
+        codeMap.set(region.properties["hc-a2"], region.properties["hc-key"]);
+    }
+    let locationsData = [];
+    let country_key = "";
+    let individual_sum = 0;
+    for (let area of currentWorldAreaData.confirmed.locations) {
+        if (nameMap.has(area.country) || codeMap.has(area.country_code)){
+            // Country
+            if (area.province === "")
+            {
+                if(individual_sum > 0){
+                    if (allMap.has(country_key))
+                        allMap.set(country_key, allMap.get(country_key) + individual_sum);
+                    else
+                        allMap.set(country_key, individual_sum);
+                    individual_sum = 0;
+                }
+                let current_key = codeMap.get(area.country_code);
+                if (allMap.has(current_key))
+                    allMap.set(current_key, area.latest + allMap.get(current_key));
+                else
+                    allMap.set(current_key, area.latest);
+            }
+            // Province
+            else {
+                // Store the last one, From one province of one country enter another province of another country
+                if(country_key !== nameMap.get(area.country))
+                {
+                    if(individual_sum > 0){
+                        if (allMap.has(country_key))
+                            allMap.set(country_key, allMap.get(country_key) + individual_sum);
+                        else
+                            allMap.set(country_key, individual_sum);
+                        individual_sum = 0;
+                    }
+                }
+
+                if(nameMap.has(area.province))
+                    allMap.set(nameMap.get(area.province), area.latest);
+                else{
+                    country_key = nameMap.get(area.country);
+                    individual_sum += area.latest;
+                }
+            }
+        }
+    }
+    // console.log(allMap);
+    for(let entry of allMap)
+        locationsData.push(entry);
+    return locationsData;
 }

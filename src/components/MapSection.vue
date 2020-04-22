@@ -1,7 +1,7 @@
 <template>
     <div class="mBlock">
-        <Map :locationsData="commonLocationsData"></Map>
-        <div style="text-align: left;opacity: 0.3;">*Data is incomplete, source: GOV.UK and isjeffcom</div>
+        <Map :locationsData="locationsData" :countryName="countryName"></Map>
+        <div style="text-align: left;opacity: 0.3;">*Data is incomplete, source: GOV.UK, isjeffcom and JHU.</div>
     </div>
 </template>
 
@@ -13,7 +13,8 @@
             Map
         },
         props: {
-            commonLocationsData: Array
+            locationsData: Array,
+            countryName: String
         }
     }
 </script>

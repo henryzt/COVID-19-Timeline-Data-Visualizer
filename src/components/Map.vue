@@ -4,19 +4,22 @@
 <script>
     export default {
         props: {
-            locationsData: {}
+            locationsData: {},
+            countryName: null
         },
         data () {
             return {
                 mapOptions: {
                     chart: {
-                        map: 'UKmap'
+                        map:'UK',
+                        height: 500
                     },
-                    title: {
-                        text: 'UK Confirmed Cases'
+                    title:{
+                        text:"COVID Map"
                     },
                     mapNavigation: {
                         enabled: true,
+                        enableDoubleClickZoomTo: true,
                         buttonOptions: {
                             alignTo: 'spacingBox'
                         }
@@ -26,7 +29,7 @@
                         min: 0
                     },
                     series: [{
-                        name: '',
+                        name: 'data',
                         states: {
                             hover: {
                                 color: '#BADA55'
@@ -36,16 +39,27 @@
                             enabled: false,
                             format: '{point.name}'
                         },
-                        allAreas: true,
+                        allAreas: this.countryName=="UK",
                         data: this.locationsData
                     }]
                 }
             }
+        },
+        mounted() {
+            this.mapOptions.chart = {
+                map: this.countryName
+            };
+            this.mapOptions.title = {
+                text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
+            };
+            // console.log(this.locationsData);
+            // if(this.countryName === "world")
+            //     this.mapOptions.title
         }
     }
 </script>
 <style scoped>
     .map {
-        min-height: 500px;
+        min-height: 300px;
     }
 </style>

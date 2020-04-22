@@ -6,12 +6,14 @@ import Highcharts from 'highcharts';
 import mapInit from 'highcharts/modules/map'
 import HighchartsVue from 'highcharts-vue';
 import addUKMap from "./js/ukmap";
+import addWorldMap from "./js/worldmap";
 
 Vue.use(scrollSpy, {
   easing: Easing.Quartic.InOut
 });
 mapInit(Highcharts);
 addUKMap(Highcharts);
+addWorldMap(Highcharts);
 Vue.use(HighchartsVue);
 
 Vue.config.productionTip = false;
