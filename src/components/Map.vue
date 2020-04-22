@@ -11,13 +11,15 @@
             return {
                 mapOptions: {
                     chart: {
-                        map:'UK'
+                        map:'UK',
+                        height: 500
                     },
                     title:{
                         text:"COVID Map"
                     },
                     mapNavigation: {
                         enabled: true,
+                        enableDoubleClickZoomTo: true,
                         buttonOptions: {
                             alignTo: 'spacingBox'
                         }
@@ -27,7 +29,7 @@
                         min: 0
                     },
                     series: [{
-                        name: '',
+                        name: 'data',
                         states: {
                             hover: {
                                 color: '#BADA55'
@@ -37,7 +39,7 @@
                             enabled: false,
                             format: '{point.name}'
                         },
-                        allAreas: true,
+                        allAreas: false,
                         data: this.locationsData
                     }]
                 }
@@ -50,7 +52,7 @@
             this.mapOptions.title = {
                 text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
             };
-            console.log(this.locationsData);
+            // console.log(this.locationsData);
             // if(this.countryName === "world")
             //     this.mapOptions.title
         }
@@ -58,6 +60,6 @@
 </script>
 <style scoped>
     .map {
-        min-height: 500px;
+        min-height: 300px;
     }
 </style>

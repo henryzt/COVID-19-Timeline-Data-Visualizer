@@ -166,7 +166,7 @@ import {
   getRegionHistoryTableData,
   getGlobalHistoryTableData,
   parseLocationData,
-  combineHighCharts,
+  combineUKHighCharts,
   combineWorldHighCharts,
   getAllCountries,
   getCountryData,
@@ -227,8 +227,10 @@ export default {
     if(this.isWeChat()){
       this.$i18n.locale = "zh";
     }
-    if(this.isMiniApp){
+    // miniapp china redirect
+    if(this.isMiniApp && Intl.DateTimeFormat().resolvedOptions().timeZone=="Asia/Shanghai"){
         window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
+        window.ga('send', 'event', "china-redirected", "mini-app-tab", "");
         return;
     }
     this.isLocaleCN = this.$i18n.locale === "zh";
@@ -396,7 +398,6 @@ export default {
           }
         })
       }
-    }
   },
     computed: {
       isMiniApp: function () {
