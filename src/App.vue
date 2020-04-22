@@ -56,12 +56,10 @@
           <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
         </div>
 
-        <div class="title">{{ $t('subtitles.map') }}</div>
-        <MapSection :locationsData="locationsData" :countryName="countryName"></MapSection>
-        <br>
-
         <div class="mSection" id="regionData">
-
+          <div class="title">{{ $t('subtitles.map') }}</div>
+          <MapSection :locationsData="locationsData" :countryName="countryName"></MapSection>
+          <br>
           <div class="title">{{ $t('subtitles.regionList') }}</div>
           <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate"></RegionTable>
         </div>
