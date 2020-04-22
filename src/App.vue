@@ -60,7 +60,7 @@
 
         <div class="mSection" id="regionData">
           <div class="title">{{ $t('subtitles.map') }}</div>
-          <MapSection :tableData="tableData" :countryName="countryName"></MapSection>
+          <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
           <br>
           <div class="title">{{ $t('subtitles.regionList') }}</div>
           <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate"></RegionTable>
@@ -244,7 +244,7 @@ export default {
                           UK data updated ${moment(data.uk.now[0].ts).fromNow()}, data is ${data.isUpToDate?"":"NOT"} up to date.
                           Data might not reflect the real number, and might be delayed.`;
         //global data
-        this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed);
+        this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed, false, true);
         this.barRaceData.global = getD3GlobalData(this.tableData.global);
         let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
         this.countryList = [this.$t('selector.uk'), this.$t('selector.world'), ...countryArr];

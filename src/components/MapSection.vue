@@ -12,7 +12,7 @@
         <div style="text-align: left;opacity: 0.3;">*Data is incomplete, source: GOV.UK, isjeffcom and JHU.</div>
 
         <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date"
-                         :hidePlayButton="true" :current-date="date"
+                         :hidePlayButton="true" :current-date="date" @change="changeDate" :lazy="true"
                          :enableEvenIfPaused="true" :playing="false"></SlideController>
     </div>
 </template>
@@ -32,7 +32,8 @@
         },
         props: {
             tableData: Object,
-            countryName: String
+            countryName: String,
+            mainDate: String
         },
         data: function () {
             return {
@@ -48,7 +49,18 @@
             this.isUK = this.countryName==="UK";
             this.changeTab(this.isUK ? 1 : 0);
         },
+        watch: {
+            mainDate: function () {
+                if(this.mainDate) {
+                    this.changeDate(this.mainDate)
+                }
+            }
+        },
         methods: {
+            changeDate: function(date){
+                this.date = date;
+                this.loadMap()
+            },
             changeTab(tab){
                 this.tab = tab;
                 if(this.isUK && this.tab === 1){
@@ -57,16 +69,17 @@
                     this.currentData = this.tableData.global;
                 }
                 this.date = this.currentData[this.currentData.length-1].date;
-                this.loadMap()
+                this.loadMap(true)
             },
-            loadMap(){
+            async loadMap(rerender){
                  let idx = this.currentData.findIndex(ele=>ele.date === this.date);
                  if(this.tab === 1) {
                      this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
                  }else{
                      this.locationsData = combineWorldHighCharts(this.currentData[idx].arr);
                  }
-                 this.forceRerender()
+                 if(rerender)
+                    this.forceRerender()
               },
               forceRerender() {
                     this.renderComponent = false;

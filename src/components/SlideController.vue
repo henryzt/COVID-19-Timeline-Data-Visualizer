@@ -7,7 +7,7 @@
             {{currentDate}}
         </div>
         <div style="flex-grow: 1; margin-left: 30px">
-            <VueSlider :value="currentDate" @change="onDateChange" @drag-end="onDragEnd" :data="dateData" :disabled="!enableEvenIfPaused && !playPause" :clickable="!disableClick"></VueSlider>
+            <VueSlider :value="currentDate" @change="onDateChange" @drag-end="onDragEnd" :data="dateData" :disabled="!enableEvenIfPaused && !playPause" :lazy="lazy" :clickable="!disableClick"></VueSlider>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
 
     export default {
         name: "SlideController",
-        props: ["startDate","endDate","playing","currentDate","enableEvenIfPaused","hidePlayButton","disableClick"],
+        props: ["startDate","endDate","playing","currentDate","enableEvenIfPaused","hidePlayButton","disableClick","lazy"],
         data: function(){
             return {
                 playPause:true,

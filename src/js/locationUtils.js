@@ -66,7 +66,7 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
     return dailyLocationJson;
 }
 
-export function getGlobalHistoryTableData(allHistory, hideCountryName) {
+export function getGlobalHistoryTableData(allHistory, hideCountryName, includeCode) {
     let dateMap = {};
     for(let dayData of allHistory.locations){
         let objArr = Object.entries(dayData.history);
@@ -74,7 +74,7 @@ export function getGlobalHistoryTableData(allHistory, hideCountryName) {
             let date =  moment(objArr[i][0]).format("DD/MM");
             let value = objArr[i][1];
             let name = hideCountryName && dayData["province"]? dayData["province"] : (dayData["country"] +(dayData["province"]?(" - "+ dayData["province"]):""));
-            let location = hideCountryName ? {location: name, number: value} : {location: name, country_code: dayData["country_code"], number: value};
+            let location = includeCode ?  {location: name, country_code: dayData["country_code"], country: dayData["country"], province : dayData["province"], number: value} : {location: name, number: value};
             dateMap[date] = dateMap[date]? dateMap[date]: [];
             dateMap[date].push(location)
         }
@@ -207,7 +207,7 @@ export function combineWorldHighCharts(currentWorldAreaData){
     let country_key = "";
     let individual_sum = 0;
     for (let area of currentWorldAreaData) {
-        if (nameMap.has(area.location) || codeMap.has(area.country_code)){
+        if (nameMap.has(area.country) || codeMap.has(area.country_code)){
             // Country
             if (!area.province || area.province === "")
             {
@@ -219,9 +219,9 @@ export function combineWorldHighCharts(currentWorldAreaData){
                     individual_sum = 0;
                 }
                 let current_key = codeMap.get(area.country_code);
-                // if (allMap.has(current_key))
-                //     allMap.set(current_key, area.latest + allMap.get(current_key));
-                // else
+                if (allMap.has(current_key))
+                    allMap.set(current_key, area.number + allMap.get(current_key));
+                else
                     allMap.set(current_key, area.number);
             }
             // Province
