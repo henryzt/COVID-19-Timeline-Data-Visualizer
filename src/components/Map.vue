@@ -17,7 +17,6 @@
         computed: {
                 mapOptions: function () {
                     let isUK = this.countryName === "UK";
-                    this.forceRerender();
                     return {
                         chart: {
                             map: this.countryName,
@@ -58,14 +57,6 @@
             // console.log(this.locationsData);
             // if(this.countryName === "world")
             //     this.mapOptions.title
-        },
-        methods: {
-            forceRerender() {
-                this.renderComponent = false;
-                this.$nextTick(() => {
-                    this.renderComponent = true;
-                });
-            }
         }
     }
 </script>

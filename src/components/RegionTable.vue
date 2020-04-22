@@ -51,7 +51,9 @@
             <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?$t('table.showAll'):$t('table.showLess')}}</div>
         </div>
         <div :class="(limit===10)?'':'stick'">
-            <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date" :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event" :enableEvenIfPaused="true" :playing="false"></SlideController>
+            <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date"
+                             :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event"
+                             :enableEvenIfPaused="true" :playing="false"></SlideController>
         </div>
     </div>
 </template>
