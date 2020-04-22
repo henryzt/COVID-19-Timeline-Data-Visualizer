@@ -81,6 +81,7 @@ const messages = {
         },
         selector:{
             uk: "🇬🇧 UK Realtime",
+            us: "🇺🇸 US Realtime",
             world: "🌎 Worldwide"
         },
         compareNote: "Data is aligned by the date when confirmed cases reaches 50 in each region",
@@ -164,6 +165,7 @@ const messages = {
         },
         selector:{
             uk: "🇬🇧英国实时数据",
+            us: "🇺🇸美国实时数据",
             world: "🌎世界实时数据"
         },
         compareNote: "数据以国家确诊首次超过50例作为起点对齐",

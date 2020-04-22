@@ -252,3 +252,8 @@ export function combineWorldHighCharts(currentWorldAreaData){
         locationsData.push(entry);
     return locationsData;
 }
+
+
+export async function getUSRegionData() {
+
+}
