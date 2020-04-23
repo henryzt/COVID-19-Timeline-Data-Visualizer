@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="mContent" v-if="dataCurrent">
+        <div class="mContent" v-if="dataCurrent && shouldRender">
 <!--          header section -->
             <div class="covid_header">
                 <div>
@@ -219,6 +219,7 @@
         },
         data: () => {
             return {
+                shouldRender: true,
                 dataCurrent: null,
                 dataUk: null,
                 dataGlobal: null,
@@ -307,7 +308,8 @@
                 }
                 window.ga('send', 'event', "timezone-acquired", this.currentCountry, timezone);
             },
-            switchCountry: function (e) {
+            switchCountry: async function (e) {
+                this.shouldRender = false;
                 console.log(e);
                 this.chartData = null;
                 this.currentCountry = e;
@@ -318,7 +320,7 @@
                 } else if (e === this.countryList[1]) {
                     this.loadUkData();
                 } else if (e === this.countryList[2]) {
-                    this.loadUsData();
+                    await this.loadUsData();
                 } else {
                     this.loadCountryData(e)
                 }
@@ -423,10 +425,9 @@
             },
             forceReload: function () {
                 //force reload
-                let cache = this.dataCurrent;
-                this.dataCurrent = null;
+                this.shouldRender = false;
                 this.$nextTick(() => {
-                    this.dataCurrent = cache;
+                    this.shouldRender = true;
                 });
             },
             isWeChat: function () {

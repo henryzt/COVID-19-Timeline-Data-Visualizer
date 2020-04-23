@@ -76,7 +76,7 @@
             }
         },
         mounted(){
-            if(this.regionData.uk && this.regionData.uk[0].arr.length>1){
+            if(this.regionData.uk && this.regionData.uk[this.regionData.uk.length-1].arr.length>1){
                 this.changeTab(1)
             }else {
                 this.changeTab(0)
