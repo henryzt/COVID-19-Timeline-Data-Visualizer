@@ -60,7 +60,7 @@
             if(!window.calculatedCountryData){
                 window.calculatedCountryData = {}
             }
-            this.countryListFiltered = this.countryList.slice(2);
+            this.countryListFiltered = this.countryList.slice(3);
             this.getSeries();
         },
         watch:{

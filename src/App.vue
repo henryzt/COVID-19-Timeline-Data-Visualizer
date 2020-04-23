@@ -296,7 +296,7 @@
         },
         methods: {
             initLocation: function(timezone){
-                if(timezone.includes("Europe/London")){
+                if(timezone.includes("Europe/London") || this.isMiniApp){
                     this.currentCountry = this.countryList[1];
                     this.loadUkData();
                 }else if(timezone.includes("America")){
