@@ -197,7 +197,8 @@
         parseLocationData,
         getAllCountries,
         getCountryData,
-        getCountryHistoryData
+        getCountryHistoryData,
+        getUSRegionData
     } from "./js/locationUtils"
 
     const moment = require('moment');
@@ -277,7 +278,7 @@
                 this.barRaceData.global = getD3GlobalData(this.tableData.global);
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
-                this.currentCountry = this.countryList[0];
+                this.currentCountry = this.countryList[1];
                 this.barRaceData.hasData = true;
                 this.loadUkData();
 
@@ -298,10 +299,13 @@
                 this.chartData = null;
                 this.currentCountry = e;
                 window.ga('send', 'event', "country", "country-changed", e);
-                if (e === this.countryList[1]) {
-                    this.loadUkData()
-                } else if (e === this.countryList[0]) {
-                    this.loadCountryData("world")
+                if (e === this.countryList[0]) {
+                    this.loadCountryData("world");
+
+                } else if (e === this.countryList[1]) {
+                    this.loadUkData();
+                } else if (e === this.countryList[2]) {
+                    this.loadUsData();
                 } else {
                     this.loadCountryData(e)
                 }
@@ -324,6 +328,11 @@
                 this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format("DD/MM");
                 this.currentDate = this.endDate;
                 this.calculateDisplay(this.dataCurrent.history.length - 1)
+            },
+            loadUsData: async function (){
+                this.loadCountryData("US");
+                this.tableData.uk = await getUSRegionData();
+                this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
             },
             calculateDisplay: function (idx) {
                 let current = this.dataCurrent.history[idx];
@@ -396,7 +405,7 @@
                 this.countryList[0] = this.$t('selector.world');
                 this.countryList[1] = this.$t('selector.uk');
                 this.countryList[2] = this.$t('selector.us');
-                this.currentCountry = this.countryList[0];
+                // this.currentCountry = this.countryList[0];
                 this.forceReload()
             },
             forceReload: function () {

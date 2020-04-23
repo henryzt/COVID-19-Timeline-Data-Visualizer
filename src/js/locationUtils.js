@@ -62,7 +62,7 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
         dailyLocationJson.push(today);
     }
 
-    // console.log(dailyLocationJson);
+    console.log("uk daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
 
@@ -93,7 +93,7 @@ export function getGlobalHistoryTableData(allHistory, hideCountryName, includeCo
         }
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
-    console.log("daily location json", dailyLocationJson);
+    console.log("global daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
 
@@ -153,7 +153,7 @@ export function getCountryHistoryData(countryData) {
         historyData.shift();
     }
 
-    // console.log(historyData);
+    console.log("country history data", historyData);
     return historyData;
 }
 
@@ -255,5 +255,23 @@ export function combineWorldHighCharts(currentWorldAreaData){
 
 
 export async function getUSRegionData() {
+    const csv=require('csvtojson');
+    let usStates = await (await fetch("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")).text();
+    let statesJson = await csv().fromString(usStates);
 
+    let dateJson = {};
+    for(let entry of statesJson){
+        let dateKey = moment(entry.date).format("DD/MM");
+        if(!dateJson[dateKey]) dateJson[dateKey] = [];
+        let location = {location: entry.state, number: entry.cases, fips: entry.fips};
+        dateJson[dateKey].push(location)
+    }
+
+    let dailyLocationJson = [];
+    for(let [key, value] of Object.entries(dateJson)){
+        let dayData = {arr: value, date: key};
+        dailyLocationJson.push(dayData)
+    }
+    console.log("us daily location json", dailyLocationJson);
+    return dailyLocationJson;
 }
