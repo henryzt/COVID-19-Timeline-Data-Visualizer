@@ -251,11 +251,12 @@
             };
         },
         mounted() {
+            let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if (this.isWeChat() && this.isMiniApp) {
                 this.$i18n.locale = "zh";
             }
             // miniapp china redirect
-            if (this.isMiniApp && Intl.DateTimeFormat().resolvedOptions().timeZone == "Asia/Shanghai") {
+            if (this.isMiniApp && timeZone == "Asia/Shanghai") {
                 window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
                 window.ga('send', 'event', "china-redirected", "mini-app-tab", "");
                 return;
@@ -278,9 +279,8 @@
                 this.barRaceData.global = getD3GlobalData(this.tableData.global);
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
-                this.currentCountry = this.countryList[1];
                 this.barRaceData.hasData = true;
-                this.loadUkData();
+                this.initLocation(timeZone);
 
                 this.getNavScrollAnchor();
                 let performanceTime = Math.round(performance.now() - performanceTimeStart);
@@ -294,6 +294,19 @@
 
         },
         methods: {
+            initLocation: function(timezone){
+                if(timezone.includes("Europe/London")){
+                    this.currentCountry = this.countryList[1];
+                    this.loadUkData();
+                }else if(timezone.includes("America")){
+                    this.currentCountry = this.countryList[2];
+                    this.loadUsData();
+                }else{
+                    this.currentCountry = this.countryList[0];
+                    this.loadCountryData("world");
+                }
+                window.ga('send', 'event', "timezone-acquired", this.currentCountry, timezone);
+            },
             switchCountry: function (e) {
                 console.log(e);
                 this.chartData = null;
