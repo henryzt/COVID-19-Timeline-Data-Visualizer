@@ -1,12 +1,16 @@
 # COVID-19 Data Visualizer & Interactive Timeline
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/91994753-67d0-4843-a818-95839ac7023c/deploy-status)](https://app.netlify.com/sites/covid19-realtime/deploys)
 [![Build Status](https://travis-ci.com/henryz00/COVID-19-Timeline-Data-Visualizer.svg?branch=master)](https://travis-ci.com/henryz00/COVID-19-Timeline-Data-Visualizer)
 
+
 Coronavirus UK and world data visualiser with interactive timeline using vue and bootstrap
+
+**[covid19track.site](https://covid19track.site/)**
+
 ![img1](screenshots/1.png)
 
-#### [covid19.uclcssa.cn](https://covid19.uclcssa.cn)
-
+Running on [covid19track.site](https://covid19track.site/) and [covid19.uclcssa.cn](https://covid19.uclcssa.cn).
 ## Screenshots
 Charts and Data
 ![img1](screenshots/2.png)

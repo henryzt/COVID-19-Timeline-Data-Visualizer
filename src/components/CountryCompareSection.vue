@@ -66,9 +66,11 @@
         watch:{
           selectedCountries:function () {
               this.getSeries();
+              window.ga('send', 'event', "compare", "countries-loaded", this.selectedCountries.toString());
           },
           dataType:function () {
               this.getSeries();
+              window.ga('send', 'event', "compare", "type-changed", this.dataType);
           }
         },
         methods:{
@@ -100,7 +102,6 @@
                 this.dates = dateArr.map((d) => {
                     return "D" + d;
                 });
-                window.ga('send', 'event', "compare", "countries-loaded", this.selectedCountries);
                 this.series = data;
             },
         },
