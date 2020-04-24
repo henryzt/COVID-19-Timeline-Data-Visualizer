@@ -1,22 +1,7 @@
 <template>
     <div v-if="series && dates" class="mBlock" style="color: grey">
 
-        <div class="btn-group-wrap">
-            <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-                <button type="button" class="btn btn-secondary" :class="{active: dataType==='confirmed'}" @click="dataType='confirmed'">
-                    {{ $t('totalConfirmed') }}
-                </button>
-                <button type="button" class="btn btn-secondary" :class="{active: dataType==='active'}" @click=" dataType='active'">
-                    {{ $t('active') }}
-                </button>
-                <button type="button" class="btn btn-secondary" :class="{active: dataType==='death'}" @click=" dataType='death'">
-                    {{ $t('totalDeaths') }}
-                </button>
-                <button type="button" class="btn btn-secondary" :class="{active: dataType==='cured'}" @click="dataType='cured'">
-                    {{ $t('totalCured') }}
-                </button>
-            </div>
-        </div>
+        <DataSwitch :data-type="dataType" @typeChange="dataType = $event"></DataSwitch>
 
         <div style="padding-bottom: 10px;font-size: 12px;">*{{$t("compareNote")}}</div>
 
@@ -37,6 +22,7 @@
 <script>
     import VueApexCharts from "vue-apexcharts";
     import vSelect from 'vue-select'
+    import DataSwitch from './DataSwitch';
     import {
         getCountryCompareData
     } from "../js/locationUtils"
@@ -45,7 +31,8 @@
         props: ["globalData", "countryList"],
         components:{
             VueApexCharts,
-            vSelect
+            vSelect,
+            DataSwitch
         },
         data: function () {
             return {
@@ -81,14 +68,18 @@
                     if(window.calculatedCountryData[country]){
                         countryData = window.calculatedCountryData[country]
                     }else{
-                        countryData = getCountryCompareData(this.globalData, country);
+                        countryData = getCountryCompareData(this.globalData, country, 50);
                         window.calculatedCountryData[country] = countryData
                     }
                     return {
                         name: country,
                         data: countryData?.map(a => {
-                            if(this.dataType==="active"){
+                            if(this.dataType==="active") {
                                 return a.confirmed - a.death - a.cured;
+                            }else if(this.dataType==="dRate"){
+                                return (a.death / a.confirmed).toPrecision(2);
+                            }else if(this.dataType==="cRate"){
+                                return (a.cured / a.confirmed).toPrecision(2);
                             }else {
                                 return a[this.dataType];
                             }
@@ -136,6 +127,10 @@
                     labels: {
                         rotate: -10
                     }
+                },
+                yaxis: {
+                    logarithmic: false,
+                    decimalsInFloat: 2
                 }
             }
         }

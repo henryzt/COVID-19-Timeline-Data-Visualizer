@@ -270,6 +270,7 @@
                 let data = await res.json();
                 let resTime = Math.round(performance.now() - performanceTimeStart);
                 this.dataUk = data.uk;
+                this.dataUs = data.us;
                 this.dataGlobal = data.global;
                 console.log(data);
                 this.lastUpdated = `Global data updated ${moment(data.global.confirmed.last_updated).fromNow()},
@@ -346,7 +347,7 @@
             },
             loadUsData: async function (){
                 this.loadCountryData("US");
-                this.tableData.uk = await getUSRegionData();
+                this.tableData.uk = await getUSRegionData(this.dataUs);
                 this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
             },
             calculateDisplay: function (idx) {

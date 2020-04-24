@@ -181,9 +181,9 @@ export function getCountryHistoryData(countryData) {
     return historyData;
 }
 
-export function getCountryCompareData(globalData, countryName) {
+export function getCountryCompareData(globalData, countryName, minCases) {
     let historyData = getCountryHistoryData(getCountryData(globalData, countryName));
-    while(historyData[0] && historyData[0].confirmed<=50){
+    while(historyData[0] && historyData[0].confirmed<=minCases){
         historyData.shift();
     }
     return historyData;
@@ -256,9 +256,8 @@ export function combineWorldHighCharts(currentWorldAreaData){
 }
 
 
-export async function getUSRegionData() {
+export async function getUSRegionData(usStates) {
     const csv=require('csvtojson');
-    let usStates = await (await fetch("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")).text();
     let statesJson = await csv().fromString(usStates);
 
     let dateJson = {};
