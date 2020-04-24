@@ -1,39 +1,18 @@
 <template>
     <div class="mBlock" v-if="currentData">
         <div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-            <div class="btn-group-wrap">
-                <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-                    <button type="button" class="btn btn-secondary" :class="{active: sort===1}" @click="sortByAlphabet()">
-                        {{$t('table.byRegion')}}
-                    </button>
-                    <button type="button" class="btn btn-secondary" :class="{active: sort===2}" @click="sortByNumber()">
-                        {{$t('table.byCases')}}
-                    </button>
-                    <button type="button" class="btn btn-secondary" :class="{active: sort===3}" @click="sortByIncreaseNumber()">
-                        {{$t('table.byChanges')}}
-                    </button>
-                </div>
-            </div>
+            <div></div>
 
-            <div class="btn-group-wrap" v-if="regionData.uk">
-                <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-                    <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
-                        {{$t('barRace.global')}}
-                    </button>
-                    <button type="button" class="btn btn-secondary" :class="{active: tab===1}" @click="changeTab(1)">
-                        {{$t('barRace.local')}}
-                    </button>
-                </div>
-            </div>
+            <CountrySwitch v-if="regionData.uk" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
         <div>
             <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
                 <thead>
                 <tr>
-                    <th scope="col">{{$t('table.region')}}</th>
-                    <th scope="col" nowrap>{{$t('table.cases')}}</th>
-                    <th scope="col" nowrap>{{$t('table.changes')}}</th>
+                    <th scope="col" :class="{active: sort===1}" @click="sortByAlphabet()">{{$t('table.region')}}<SortIcon/></th>
+                    <th scope="col" :class="{active: sort===2}" @click="sortByNumber()" nowrap>{{$t('table.byCases')}}<SortIcon/></th>
+                    <th scope="col" :class="{active: sort===3}" @click="sortByIncreaseNumber()" nowrap>{{$t('table.changes')}}<SortIcon/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,16 +38,23 @@
     // eslint-disable-next-line no-unused-vars
     import {filterRegionDataHasData} from "../js/locationUtils"
     import SlideController from './SlideController'
+    import SortIcon from 'mdi-vue/SortAscending'
+    import DataSwitch from './DataSwitch';
+    import CountrySwitch from './CountrySwitch';
     export default {
         name: "RegionTable",
         props: ["regionData","mainDate"],
         components: {
-            SlideController
+            SlideController,
+            SortIcon,
+            // eslint-disable-next-line vue/no-unused-components
+            DataSwitch,
+            CountrySwitch
         },
         data: function (){
             return {
                 tableData: [],
-                sort: 1,
+                sort: 2,
                 limit: 10,
                 date: null,
                 currentData: null,
@@ -184,5 +170,14 @@
         border-top: solid 1px whitesmoke;
         background:white;padding: 0 10px;
         padding-bottom: 50px;
+    }
+    .mdi-sort-ascending{
+        opacity: 0.4;
+        padding-left: 5px;
+        cursor: pointer;
+    }
+    .active .mdi-sort-ascending{
+        color: #5098d6;
+        opacity: 1;
     }
 </style>
