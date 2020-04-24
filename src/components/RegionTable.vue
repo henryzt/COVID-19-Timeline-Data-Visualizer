@@ -1,8 +1,8 @@
 <template>
     <div class="mBlock" v-if="currentData">
-        <div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-            <div></div>
 
+        <div class="switch-header">
+            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)"></DataSwitch>
             <CountrySwitch v-if="regionData.uk" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
@@ -47,7 +47,6 @@
         components: {
             SlideController,
             SortIcon,
-            // eslint-disable-next-line vue/no-unused-components
             DataSwitch,
             CountrySwitch
         },

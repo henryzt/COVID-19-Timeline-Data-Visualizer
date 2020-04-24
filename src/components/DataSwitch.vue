@@ -1,24 +1,14 @@
 <template>
-    <div class="btn-group-wrap">
-        <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-            <button type="button" class="btn btn-secondary" :class="{active: dataType==='confirmed'}" @click=" $emit('typeChange','confirmed') ">
-                {{ $t('totalConfirmed') }}
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: dataType==='active'}" @click=" $emit('typeChange','active') ">
-                {{ $t('active') }}
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: dataType==='death'}" @click=" $emit('typeChange','death') ">
-                {{ $t('totalDeaths') }}
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: dataType==='dRate'}" @click=" $emit('typeChange','dRate') ">
-                %
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: dataType==='cured'}" @click=" $emit('typeChange','cured') ">
-                {{ $t('totalCured') }}
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: dataType==='cRate'}" @click=" $emit('typeChange','cRate') ">
-                %
-            </button>
+
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ $t('dataSwitch.'+dataType) }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+            <div v-for="type of options" :key="type">
+                <div v-if="type==='#'" class="dropdown-divider"></div>
+                <button v-else class="dropdown-item" type="button" :class="{active: dataType===type}" @click=" $emit('typeChange',type) ">{{ $t('dataSwitch.'+type) }}</button>
+            </div>
         </div>
     </div>
 </template>
@@ -26,10 +16,17 @@
 <script>
     export default {
         name: "DataSwitch",
-        props: ["dataType"]
+        props: ["dataType"],
+        data: function () {
+            return {
+                options: ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"]
+            }
+        }
     }
 </script>
 
 <style scoped>
-
+    .dropdown-menu{
+        box-shadow: 0px 10px 20px -2px rgba(0, 0, 0, 0.1);
+    }
 </style>

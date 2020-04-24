@@ -85,7 +85,15 @@ const messages = {
             world: "🌎 Worldwide"
         },
         compareNote: "Data is aligned by the date when confirmed cases reaches 50 in each region",
-        compareSelect: "Select any countries below to add for comparision"
+        compareSelect: "Select any countries below to add for comparision",
+        dataSwitch:{
+            confirmed: "Confirmed Cases",
+            active: "Active Cases",
+            death: "Death Toll",
+            dRate: "Death Rate",
+            cured: "Recovered Cases",
+            cRate: "Recover Rate"
+        }
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",

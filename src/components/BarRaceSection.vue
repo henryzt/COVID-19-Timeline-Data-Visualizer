@@ -1,13 +1,10 @@
 <template>
     <div class="mBlock">
-        <div class="btn-group btn-group-sm" role="group" aria-label="date range" style="position: absolute;right: 20px;" v-if="barRaceData.ukRegions">
-            <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
-                {{$t('barRace.global')}}
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: tab===1}" @click="changeTab(1)">
-                {{$t('barRace.local')}}
-            </button>
+        <div class="switch-header">
+            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)"></DataSwitch>
+            <CountrySwitch v-if="barRaceData.ukRegions" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
+
         <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" :title="$t('barRace.globalTitle')" :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
         <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.localTitle')" :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk"  id="1"></BarRace>
 
@@ -18,10 +15,14 @@
 
 <script>
     import BarRace from "./BarRace.vue";
+    import DataSwitch from './DataSwitch';
+    import CountrySwitch from './CountrySwitch';
     export default {
         name: "BarRaceSection",
         components:{
-            BarRace
+            BarRace,
+            DataSwitch,
+            CountrySwitch
         },
         props: {
             barRaceData: Object,

@@ -1,13 +1,10 @@
 <template>
     <div class="mBlock" v-if="renderComponent">
-        <div class="btn-group btn-group-sm" role="group" aria-label="date range" style="position: absolute;right: 20px;z-index: 50;" v-if="isUK">
-            <button type="button" class="btn btn-secondary" :class="{active: tab===0}" @click="changeTab(0)">
-                {{$t('barRace.global')}}
-            </button>
-            <button type="button" class="btn btn-secondary" :class="{active: tab===1}" @click="changeTab(1)">
-                {{$t('barRace.local')}}
-            </button>
+        <div class="switch-header">
+            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)"></DataSwitch>
+            <CountrySwitch v-if="isUK" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
+
         <Map :locationsData="locationsData" :countryName="tab === 1 ? countryName : 'world'"></Map>
         <div style="text-align: left;opacity: 0.3;">*Data is incomplete, source: GOV.UK, isjeffcom and JHU.</div>
 
@@ -19,6 +16,8 @@
 
 <script>
     import Map from "./Map.vue";
+    import DataSwitch from './DataSwitch';
+    import CountrySwitch from './CountrySwitch';
     import {
         combineUKHighCharts,
         combineWorldHighCharts
@@ -28,7 +27,9 @@
         name: "MapSection",
         components:{
             SlideController,
-            Map
+            Map,
+            DataSwitch,
+            CountrySwitch
         },
         props: {
             tableData: Object,
