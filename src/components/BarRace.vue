@@ -66,7 +66,7 @@
             let width = this.width;
 
             const margin = {
-                top: 80,
+                top: 30,
                 right: 0,
                 bottom: 5,
                 left: 0
@@ -74,22 +74,22 @@
 
             let barPadding = (height-(margin.bottom+margin.top))/(top_n*5);
 
-            let title = svg.append('text')
-                .attr('class', 'title')
-                .attr('y', 24)
-                .html(this.title);
-
-            let subTitle = svg.append("text")
-                .attr("class", "subTitle")
-                .attr("y", 55)
-                .html(this.subtitle);
+            // let title = svg.append('text')
+            //     .attr('class', 'title')
+            //     .attr('y', 24)
+            //     .html(this.title);
+            //
+            // let subTitle = svg.append("text")
+            //     .attr("class", "subTitle")
+            //     .attr("y", 55)
+            //     .html(this.subtitle);
 
             let caption = svg.append('text')
                 .attr('class', 'caption')
                 .attr('x', width)
                 .attr('y', height-5)
                 .style('text-anchor', 'end')
-                .html(this.source);
+                .html("Source - JHU | ©covid19track.site");
 
             this.day = this.raceData[0].day;
 
@@ -98,7 +98,7 @@
             function loadData(data) {
                 //if (error) throw error;
 
-                // console.log(data);
+                console.log(data);
 
                 data.forEach(d => {
                     d.value = +d.value,
@@ -107,7 +107,7 @@
                         d.colour = d3.rgb(0, 195, 255)
                 });
 
-                // console.log(data);
+                console.log(data);
 
                 let daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
                     .sort((a,b) => b.value - a.value)
@@ -115,7 +115,7 @@
 
                 daySlice.forEach((d,i) => d.rank = i);
 
-                // console.log('daySlice: ', daySlice)
+                console.log('daySlice: ', daySlice)
 
 
                 const getClassName = (d)=>"bar_"+d.name.replace(/[^\w]/g, "_");
@@ -186,17 +186,31 @@
                 let dayText = svg.append('text')
                     .attr('class', 'dayText')
                     .attr('x', width-margin.right)
-                    .attr('y', height-25)
+                    .attr('y', height-60)
                     .style('text-anchor', 'end')
                     .html(that.day);
                     // .call(halo, 10);
+
+                let totalText = svg.append('text')
+                    .attr('class', 'totalText')
+                    .attr('x', width-margin.right)
+                    .attr('y', height-30)
+                    .style('text-anchor', 'end')
+                    .html(that.$t('total') + "- 0");
+
+                let total = 0;
 
                 let ticker = d3.interval(e => {
                     if(!that.playing) return;
 
                     daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
-                        .sort((a,b) => b.value - a.value)
-                        .slice(0,top_n);
+                        .sort((a,b) => b.value - a.value);
+
+                    total = daySlice.reduce((accumulator, currentValue) => accumulator + currentValue.value, 0);
+
+                    totalText.text(d => that.$t('total') + " - " + d3.format(',.0f')(total));
+
+                    daySlice = daySlice.slice(0,top_n);
 
                     daySlice.forEach((d,i) => d.rank = i);
 
@@ -359,6 +373,11 @@
     .bar_race text.subTitle{
         font-weight: 500;
         fill: #777777;
+    }
+    .bar_race text.totalText{
+        font-size: 23px;
+        font-weight: bold;
+        fill: #3d3d3d;
     }
     .bar_race text.caption{
         font-weight: 400;

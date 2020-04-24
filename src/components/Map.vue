@@ -23,7 +23,8 @@
                             height: 500
                         },
                         title: {
-                            text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
+                            text: ""
+                            // text: this.countryName[0].toUpperCase() + this.countryName.slice(1) + " Confirmed Cases"
                         },
                         mapNavigation: {
                             enabled: true,

@@ -35,8 +35,6 @@
 </template>
 
 <script>
-    // eslint-disable-next-line no-unused-vars
-    import {filterRegionDataHasData} from "../js/locationUtils"
     import SlideController from './SlideController'
     import SortIcon from 'mdi-vue/SortAscending'
     import DataSwitch from './DataSwitch';

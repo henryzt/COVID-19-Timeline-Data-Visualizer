@@ -93,7 +93,8 @@ const messages = {
             dRate: "Death Rate",
             cured: "Recovered Cases",
             cRate: "Recover Rate"
-        }
+        },
+        total: "Total"
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
