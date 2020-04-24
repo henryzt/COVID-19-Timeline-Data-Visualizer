@@ -1,8 +1,9 @@
 <template>
 
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ $t('dataSwitch.'+dataType) }}
+        <button class="btn btn-secondary dropdown-toggle btn-sm" :class="{disabled: disabled}"
+                type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ disabled ? $t('dataSwitch.number') : $t('dataSwitch.'+dataType) }}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu">
             <div v-for="type of options" :key="type">
@@ -16,7 +17,7 @@
 <script>
     export default {
         name: "DataSwitch",
-        props: ["dataType"],
+        props: ["dataType", "disabled"],
         data: function () {
             return {
                 options: ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"]

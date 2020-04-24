@@ -1,8 +1,8 @@
 <template>
     <div class="mBlock" v-if="renderComponent">
         <div class="switch-header">
-            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)"></DataSwitch>
-            <CountrySwitch v-if="isUK" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
+            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)" :disabled="tab === 1 && isUk"></DataSwitch>
+            <CountrySwitch v-if="isUk" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
         <Map :locationsData="locationsData" :countryName="tab === 1 ? countryName : 'world'"></Map>
@@ -41,14 +41,15 @@
                 currentData: null,
                 tab: 1,
                 locationsData: null,
-                isUK: true,
+                isUk: true,
                 date: null,
-                renderComponent: true
+                renderComponent: true,
+                dataType: "confirmed"
             }
         },
         mounted() {
-            this.isUK = this.countryName==="UK";
-            this.changeTab(this.isUK ? 1 : 0);
+            this.isUk = this.countryName==="UK";
+            this.changeTab(this.isUk ? 1 : 0);
         },
         watch: {
             mainDate: function () {
@@ -64,12 +65,16 @@
             },
             changeTab(tab){
                 this.tab = tab;
-                if(this.isUK && this.tab === 1){
-                    this.currentData = this.tableData.uk;
+                if(this.isUk && this.tab === 1){
+                    this.currentData = this.tableData.country;
                 }else {
                     this.currentData = this.tableData.global;
                 }
                 this.date = this.currentData[this.currentData.length-1].date;
+                this.loadMap(true)
+            },
+            changeDataType(type){
+                this.dataType = type;
                 this.loadMap(true)
             },
             async loadMap(rerender){
@@ -77,7 +82,7 @@
                  if(this.tab === 1) {
                      this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
                  }else{
-                     this.locationsData = combineWorldHighCharts(this.currentData[idx].arr);
+                     this.locationsData = combineWorldHighCharts(this.currentData[idx].arr, this.dataType);
                  }
                  if(rerender)
                     this.forceRerender()

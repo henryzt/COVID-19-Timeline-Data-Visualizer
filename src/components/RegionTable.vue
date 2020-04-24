@@ -2,8 +2,8 @@
     <div class="mBlock" v-if="currentData">
 
         <div class="switch-header">
-            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)"></DataSwitch>
-            <CountrySwitch v-if="regionData.uk" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
+            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)" :disabled="tab === 1 && isUk"></DataSwitch>
+            <CountrySwitch v-if="regionData.country" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
         <div>
@@ -18,7 +18,7 @@
                 <tbody>
                 <tr class="singleRegionData" v-for="singleRegion in tableData.slice(0, limit)" :key="singleRegion.id">
                     <td>{{ singleRegion.location }}</td>
-                    <td>{{ singleRegion.number }}</td>
+                    <td>{{ singleRegion[dataType] }}</td>
                     <td>{{ singleRegion.change }}</td>
                 </tr>
                 <tr></tr>
@@ -41,7 +41,7 @@
     import CountrySwitch from './CountrySwitch';
     export default {
         name: "RegionTable",
-        props: ["regionData","mainDate"],
+        props: ["regionData","mainDate","isUk"],
         components: {
             SlideController,
             SortIcon,
@@ -55,11 +55,12 @@
                 limit: 10,
                 date: null,
                 currentData: null,
-                tab: 1
+                tab: 1,
+                dataType: "confirmed"
             }
         },
         mounted(){
-            if(this.regionData.uk && this.regionData.uk[this.regionData.uk.length-1].arr.length>1){
+            if(this.regionData.country && this.regionData.country[this.regionData.country.length-1].arr.length>1){
                 this.changeTab(1)
             }else {
                 this.changeTab(0)
@@ -73,6 +74,11 @@
             }
         },
         methods:{
+            changeDataType(type){
+                this.dataType = type;
+                this.changeTab(this.tab)
+            },
+
             getCurrentTableData: function(current){
                 this.date = current[current.length-1].date;
                 this.currentData = current;
@@ -87,9 +93,11 @@
 
             changeTab(tab){
                 if(tab===0){
+                    if(this.dataType === "number") this.dataType = "confirmed";
                     this.getCurrentTableData(this.regionData.global)
                 }else {
-                    this.getCurrentTableData(this.regionData.uk)
+                    if(this.isUk) this.dataType = "number";
+                    this.getCurrentTableData(this.regionData.country)
                 }
                 this.tab = tab;
             },
@@ -103,7 +111,7 @@
                 {
                     let lastData = last?.find(element => element.location == region.location);
                     region.id = id++;
-                    let change = lastData? region.number - lastData.number : 0;
+                    let change = lastData? region[this.dataType] - lastData[this.dataType] : 0;
                     region.change = (change>0?"+":"") + change
                 }
                 this.tableData = current;
@@ -137,7 +145,7 @@
             },
             sortByNumber:function () {
                 this.sort = 2;
-                this.tableData = [...this.tableData].sort((a, b) => b.number - a.number);
+                this.tableData = [...this.tableData].sort((a, b) => b[this.dataType] - a[this.dataType]);
             },
             sortByIncreaseNumber:function () {
                 this.sort = 3;

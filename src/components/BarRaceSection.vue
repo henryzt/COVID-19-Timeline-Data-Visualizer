@@ -1,12 +1,12 @@
 <template>
-    <div class="mBlock">
+    <div class="mBlock" v-if="renderComponent">
         <div class="switch-header">
-            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)"></DataSwitch>
-            <CountrySwitch v-if="barRaceData.ukRegions" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
+            <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)" :disabled="tab === 1 && isUk"></DataSwitch>
+            <CountrySwitch v-if="country" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
-        <BarRace v-if="barRaceData.global" v-show="tab===0" :raceData="barRaceData.global" :title="$t('barRace.globalTitle')" :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
-        <BarRace v-if="barRaceData.ukRegions" v-show="tab===1" :raceData="barRaceData.ukRegions" :title="$t('barRace.localTitle')" :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk"  id="1"></BarRace>
+        <BarRace v-if="global" v-show="tab===0" :raceData="global" :title="$t('barRace.globalTitle')" :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
+        <BarRace v-if="country" v-show="tab===1" :raceData="country" :title="$t('barRace.localTitle')" :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk"  id="1"></BarRace>
 
 
     </div>
@@ -17,6 +17,8 @@
     import BarRace from "./BarRace.vue";
     import DataSwitch from './DataSwitch';
     import CountrySwitch from './CountrySwitch';
+    import { getD3Data } from "../js/locationUtils"
+
     export default {
         name: "BarRaceSection",
         components:{
@@ -25,19 +27,37 @@
             CountrySwitch
         },
         props: {
-            barRaceData: Object,
+            tableData: Object,
             isUk: Boolean
         },
         data: function () {
             return {
+                renderComponent:true,
                 tab:0,
-                dataType: "confirmed"
+                dataType: "confirmed",
+                global: null,
+                country: null
             }
         },
         methods:{
             changeTab(tab){
                 this.tab = tab;
+            },
+            changeDataType(type){
+                this.dataType = type;
+                this.global = getD3Data(this.tableData.global, type);
+                this.country = getD3Data(this.tableData.country, this.isUk?"number":type);
+                this.forceRerender()
+            },
+            forceRerender() {
+                this.renderComponent = false;
+                this.$nextTick(() => {
+                    this.renderComponent = true;
+                });
             }
+        },
+        mounted() {
+            this.changeDataType(this.dataType)
         }
     }
 </script>

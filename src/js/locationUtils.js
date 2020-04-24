@@ -20,7 +20,7 @@ export function parseLocationData(areaData) {
     return locationJSON;
 }
 
-export function getD3Data(dailyLocationJson) {
+export function getD3Data(dailyLocationJson, dataTypeKey) {
     // dailyLocationJson: { arr: [{location: String, number：Int},...], date: String(DD/MM)}
 
     let locationData = [];
@@ -29,12 +29,12 @@ export function getD3Data(dailyLocationJson) {
         for(let location of dailyData.arr){
             let obj = {};
             obj.name = location.location;
-            obj.value = location.number;
+            obj.value = location[dataTypeKey];
             obj.day = dailyData.date;
             obj.lastValue = 0;
             if(lastDailyData){
                 let lastLocationData = lastDailyData.arr.find(obj => {return obj.location === location.location});
-                obj.lastValue = lastLocationData && lastLocationData.number ? lastLocationData.number : 0;
+                obj.lastValue = lastLocationData && lastLocationData[dataTypeKey] ? lastLocationData[dataTypeKey] : 0;
             }
             locationData.push(obj)
         }
@@ -66,39 +66,50 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
     return dailyLocationJson;
 }
 
-function combineProvinces(locations) {
+function combineAllCountryData(globalData, combineProvince) {
     let filteredLocations = [];
     let addedCountryCodes = {};
-    for(let region of locations){
-        let objArr = Object.entries(region.history);
-        if(addedCountryCodes[region.country_code]){
+    for(let region of globalData.confirmed.locations){
+        let confirmedArr = Object.entries(region.history);
+        let query = (ele) => {return ele.country_code===region.country_code && ele.province===region.province};
+        let deathArr = globalData.deaths.locations.find(query)?.history;
+        let curedArr = globalData.recovered.locations.find(query)?.history;
+        if(combineProvince && addedCountryCodes[region.country_code]){
             let main = filteredLocations[filteredLocations.length-1];
-            for(let [key, value] of objArr){
-                main.history[key] = main.history[key] + value
+            for(let [key, value] of confirmedArr){
+                main.confirmed[key] = main.confirmed[key] + value;
+                main.death[key] = main.death[key] + deathArr[key];
+                main.cured[key] = main.cured[key] + (curedArr?curedArr[key]:0);
             }
         }else{
             addedCountryCodes[region.country_code] = true;
-            let main = {country: region.country, country_code: region.country_code, history: {}};
-            for(let [key, value] of objArr){
-                main.history[key] = value
+            let main = {country: region.country, country_code: region.country_code, confirmed: {}, death: {}, cured: {}};
+            if(!combineProvince)
+                main.province = region.province;
+            for(let [key, value] of confirmedArr){
+                main.confirmed[key] = value;
+                main.death[key] = deathArr[key];
+                main.cured[key] = (curedArr?curedArr[key]:0);
             }
             filteredLocations.push(main)
         }
     }
-    console.log("combine results", filteredLocations);
+    console.log("combined results", filteredLocations);
     return filteredLocations;
 }
 
-export function getGlobalHistoryTableData(allHistory, hideCountryName, combineProvince) {
-    let locations = combineProvince ? combineProvinces(allHistory.locations) : allHistory.locations;
+export function getGlobalHistoryTableData(globalData, hideCountryName, combineProvince) {
+    let locations = combineAllCountryData(globalData, combineProvince);
     let dateMap = {};
     for(let dayData of locations){
-        let objArr = Object.entries(dayData.history);
-        for(let i = 0; i<objArr.length;i++){
-            let date =  moment(objArr[i][0]).format("DD/MM");
-            let value = objArr[i][1];
+        let confirmedArr = Object.entries(dayData.confirmed);
+        for(let [key, value] of confirmedArr){
+            let date =  moment(key).format("DD/MM");
             let name = hideCountryName && dayData["province"]? dayData["province"] : (dayData["country"] +(dayData["province"]?(" - "+ dayData["province"]):""));
-            let location = combineProvince ?  {location: name, country_code: dayData["country_code"], country: dayData["country"], number: value} : {location: name, number: value};
+            let location = combineProvince ?  {location: name, country_code: dayData["country_code"], country: dayData["country"]} : {location: name};
+            location.confirmed = value;
+            location.death = dayData.death[key];
+            location.cured = dayData.cured[key];
             dateMap[date] = dateMap[date]? dateMap[date]: [];
             dateMap[date].push(location)
         }
@@ -106,7 +117,7 @@ export function getGlobalHistoryTableData(allHistory, hideCountryName, combinePr
     // console.log(dateMap);
     let dailyLocationJson = [];
     let checkAllZero = true;
-    let allZeroChecker = (total, num) => {return total + num.number};
+    let allZeroChecker = (total, num) => {return total + num.confirmed};
     for(let entry of Object.entries(dateMap)){
         if(checkAllZero) {
             if (entry[1].reduce(allZeroChecker, 0) === 0) {
@@ -119,14 +130,6 @@ export function getGlobalHistoryTableData(allHistory, hideCountryName, combinePr
     }
     console.log("global daily location json", dailyLocationJson);
     return dailyLocationJson;
-}
-
-export function getNHSRegionD3Data(historyTableData) {
-    return getD3Data(historyTableData);
-}
-
-export function getD3GlobalData(historyTableData) {
-    return getD3Data(historyTableData);
 }
 
 export function getAllCountries(locations) {
@@ -149,7 +152,7 @@ export function getCountryData(globalData, countryName) {
 export function getCountryHistoryData(countryData) {
 
     let historyKeys = Object.keys(countryData.confirmed.locations[0].history);
-    let historyData = []
+    let historyData = [];
     //create empty history data
     for(let dateKey of historyKeys){
         let entry = {
@@ -218,7 +221,7 @@ export function combineUKHighCharts(currentUkAreaData){
 }
 
 import { worldmapData } from "./worldmap";
-export function combineWorldHighCharts(currentWorldAreaData){
+export function combineWorldHighCharts(currentWorldAreaData, dataTypeKey){
     let codeMap = new Map();
     let nameMap = new Map();
     let allMap = new Map();
@@ -243,9 +246,9 @@ export function combineWorldHighCharts(currentWorldAreaData){
                 }
                 let current_key = codeMap.get(area.country_code);
                 if (allMap.has(current_key))
-                    allMap.set(current_key, area.number + allMap.get(current_key));
+                    allMap.set(current_key, area[dataTypeKey] + allMap.get(current_key));
                 else
-                    allMap.set(current_key, area.number);
+                    allMap.set(current_key, area[dataTypeKey]);
         }
     }
 

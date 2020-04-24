@@ -87,6 +87,7 @@ const messages = {
         compareNote: "Data is aligned by the date when confirmed cases reaches 50 in each region",
         compareSelect: "Select any countries below to add for comparision",
         dataSwitch:{
+            number: "Confirmed Cases",
             confirmed: "Confirmed Cases",
             active: "Active Cases",
             death: "Death Toll",
@@ -182,6 +183,7 @@ const messages = {
         compareNote: "数据以国家确诊首次超过50例作为起点对齐",
         compareSelect: "从下列输入框可选择其他任何国家进行对比",
         dataSwitch:{
+            number: "累计确诊",
             confirmed: "累计确诊",
             active: "现存确诊",
             death: "累计死亡",

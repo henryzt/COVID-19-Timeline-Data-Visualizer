@@ -66,7 +66,7 @@
 <!--               animations -->
                 <div class="mSection" id="animation">
                     <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
-                    <BarRaceSection v-if="barRaceData.hasData" :bar-race-data="barRaceData"></BarRaceSection>
+                    <BarRaceSection v-if="tableData.hasData" :table-data="tableData" :is-uk="dataCurrent.isUk"></BarRaceSection>
                     <div class="title">{{ $t('subtitles.ratio') }}</div>
                     <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
                     <div class="title">{{ $t('subtitles.countryCompare') }}</div>
@@ -80,7 +80,7 @@
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
                     <br>
                     <div class="title">{{ $t('subtitles.regionList') }}</div>
-                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate"></RegionTable>
+                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk"></RegionTable>
                 </div>
 
             </div>
@@ -190,8 +190,6 @@
     import vSelect from 'vue-select'
     import 'vue-select/dist/vue-select.css';
     import {
-        getNHSRegionD3Data,
-        getD3GlobalData,
         getRegionHistoryTableData,
         getGlobalHistoryTableData,
         parseLocationData,
@@ -237,9 +235,6 @@
                     cured: 0,
                     curedChange: 0
                 },
-                barRaceData: {
-                    hasData: false
-                },
                 tableData: {
                     hasData: false
                 },
@@ -277,11 +272,9 @@
                           UK data updated ${moment(data.uk.now[0].ts).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
                           Data might not reflect the real number, and might be delayed.`;
                 //global data
-                this.tableData.global = getGlobalHistoryTableData(this.dataGlobal.confirmed, false, true);
-                this.barRaceData.global = getD3GlobalData(this.tableData.global);
+                this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
-                this.barRaceData.hasData = true;
                 this.initLocation(timeZone);
 
                 this.getNavScrollAnchor();
@@ -335,8 +328,7 @@
                 this.dataCurrent.isUk = false;
                 //history data
                 //console.log("data loaded", countryData);
-                this.tableData.uk = countryName === "world" ? null : getGlobalHistoryTableData(countryData.confirmed, true);
-                this.barRaceData.ukRegions = countryName === "world" ? null : getNHSRegionD3Data(this.tableData.uk);
+                this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
                 this.tableData.hasData = true;
                 this.dataCurrent.history = getCountryHistoryData(countryData);
                 console.log("country loaded", this.dataCurrent);
@@ -347,8 +339,7 @@
             },
             loadUsData: async function (){
                 this.loadCountryData("US");
-                this.tableData.uk = await getUSRegionData(this.dataUs);
-                this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
+                this.tableData.country = await getUSRegionData(this.dataUs);
             },
             calculateDisplay: function (idx) {
                 let current = this.dataCurrent.history[idx];
@@ -373,8 +364,7 @@
                 //history data
                 let todayData = this.dataUk.history[this.dataUk.history.length - 1];
                 let yesterData = this.dataUk.history[this.dataUk.history.length - 2];
-                this.tableData.uk = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
-                this.barRaceData.ukRegions = getNHSRegionD3Data(this.tableData.uk);
+                this.tableData.country = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
                 console.log(currentUkAreaData);
 
                 this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
