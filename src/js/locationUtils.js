@@ -68,16 +68,16 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
 
 function combineProvinces(locations) {
     let filteredLocations = [];
-    let currentCountryCode = "";
+    let addedCountryCodes = {};
     for(let region of locations){
         let objArr = Object.entries(region.history);
-        if(region.country_code === currentCountryCode){
+        if(addedCountryCodes[region.country_code]){
             let main = filteredLocations[filteredLocations.length-1];
             for(let [key, value] of objArr){
                 main.history[key] = main.history[key] + value
             }
         }else{
-            currentCountryCode = region.country_code;
+            addedCountryCodes[region.country_code] = true;
             let main = {country: region.country, country_code: region.country_code, history: {}};
             for(let [key, value] of objArr){
                 main.history[key] = value
@@ -227,14 +227,13 @@ export function combineWorldHighCharts(currentWorldAreaData){
         nameMap.set(region.properties.name, region.properties["hc-key"]);
         codeMap.set(region.properties["hc-a2"], region.properties["hc-key"]);
     }
+    console.log("MAP",codeMap, nameMap)
     let locationsData = [];
     let country_key = "";
     let individual_sum = 0;
     for (let area of currentWorldAreaData) {
         if (nameMap.has(area.country) || codeMap.has(area.country_code)){
             // Country
-            if (!area.province || area.province === "")
-            {
                 if(individual_sum > 0){
                     if (allMap.has(country_key))
                         allMap.set(country_key, allMap.get(country_key) + individual_sum);
@@ -247,30 +246,9 @@ export function combineWorldHighCharts(currentWorldAreaData){
                     allMap.set(current_key, area.number + allMap.get(current_key));
                 else
                     allMap.set(current_key, area.number);
-            }
-            // Province
-            else {
-                // Store the last one, From one province of one country enter another province of another country
-                if(country_key !== nameMap.get(area.country))
-                {
-                    if(individual_sum > 0){
-                        if (allMap.has(country_key))
-                            allMap.set(country_key, allMap.get(country_key) + individual_sum);
-                        else
-                            allMap.set(country_key, individual_sum);
-                        individual_sum = 0;
-                    }
-                }
-
-                if(nameMap.has(area.province))
-                    allMap.set(nameMap.get(area.province), area.number);
-                else{
-                    country_key = nameMap.get(area.country);
-                    individual_sum += area.number;
-                }
-            }
         }
     }
+
     // console.log(allMap);
     for(let entry of allMap)
         locationsData.push(entry);
