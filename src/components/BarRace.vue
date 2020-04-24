@@ -89,7 +89,7 @@
                 .attr('x', width)
                 .attr('y', height-5)
                 .style('text-anchor', 'end')
-                .html("Source - JHU | ©covid19track.site");
+                .html("©covid19track.site | Data ©JHU");
 
             this.day = this.raceData[0].day;
 

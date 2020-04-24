@@ -30,7 +30,8 @@
         },
         data: function () {
             return {
-                tab:0
+                tab:0,
+                dataType: "confirmed"
             }
         },
         methods:{

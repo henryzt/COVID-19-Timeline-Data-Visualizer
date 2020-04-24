@@ -13,7 +13,7 @@ const messages = {
             confirmAndDeath: "Cumulative Cases",
             newDeaths: "New Cases",
             rates: "Death Rate and Recover Rate",
-            historyAnimation: "Confirmed Cases Animation",
+            historyAnimation: "Historical Time Series Animation",
             regionList: "Region List",
             source: "Source",
             about: "About",
@@ -94,7 +94,9 @@ const messages = {
             cured: "Recovered Cases",
             cRate: "Recover Rate"
         },
-        total: "Total"
+        total: "Total",
+        showAllCharts: "Show All Charts",
+        showLess: "Hide"
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -106,7 +108,7 @@ const messages = {
             confirmAndDeath: "确诊及死亡",
             newDeaths: "新增确诊及死亡",
             rates: "死亡率及治愈率",
-            historyAnimation: "历史确诊数据动画",
+            historyAnimation: "历史数据变化动画",
             regionList: "地域确诊列表",
             source: "数据来源",
             about: "关于",
@@ -164,7 +166,7 @@ const messages = {
         table: {
             default: "默认排序",
             byRegion: "按地区",
-            byCases:"按人数",
+            byCases:"数据",
             byChanges:"按变化",
             region: "地区",
             cases: "确诊人数",
@@ -178,7 +180,18 @@ const messages = {
             world: "🌎世界实时数据"
         },
         compareNote: "数据以国家确诊首次超过50例作为起点对齐",
-        compareSelect: "从下列输入框可选择其他任何国家进行对比"
+        compareSelect: "从下列输入框可选择其他任何国家进行对比",
+        dataSwitch:{
+            confirmed: "累计确诊",
+            active: "现存确诊",
+            death: "累计死亡",
+            dRate: "死亡率",
+            cured: "累计治愈",
+            cRate: "治愈率"
+        },
+        total: "累计",
+        showAllCharts: "显示全部图表",
+        showLess: "收起"
     }
 };
 
