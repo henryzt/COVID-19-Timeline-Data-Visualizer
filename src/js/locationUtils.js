@@ -66,15 +66,39 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
     return dailyLocationJson;
 }
 
-export function getGlobalHistoryTableData(allHistory, hideCountryName, includeCode) {
+function combineProvinces(locations) {
+    let filteredLocations = [];
+    let currentCountryCode = "";
+    for(let region of locations){
+        let objArr = Object.entries(region.history);
+        if(region.country_code === currentCountryCode){
+            let main = filteredLocations[filteredLocations.length-1];
+            for(let [key, value] of objArr){
+                main.history[key] = main.history[key] + value
+            }
+        }else{
+            currentCountryCode = region.country_code;
+            let main = {country: region.country, country_code: region.country_code, history: {}};
+            for(let [key, value] of objArr){
+                main.history[key] = value
+            }
+            filteredLocations.push(main)
+        }
+    }
+    console.log("combine results", filteredLocations);
+    return filteredLocations;
+}
+
+export function getGlobalHistoryTableData(allHistory, hideCountryName, combineProvince) {
+    let locations = combineProvince ? combineProvinces(allHistory.locations) : allHistory.locations;
     let dateMap = {};
-    for(let dayData of allHistory.locations){
+    for(let dayData of locations){
         let objArr = Object.entries(dayData.history);
         for(let i = 0; i<objArr.length;i++){
             let date =  moment(objArr[i][0]).format("DD/MM");
             let value = objArr[i][1];
             let name = hideCountryName && dayData["province"]? dayData["province"] : (dayData["country"] +(dayData["province"]?(" - "+ dayData["province"]):""));
-            let location = includeCode ?  {location: name, country_code: dayData["country_code"], country: dayData["country"], province : dayData["province"], number: value} : {location: name, number: value};
+            let location = combineProvince ?  {location: name, country_code: dayData["country_code"], country: dayData["country"], number: value} : {location: name, number: value};
             dateMap[date] = dateMap[date]? dateMap[date]: [];
             dateMap[date].push(location)
         }
