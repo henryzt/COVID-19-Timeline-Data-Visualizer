@@ -56,7 +56,7 @@
         mounted() {
             this.isUk = this.countryName==="UK";
             this.isUs = this.countryName==="US";
-            this.changeTab(this.isUk ? 1 : 0);
+            this.changeTab(this.isUk || this.isUs ? 1 : 0);
         },
         watch: {
             mainDate: function () {
