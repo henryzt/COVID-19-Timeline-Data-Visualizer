@@ -22,6 +22,11 @@
             return {
                 options: ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"]
             }
+        },
+        watch: {
+            dataType: function () {
+                window.ga('send', 'event', "data-switch", "type-changed", this.dataType);
+            }
         }
     }
 </script>

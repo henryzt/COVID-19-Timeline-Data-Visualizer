@@ -170,6 +170,7 @@ div.btn-group {
 
 .switch-header{
   display: flex;justify-content: space-between;flex-wrap: wrap;
+  padding-bottom: 5px;
 }
 
 @media only screen and (max-width: 600px) {

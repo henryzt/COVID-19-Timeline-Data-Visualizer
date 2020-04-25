@@ -8,35 +8,51 @@
                 :seriesData="confirmedAndDeathChart1"
         ></Chart>
 
+        <div v-if="showMore">
+            <div class="title">{{ $t('subtitles.newDeaths') }}</div>
+            <Chart
+                    id="deathChart2"
+                    type="bar"
+                    :stacked="true"
+                    :dataHistory="ChartData"
+                    :seriesData="deathChart2"
+                    :colors='["#c40000","#3d000d","#2c9100"]'
+            ></Chart>
 
-        <div class="title">{{ $t('subtitles.newDeaths') }}</div>
-        <Chart
-                id="deathChart2"
-                type="bar"
-                :stacked="true"
-                :dataHistory="ChartData"
-                :seriesData="deathChart2"
-                :colors='["#c40000","#3d000d","#2c9100"]'
-        ></Chart>
+            <div class="title">{{ $t('subtitles.rates') }}</div>
+            <Chart
+                    id="rateChart3"
+                    type="area"
+                    :dataHistory="ChartData"
+                    :seriesData="rateChart3"
+                    :colors='["#ca0011","#0088ff"]'
+            ></Chart>
+        </div>
 
-        <div class="title">{{ $t('subtitles.rates') }}</div>
-        <Chart
-                id="rateChart3"
-                type="area"
-                :dataHistory="ChartData"
-                :seriesData="rateChart3"
-                :colors='["#ca0011","#0088ff"]'
-        ></Chart>
+        <div class="more" @click="showMore = !showMore">
+            <MoreIcon v-if="!showMore"/><LessIcon v-else/>
+            {{showMore? $t('showLess') : $t('showAllCharts')}}
+        </div>
+
     </div>
 </template>
 
 <script>
     import Chart from "./Chart.vue";
+    import MoreIcon from 'mdi-vue/ChevronDown'
+    import LessIcon from 'mdi-vue/ChevronUp'
     export default {
         name: "ChartSection",
         props: ["ChartData"],
         components: {
-           Chart
+            Chart,
+            MoreIcon,
+            LessIcon
+        },
+        data: function () {
+            return {
+                showMore: false
+            }
         },
         computed: {
             confirmedAndDeathChart1: function () {
@@ -98,9 +114,21 @@
                 ]
             }
         },
+        watch:{
+            showMore: function () {
+                window.ga('send', 'event', "chart", "chart-expanded", this.showMore);
+            }
+        }
     }
 </script>
 
 <style scoped>
-
+    .more{
+        text-align: center;
+        padding-top: 30px;
+        font-size: 17px;
+        user-select: none;
+        cursor: pointer;
+        opacity: 0.7;
+    }
 </style>
