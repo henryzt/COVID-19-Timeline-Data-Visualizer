@@ -150,6 +150,10 @@
                             <span>{{isLocaleCN ? " | UCLCSSA 伦敦大学学院中国学联" : " at University College London."}}</span>
                         </li>
                     </ul>
+                        <div style="font-size:14px; opacity:0.5;">You are free to distribute, share or embed whole or part of the site without prior notice to us, as long as
+                            you mention the source (covid19track.site or covid19.uclcssa.cn) or keep this section intact. Please see the github repo for more
+                            information if you would like to modify the source code :)
+                        </div>
                 </div>
 
 <!--                logo and language switch -->

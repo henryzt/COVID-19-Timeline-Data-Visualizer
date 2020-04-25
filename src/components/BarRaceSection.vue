@@ -7,9 +7,9 @@
 
         <BarRace v-if="global" v-show="tab===0" :raceData="global" :title="$t('barRace.globalTitle')" :is-rate="dataType.includes('Rate')"
                  :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
-        <BarRace v-if="country" v-show="tab===1" :raceData="country" :title="$t('barRace.localTitle')" :is-rate="dataType.includes('Rate')"
+        <BarRace v-if="country && country.length>0" v-show="tab===1" :raceData="country" :title="$t('barRace.localTitle')" :is-rate="dataType.includes('Rate')"
                  :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk"  id="1"></BarRace>
-
+        <div v-else v-show="tab===1" style="padding: 30px;text-align: center;">{{$t('noData')}}</div>
 
     </div>
 

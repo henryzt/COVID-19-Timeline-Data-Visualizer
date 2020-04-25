@@ -97,7 +97,8 @@ const messages = {
         },
         total: "Total",
         showAllCharts: "Show All Charts",
-        showLess: "Hide"
+        showLess: "Hide",
+        noData: "No data available for this view, you can try other data types."
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -193,7 +194,8 @@ const messages = {
         },
         total: "累计",
         showAllCharts: "显示全部图表",
-        showLess: "收起"
+        showLess: "收起",
+        noData: "暂无数据，您可以查看其他数据类型或国家"
     }
 };
 

@@ -6,7 +6,7 @@
             <CountrySwitch v-if="regionData.country" :tab="tab"  @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
-        <div>
+        <div v-if="tableData">
             <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
                 <thead>
                 <tr>
@@ -25,8 +25,9 @@
                 </tbody>
             </table>
         </div>
+        <div v-else style="padding: 30px;text-align: center;">{{$t('noData')}}</div>
         <div :class="(limit===10)?'':'stick'">
-            <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?$t('table.showAll'):$t('table.showLess')}}</div>
+            <div v-if="tableData" class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?$t('table.showAll'):$t('table.showLess')}}</div>
             <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date"
                              :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event"
                              :enableEvenIfPaused="true" :playing="false"></SlideController>
@@ -113,12 +114,18 @@
                 let current = this.currentData[currentIndex]?.arr;
                 let last = this.currentData[currentIndex-1]?.arr;
                 let id = 0;
+                let sum = 0;
                 for (let region of current)
                 {
                     let lastData = last?.find(element => element.location == region.location);
                     region.id = id++;
+                    sum+=region[this.dataType];
                     let change = lastData? region[this.dataType] - lastData[this.dataType] : 0;
                     region.change = (change>0?"+":"") + (this.isRate ? change.toFixed(2) : change)
+                }
+                if(sum===0 && (this.dataType==="cured" || this.dataType==="cRate")) {
+                    this.tableData = null;
+                    return;
                 }
                 this.tableData = current;
                 this.sortTable()
