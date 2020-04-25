@@ -20,7 +20,8 @@
             subtitle: String,
             source: String,
             id:String,
-            changeLabelPosition: Boolean
+            changeLabelPosition: Boolean,
+            isRate: Boolean
         },
         data:function () {
             return {
@@ -53,7 +54,7 @@
             this.startDate = this.raceData[0].day;
             this.endDate = this.raceData[this.raceData.length-1].day;
             const d3 = require('d3');
-            //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f
+            //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f NEED REFACTOR THO, no time yet
             // Feel free to change or delete any of the code you see in this editor!
             let svg = d3.select("#barRace"+this.id).append("svg")
                 .attr("width", this.width)
@@ -93,12 +94,13 @@
 
             this.day = this.raceData[0].day;
 
+            let totalString = this.$t('total');
             let that = this;
 
             function loadData(data) {
                 //if (error) throw error;
 
-                console.log(data);
+                // console.log(data);
 
                 data.forEach(d => {
                     d.value = +d.value,
@@ -107,7 +109,7 @@
                         d.colour = d3.rgb(0, 195, 255)
                 });
 
-                console.log(data);
+                // console.log(data);
 
                 let daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
                     .sort((a,b) => b.value - a.value)
@@ -115,7 +117,7 @@
 
                 daySlice.forEach((d,i) => d.rank = i);
 
-                console.log('daySlice: ', daySlice)
+                // console.log('daySlice: ', daySlice)
 
 
                 const getClassName = (d)=>"bar_"+d.name.replace(/[^\w]/g, "_");
@@ -124,7 +126,7 @@
                     let theBar = d3.select(`.${getClassName(d)}`);
                     return theBar?.node()?.getBoundingClientRect().width < 100
                 };
-                const getOutsideWidth = (d) => x(d.value)+15+(d.value+"").length*10;
+                const getOutsideWidth = (d) => x(d.value)+15+(d.value.toFixed(0)).length*10;
 
                 const getLabelX = (d)=>that.changeLabelPosition && isTooSmall(d)?getOutsideWidth(d): x(d.value)-8;
                 const getLabelAnchor = (d)=>that.changeLabelPosition && isTooSmall(d)?'start':'end';
@@ -196,7 +198,7 @@
                     .attr('x', width-margin.right)
                     .attr('y', height-30)
                     .style('text-anchor', 'end')
-                    .html(that.$t('total') + "- 0");
+                    .html(totalString + " - 0");
 
                 let total = 0;
 
@@ -208,7 +210,11 @@
 
                     total = daySlice.reduce((accumulator, currentValue) => accumulator + currentValue.value, 0);
 
-                    totalText.text(d => that.$t('total') + " - " + d3.format(',.0f')(total));
+                    if(that.isRate){
+                        totalText.text(d => "Data Average - " + d3.format(',.2f')(total/daySlice.length)+"%");
+                    }else {
+                        totalText.text(d => totalString + " - " + d3.format(',.0f')(total));
+                    }
 
                     daySlice = daySlice.slice(0,top_n);
 

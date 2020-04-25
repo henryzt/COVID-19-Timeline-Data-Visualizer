@@ -26,19 +26,24 @@ export function getD3Data(dailyLocationJson, dataTypeKey) {
     let locationData = [];
     let lastDailyData = null;
     for(let dailyData of dailyLocationJson){
+        let dailyLocationData = [];
+        let dailySum = 0;
         for(let location of dailyData.arr){
             let obj = {};
             obj.name = location.location;
-            obj.value = location[dataTypeKey];
+            obj.value = (!location[dataTypeKey]||isNaN(location[dataTypeKey])) ? 0 : location[dataTypeKey];
             obj.day = dailyData.date;
             obj.lastValue = 0;
+            dailySum += obj.value;
             if(lastDailyData){
                 let lastLocationData = lastDailyData.arr.find(obj => {return obj.location === location.location});
                 obj.lastValue = lastLocationData && lastLocationData[dataTypeKey] ? lastLocationData[dataTypeKey] : 0;
             }
-            locationData.push(obj)
+            dailyLocationData.push(obj)
         }
         lastDailyData = dailyData;
+        if(dailySum > 0)
+            locationData = locationData.concat(dailyLocationData);
     }
     // console.log(locationData)
     return locationData;
@@ -71,7 +76,7 @@ function combineAllCountryData(globalData, combineProvince) {
     let addedCountryCodes = {};
     for(let region of globalData.confirmed.locations){
         let confirmedArr = Object.entries(region.history);
-        let query = (ele) => {return ele.country_code===region.country_code && ele.province===region.province};
+        let query = (ele) => {return ele.country===region.country && ele.province===region.province};
         let deathArr = globalData.deaths.locations.find(query)?.history;
         let curedArr = globalData.recovered.locations.find(query)?.history;
         if(combineProvince && addedCountryCodes[region.country_code]){
@@ -110,6 +115,9 @@ export function getGlobalHistoryTableData(globalData, hideCountryName, combinePr
             location.confirmed = value;
             location.death = dayData.death[key];
             location.cured = dayData.cured[key];
+            location.active = location.confirmed - location.cured - location.death;
+            location.dRate = location.confirmed>0?((location.death/location.confirmed)*100):0;
+            location.cRate = location.confirmed>0?((location.cured/location.confirmed)*100):0;
             dateMap[date] = dateMap[date]? dateMap[date]: [];
             dateMap[date].push(location)
         }
@@ -230,7 +238,7 @@ export function combineWorldHighCharts(currentWorldAreaData, dataTypeKey){
         nameMap.set(region.properties.name, region.properties["hc-key"]);
         codeMap.set(region.properties["hc-a2"], region.properties["hc-key"]);
     }
-    console.log("MAP",codeMap, nameMap)
+    // console.log("MAP",codeMap, nameMap)
     let locationsData = [];
     let country_key = "";
     let individual_sum = 0;
@@ -252,9 +260,9 @@ export function combineWorldHighCharts(currentWorldAreaData, dataTypeKey){
         }
     }
 
-    // console.log(allMap);
     for(let entry of allMap)
         locationsData.push(entry);
+    // console.log(allMap, locationsData);
     return locationsData;
 }
 
@@ -267,7 +275,13 @@ export async function getUSRegionData(usStates) {
     for(let entry of statesJson){
         let dateKey = moment(entry.date).format("DD/MM");
         if(!dateJson[dateKey]) dateJson[dateKey] = [];
-        let location = {location: entry.state, number: entry.cases, fips: entry.fips};
+        let location = {location: entry.state, fips: entry.fips};
+        location.confirmed = entry.cases;
+        location.death = entry.deaths;
+        location.cured = 0;
+        location.active = location.confirmed - location.death;
+        location.dRate = location.confirmed>0?((location.death/location.confirmed)*100):0;
+        location.cRate = 0;
         dateJson[dateKey].push(location)
     }
 

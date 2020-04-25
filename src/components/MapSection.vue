@@ -75,7 +75,7 @@
             },
             changeDataType(type){
                 this.dataType = type;
-                this.loadMap(true)
+                this.loadMap()
             },
             async loadMap(rerender){
                  let idx = this.currentData.findIndex(ele=>ele.date === this.date);

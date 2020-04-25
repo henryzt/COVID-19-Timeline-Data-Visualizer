@@ -18,15 +18,15 @@
                 <tbody>
                 <tr class="singleRegionData" v-for="singleRegion in tableData.slice(0, limit)" :key="singleRegion.id">
                     <td>{{ singleRegion.location }}</td>
-                    <td>{{ singleRegion[dataType] }}</td>
+                    <td>{{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}</td>
                     <td>{{ singleRegion.change }}</td>
                 </tr>
                 <tr></tr>
                 </tbody>
             </table>
-            <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?$t('table.showAll'):$t('table.showLess')}}</div>
         </div>
         <div :class="(limit===10)?'':'stick'">
+            <div class="showAll" @click="limit=(limit===10)?tableData.length:10">{{(limit===10)?$t('table.showAll'):$t('table.showLess')}}</div>
             <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date"
                              :hidePlayButton="true" :current-date="date" @change="changeDate" @playPause="playing = $event"
                              :enableEvenIfPaused="true" :playing="false"></SlideController>
@@ -73,6 +73,11 @@
                 }
             }
         },
+        computed:{
+          isRate: function () {
+              return this.dataType.includes('Rate')
+          }
+        },
         methods:{
             changeDataType(type){
                 this.dataType = type;
@@ -80,7 +85,8 @@
             },
 
             getCurrentTableData: function(current){
-                this.date = current[current.length-1].date;
+                if(!current.find(ele=>ele.date===this.date))
+                    this.date = current[current.length-1].date;
                 this.currentData = current;
                 this.updateTableData(current.length-1)
             },
@@ -112,7 +118,7 @@
                     let lastData = last?.find(element => element.location == region.location);
                     region.id = id++;
                     let change = lastData? region[this.dataType] - lastData[this.dataType] : 0;
-                    region.change = (change>0?"+":"") + change
+                    region.change = (change>0?"+":"") + (this.isRate ? change.toFixed(2) : change)
                 }
                 this.tableData = current;
                 this.sortTable()
@@ -169,6 +175,7 @@
         text-align: center;
         cursor: pointer;
         color: #0099db;
+        padding-top: 10px;
     }
     .stick{
         position: sticky;bottom:0;

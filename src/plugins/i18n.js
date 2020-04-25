@@ -91,9 +91,9 @@ const messages = {
             confirmed: "Confirmed Cases",
             active: "Active Cases",
             death: "Death Toll",
-            dRate: "Death Rate",
+            dRate: "Death Rate (%)",
             cured: "Recovered Cases",
-            cRate: "Recover Rate"
+            cRate: "Recover Rate (%)"
         },
         total: "Total",
         showAllCharts: "Show All Charts",
@@ -187,9 +187,9 @@ const messages = {
             confirmed: "累计确诊",
             active: "现存确诊",
             death: "累计死亡",
-            dRate: "死亡率",
+            dRate: "死亡率 (%)",
             cured: "累计治愈",
-            cRate: "治愈率"
+            cRate: "治愈率 (%)"
         },
         total: "累计",
         showAllCharts: "显示全部图表",

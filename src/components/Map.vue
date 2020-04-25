@@ -38,7 +38,7 @@
                             min: 0
                         },
                         series: [{
-                            name: 'data',
+                            name: 'Cases',
                             states: {
                                 hover: {
                                     color: '#BADA55'
