@@ -1,5 +1,5 @@
 <template>
-    <div class="btn-group-wrap">
+    <div>
         <div class="btn-group btn-group-sm" role="group" aria-label="date range">
             <button type="button" class="btn btn-secondary" :class="{active: tab==0}" @click="changeTab(0)">
                 {{$t('barRace.global')}}
