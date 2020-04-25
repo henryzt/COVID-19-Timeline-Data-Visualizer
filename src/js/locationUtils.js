@@ -238,13 +238,14 @@ export function combineUSHighCharts(currentUSAreaData, dataTypeKey){
     let keys = [];
     for (let region of usmapData.features)
     {
-        fips.push(region.properties["state-fips"]);
+        fips.push(Number(region.properties["state-fips"]));
         keys.push(region.properties["hc-key"]);
     }
 
     for (let region of currentUSAreaData){
-        if(fips.includes(region.fips)) {
-            const index = fips.indexOf(region.fips);
+        let regionFip = Number(region.fips);
+        if(fips.includes(regionFip)) {
+            const index = fips.indexOf(regionFip);
             if (index > -1)
                 commonLocationsData.push([keys[index], Number(region[dataTypeKey])]);
         }

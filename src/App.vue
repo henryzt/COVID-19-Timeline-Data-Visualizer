@@ -80,7 +80,7 @@
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
                     <br>
                     <div class="title">{{ $t('subtitles.regionList') }}</div>
-                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk"></RegionTable>
+                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk" @switchCountry="switchCountry" :current-country="currentCountry"></RegionTable>
                 </div>
 
             </div>
@@ -319,7 +319,7 @@
 
                 } else if (e === this.countryList[1]) {
                     this.loadUkData();
-                } else if (e === this.countryList[2]) {
+                } else if (e === this.countryList[2] || e === "US") {
                     await this.loadUsData();
                 } else {
                     this.loadCountryData(e)

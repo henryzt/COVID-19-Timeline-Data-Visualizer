@@ -7,7 +7,8 @@
     export default {
         props: {
             locationsData: {},
-            countryName: String
+            countryName: String,
+            isRate: Boolean
         },
         data: function(){
             return {
@@ -17,7 +18,7 @@
         computed: {
                 mapOptions: function () {
                     let isUK = this.countryName === "UK" || this.countryName === "US";
-                    return {
+                    let options = {
                         chart: {
                             map: this.countryName,
                             height: 500
@@ -50,8 +51,12 @@
                             },
                             allAreas: isUK,
                             data: this.locationsData
-                        }]
-                    }
+                        }],
+                        tooltip: {},
+                    };
+                    if(this.isRate)
+                        options.tooltip.pointFormat = '{point.name}: <b>{point.value:.2f}</b><br/>'
+                    return options;
                 }
         },
         mounted() {

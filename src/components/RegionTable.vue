@@ -17,7 +17,10 @@
                 </thead>
                 <tbody>
                 <tr class="singleRegionData" v-for="singleRegion in tableData.slice(0, limit)" :key="singleRegion.id">
-                    <td>{{ singleRegion.location }}</td>
+                    <td>
+                        <div class="goToCountry" v-if="tab===0" @click="switchCountry(singleRegion.location)">{{ singleRegion.location }}<MoreIcon/></div>
+                        <div v-else>{{ singleRegion.location }}</div>
+                    </td>
                     <td>{{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}</td>
                     <td>{{ singleRegion.change }}</td>
                 </tr>
@@ -38,16 +41,18 @@
 <script>
     import SlideController from './SlideController'
     import SortIcon from 'mdi-vue/SortAscending'
+    import MoreIcon from 'mdi-vue/ChevronRight'
     import DataSwitch from './DataSwitch';
     import CountrySwitch from './CountrySwitch';
     export default {
         name: "RegionTable",
-        props: ["regionData","mainDate","isUk"],
+        props: ["regionData","mainDate","isUk","currentCountry"],
         components: {
             SlideController,
             SortIcon,
             DataSwitch,
-            CountrySwitch
+            CountrySwitch,
+            MoreIcon
         },
         data: function (){
             return {
@@ -80,6 +85,12 @@
           }
         },
         methods:{
+            switchCountry(e){
+                window.scrollTo(0,0);
+                window.ga('send', 'event', "country", "country-changed-from-table", e);
+                this.$emit("switchCountry", e);
+            },
+
             changeDataType(type){
                 this.dataType = type;
                 this.changeTab(this.tab)
@@ -177,6 +188,7 @@
         position: sticky;
         top:55px;
         background: white;
+        z-index: 50;
     }
     .showAll{
         text-align: center;
@@ -189,6 +201,7 @@
         border-top: solid 1px whitesmoke;
         background:white;padding: 0 10px;
         padding-bottom: 50px;
+        z-index: 50;
     }
     .mdi-sort-ascending{
         opacity: 0.4;
@@ -198,5 +211,15 @@
     .active .mdi-sort-ascending{
         color: #5098d6;
         opacity: 1;
+    }
+
+    .goToCountry{
+        font-weight: bolder;
+        cursor: pointer;
+    }
+
+    .goToCountry svg{
+        margin-top: -2px;
+        opacity: 0.5;
     }
 </style>
