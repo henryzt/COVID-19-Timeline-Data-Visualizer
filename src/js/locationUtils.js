@@ -1,6 +1,10 @@
 // filter for d3 data,
 // written by @henryz00 on Apr 2020
 
+import { worldmapData } from "./worldmap";
+import { ukmapData } from "./ukmap";
+import { usmapData } from "./usmap";
+
 const moment = require('moment');
 
 export function parseLocationData(areaData) {
@@ -67,7 +71,7 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
         dailyLocationJson.push(today);
     }
 
-    console.log("uk daily location json", dailyLocationJson);
+    // console.log("uk daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
 
@@ -136,7 +140,7 @@ export function getGlobalHistoryTableData(globalData, hideCountryName, combinePr
         }
         dailyLocationJson.push({arr:entry[1], date:entry[0]})
     }
-    console.log("global daily location json", dailyLocationJson);
+    // console.log("global daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
 
@@ -153,7 +157,7 @@ export function getCountryData(globalData, countryName) {
     countryData.confirmed.locations = globalData.confirmed.locations.filter(countryFilter);
     countryData.deaths.locations = globalData.deaths.locations.filter(countryFilter);
     countryData.recovered.locations = globalData.recovered.locations.filter(countryFilter);
-    console.log("country data",countryData);
+    // console.log("country data",countryData);
     return countryData;
 }
 
@@ -188,7 +192,7 @@ export function getCountryHistoryData(countryData) {
         historyData.shift();
     }
 
-    console.log("country history data", historyData);
+    // console.log("country history data", historyData);
     return historyData;
 }
 
@@ -202,7 +206,7 @@ export function getCountryCompareData(globalData, countryName, minCases) {
 }
 
 /* --------------------------------------------------------------------------------------- */
-import { ukmapData } from "./ukmap";
+// by davies xue
 
 export function combineUKHighCharts(currentUkAreaData){
     let  commonLocationsData = [];
@@ -228,7 +232,29 @@ export function combineUKHighCharts(currentUkAreaData){
     return commonLocationsData;
 }
 
-import { worldmapData } from "./worldmap";
+export function combineUSHighCharts(currentUSAreaData, dataTypeKey){
+    let  commonLocationsData = [];
+    let fips = [];
+    let keys = [];
+    for (let region of usmapData.features)
+    {
+        fips.push(region.properties["state-fips"]);
+        keys.push(region.properties["hc-key"]);
+    }
+
+    for (let region of currentUSAreaData){
+        if(fips.includes(region.fips)) {
+            const index = fips.indexOf(region.fips);
+            if (index > -1)
+                commonLocationsData.push([keys[index], Number(region[dataTypeKey])]);
+        }
+    }
+    // console.log("US MAP", commonLocationsData);
+
+    return commonLocationsData;
+}
+
+
 export function combineWorldHighCharts(currentWorldAreaData, dataTypeKey){
     let codeMap = new Map();
     let nameMap = new Map();

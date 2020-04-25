@@ -6,6 +6,7 @@ import Highcharts from 'highcharts';
 import mapInit from 'highcharts/modules/map'
 import HighchartsVue from 'highcharts-vue';
 import addUKMap from "./js/ukmap";
+import addUSMap from "./js/usmap";
 import addWorldMap from "./js/worldmap";
 
 Vue.use(scrollSpy, {
@@ -13,6 +14,7 @@ Vue.use(scrollSpy, {
 });
 mapInit(Highcharts);
 addUKMap(Highcharts);
+addUSMap(Highcharts);
 addWorldMap(Highcharts);
 Vue.use(HighchartsVue);
 

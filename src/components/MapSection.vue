@@ -2,7 +2,7 @@
     <div class="mBlock" v-if="renderComponent">
         <div class="switch-header">
             <DataSwitch :data-type="dataType" @typeChange="changeDataType($event)" :disabled="tab === 1 && isUk"></DataSwitch>
-            <CountrySwitch v-if="isUk" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
+            <CountrySwitch v-if="isUk || isUs" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
         </div>
 
         <Map :locationsData="locationsData" :countryName="tab === 1 ? countryName : 'world'"></Map>
@@ -20,6 +20,7 @@
     import CountrySwitch from './CountrySwitch';
     import {
         combineUKHighCharts,
+        combineUSHighCharts,
         combineWorldHighCharts
     } from "../js/locationUtils"
     import SlideController from './SlideController'
@@ -42,6 +43,7 @@
                 tab: 1,
                 locationsData: null,
                 isUk: true,
+                isUs: false,
                 date: null,
                 renderComponent: true,
                 dataType: "confirmed"
@@ -49,6 +51,7 @@
         },
         mounted() {
             this.isUk = this.countryName==="UK";
+            this.isUs = this.countryName==="US";
             this.changeTab(this.isUk ? 1 : 0);
         },
         watch: {
@@ -65,7 +68,7 @@
             },
             changeTab(tab){
                 this.tab = tab;
-                if(this.isUk && this.tab === 1){
+                if((this.isUk || this.isUs) && this.tab === 1){
                     this.currentData = this.tableData.country;
                 }else {
                     this.currentData = this.tableData.global;
@@ -80,7 +83,10 @@
             async loadMap(rerender){
                  let idx = this.currentData.findIndex(ele=>ele.date === this.date);
                  if(this.tab === 1) {
-                     this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
+                     if(this.isUk)
+                        this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
+                     else
+                         this.locationsData = combineUSHighCharts(this.currentData[idx].arr, this.dataType);
                  }else{
                      this.locationsData = combineWorldHighCharts(this.currentData[idx].arr, this.dataType);
                  }

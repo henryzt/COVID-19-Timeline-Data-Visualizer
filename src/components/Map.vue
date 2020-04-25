@@ -16,7 +16,7 @@
         },
         computed: {
                 mapOptions: function () {
-                    let isUK = this.countryName === "UK";
+                    let isUK = this.countryName === "UK" || this.countryName === "US";
                     return {
                         chart: {
                             map: this.countryName,
