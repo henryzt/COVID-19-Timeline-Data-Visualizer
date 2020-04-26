@@ -1,3 +1,4 @@
+<!--This section is only used for our community app posts, you can ignore if not needed-->
 <template>
     <div class="ma-overlay" v-if="posts">
         <div class="title_bg" :class="{'hidden-title': !showMore}">
@@ -6,15 +7,15 @@
         </div>
         <div style="background: white;" v-if="showMore">
             <div style="display: flex;overflow-y: scroll; margin:0;">
-                <div class="post-block" v-for="post of posts" :key="post.id">
+                <div class="post-block" v-for="post of posts" :key="post.id" @click="goToPost(post.id)">
                     <div style="float: right; color: #007BFF">查看详情</div>
                     <div style="opacity:0.5">{{post.user}}</div>
                     <div style="max-height: 17vh;">{{post.content}}</div>
                 </div>
             </div>
             <div style="display: flex; justify-content: space-around;opacity: 0.7; padding: 10px;">
-                <div>查看更多</div>
-                <div>发布动态</div>
+                <div @click="goToCommunity">查看更多</div>
+                <div @click="goToPublish">发布动态</div>
             </div>
         </div>
     </div>
@@ -38,11 +39,28 @@
         },
         mounted() {
             wx.miniProgram.getEnv(function(res) { console.log(res.miniprogram) })
-            fetch("https://uclcssa.cn/post/getPostEndpoint.php?auth=ucl").then(async res=>{
+            fetch("https://uclcssa.cn/post/getPostEndpoint.php?auth=ucl&space=13").then(async res=>{
                 let data = await res.json();
                 this.posts = data.posts;
             })
         },
+        methods:{
+            goToCommunity(){
+                wx.miniProgram.switchTab({
+                    url:'/pages/discover/discover'
+                });
+            },
+            goToPublish(){
+                wx.miniProgram.switchTab({
+                    url:'/pages/publish/publish?space_id=13'
+                });
+            },
+            goToPost(id){
+                wx.miniProgram.switchTab({
+                    url:'pages/moments/detail?id='+id
+                });
+            },
+        }
     }
 </script>
 
@@ -51,13 +69,14 @@
         background: linear-gradient(rgba(255, 255, 255, 0) 0%, white 70%);
         display:flex;
         justify-content: space-between;
-        padding:  0 10px;
+        padding: 0 10px;
         padding-top: 25px;
         text-shadow: 2px 2px 4px white;
     }
 
     .hidden-title{
         padding: 10px;
+        padding-top: 30px;
     }
 
     .ma-overlay{

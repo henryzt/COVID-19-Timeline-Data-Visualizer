@@ -164,9 +164,9 @@
                 </div>
             </div>
 
-<!--            <div v-if="isMiniApp && isLocaleCN && !showWechatPopup">-->
+            <div v-if="isMiniApp && isLocaleCN && !showWechatPopup">
                 <MiniAppPostOverlay></MiniAppPostOverlay>
-<!--            </div>-->
+            </div>
 
         </div>
 
