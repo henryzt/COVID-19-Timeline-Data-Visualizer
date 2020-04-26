@@ -164,6 +164,10 @@
                 </div>
             </div>
 
+<!--            <div v-if="isMiniApp && isLocaleCN && !showWechatPopup">-->
+                <MiniAppPostOverlay></MiniAppPostOverlay>
+<!--            </div>-->
+
         </div>
 
 <!--        loading indicator -->
@@ -193,6 +197,7 @@
     import SlideController from "./components/SlideController.vue";
     import PieSection from "./components/PieSection.vue";
     import CountryCompareSection from "./components/CountryCompareSection.vue";
+    import MiniAppPostOverlay from "./components/MiniAppPostOverlay.vue";
     import vSelect from 'vue-select'
     import 'vue-select/dist/vue-select.css';
     import {
@@ -219,7 +224,8 @@
             vSelect,
             MapSection,
             SlideController,
-            CountryCompareSection
+            CountryCompareSection,
+            MiniAppPostOverlay
         },
         data: () => {
             return {
