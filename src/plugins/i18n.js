@@ -2,6 +2,15 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
+const barRaceColor = {
+    confirmed: "#33CCFF",
+    active: "#ffaa00",
+    death: "#bcbcbc",
+    dRate: "#bcbcbc",
+    cured: "#00ff79",
+    cRate: "#00ff79"
+}
+
 const messages = {
     'en': {
         pageTitle: "COVID-19 Realtime Data Visualization and Timeline",
@@ -98,7 +107,8 @@ const messages = {
         total: "Total",
         showAllCharts: "Show All Charts",
         showLess: "Hide",
-        noData: "No data available for this view, you can try other data types."
+        noData: "No data available for this view, you can try other data types.",
+        barRaceColor: barRaceColor
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -195,7 +205,8 @@ const messages = {
         total: "累计",
         showAllCharts: "显示全部图表",
         showLess: "收起",
-        noData: "暂无数据，您可以查看其他数据类型或国家"
+        noData: "暂无数据，您可以查看其他数据类型或国家",
+        barRaceColor: barRaceColor
     }
 };
 

@@ -59,7 +59,7 @@
             },
             goToPost(id){
                 wx.miniProgram.navigateTo({
-                    url:'pages/moments/detail?id='+id
+                    url:'/pages/moments/detail?id='+id
                 });
                 window.ga('send', 'event', "mini-app", "go-to-post", id);
             },

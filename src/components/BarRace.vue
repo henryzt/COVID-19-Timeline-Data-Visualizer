@@ -21,7 +21,8 @@
             source: String,
             id:String,
             changeLabelPosition: Boolean,
-            isRate: Boolean
+            isRate: Boolean,
+            color: String
         },
         data:function () {
             return {
@@ -106,7 +107,7 @@
                     d.value = +d.value,
                         d.lastValue = d.lastValue<0? 0: +d.lastValue,
                         d.value = isNaN(d.value) && d.value < 0 ? 0 : d.value,
-                        d.colour = d3.rgb(0, 195, 255)
+                        d.colour = that.color?that.color:"#33CCFF"
                 });
 
                 // console.log(data);
