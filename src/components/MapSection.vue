@@ -86,6 +86,7 @@
             },
             async loadMap(rerender){
                  let idx = this.currentData.findIndex(ele=>ele.date === this.date);
+                this.isDataAvailable = true;
                  if(this.tab === 1) {
                      if(this.isUk) {
                          this.locationsData = combineUKHighCharts(this.currentData[idx].arr);

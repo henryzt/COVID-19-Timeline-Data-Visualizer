@@ -131,7 +131,7 @@
                         <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API -
                             ExpDev07</a></li>
                         <li><a href="https://github.com/nytimes/covid-19-data">Coronavirus Data in the United States - The New York Times</a></li>
-                        <li><a href="https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f">D3 Bar Chart Races (Based on) - jrzief</a></li>
+                        <li><a href="https://bl.ocks.org/jrzief/70f1f8a5d066a286da3a1e699823470f">D3 Bar Chart Races (Based on) - jrzief</a></li>
                         <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness
                             Icons - iconfinder</a></li>
                         <li>{{lastUpdated}}</li>
