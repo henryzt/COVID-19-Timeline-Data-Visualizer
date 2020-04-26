@@ -10,7 +10,7 @@
                 <div class="post-block" v-for="post of posts" :key="post.id" @click="goToPost(post.id)">
                     <div style="float: right; color: #007BFF">查看详情</div>
                     <div style="opacity:0.5">{{post.user}}</div>
-                    <div style="max-height: 17vh;">{{post.content}}</div>
+                    <div style="max-height: 10vh; overflow: hidden;">{{post.content}}</div>
                 </div>
             </div>
             <div style="display: flex; justify-content: space-around;opacity: 0.7; padding: 10px;">
@@ -49,16 +49,19 @@
                 wx.miniProgram.switchTab({
                     url:'/pages/discover/discover'
                 });
+                window.ga('send', 'event', "mini-app", "go-to-community", "");
             },
             goToPublish(){
-                wx.miniProgram.switchTab({
+                wx.miniProgram.navigateTo({
                     url:'/pages/publish/publish?space_id=13'
                 });
+                window.ga('send', 'event', "mini-app", "go-to-publish", "");
             },
             goToPost(id){
-                wx.miniProgram.switchTab({
+                wx.miniProgram.navigateTo({
                     url:'pages/moments/detail?id='+id
                 });
+                window.ga('send', 'event', "mini-app", "go-to-post", id);
             },
         }
     }
@@ -90,13 +93,15 @@
 
     .post-block{
         min-width: 230px;
-        height: 20vh;
+        height: 17vh;
         background: white;
         padding: 10px;
         overflow: hidden;
         margin: 10px;
         box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        font-size: 14px
+        font-size: 14px;
+        white-space: pre-wrap;
+        text-overflow: ellipsis;
     }
 </style>
