@@ -87,6 +87,12 @@
 
             <div class="mSection">
 
+                <div v-if="!isLocaleCN">
+                    <div class="title">Share to Friends</div>
+                    <ShareIcons></ShareIcons>
+                </div>
+
+
 <!--                 WeChat notification, for CN only -->
                 <div v-if="isLocaleCN">
                     <div class="title">实时更新订阅</div>
@@ -150,7 +156,7 @@
                             <span>{{isLocaleCN ? " | UCLCSSA 伦敦大学学院中国学联" : " at University College London."}}</span>
                         </li>
                     </ul>
-                        <div style="font-size:14px; opacity:0.5;">You are free to distribute, share or embed whole or part of the site without prior notice to us, as long as
+                        <div style="font-size:14px; opacity:0.5;">You are free to distribute, embed or edit whole or part of the site without prior notice to us, as long as
                             you mention the source (covid19track.site or covid19.uclcssa.cn) or keep this section intact. Please see the github repo for more
                             information if you would like to modify the source code :)
                         </div>
@@ -198,6 +204,7 @@
     import PieSection from "./components/PieSection.vue";
     import CountryCompareSection from "./components/CountryCompareSection.vue";
     import MiniAppPostOverlay from "./components/MiniAppPostOverlay.vue";
+    import ShareIcons from "./components/ShareIcons.vue";
     import vSelect from 'vue-select'
     import 'vue-select/dist/vue-select.css';
     import {
@@ -225,7 +232,8 @@
             MapSection,
             SlideController,
             CountryCompareSection,
-            MiniAppPostOverlay
+            MiniAppPostOverlay,
+            ShareIcons
         },
         data: () => {
             return {
@@ -446,7 +454,8 @@
                         this.$refs["nav"].classList.remove("fixed_nav");
                         this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
                     }
-                })
+                });
+
             }
         },
         computed: {

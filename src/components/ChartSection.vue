@@ -8,7 +8,7 @@
                 :seriesData="confirmedAndDeathChart1"
         ></Chart>
 
-        <div v-if="showMore">
+
             <div class="title">{{ $t('subtitles.newDeaths') }}</div>
             <Chart
                     id="deathChart2"
@@ -19,6 +19,7 @@
                     :colors='["#c40000","#3d000d","#2c9100"]'
             ></Chart>
 
+        <div v-if="showMore">
             <div class="title">{{ $t('subtitles.rates') }}</div>
             <Chart
                     id="rateChart3"
