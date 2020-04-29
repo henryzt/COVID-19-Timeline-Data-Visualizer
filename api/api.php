@@ -19,10 +19,22 @@ function portal_curl_return($path)
 if ($_GET["purge"]) {
     // clear cache
     apc_delete('ttl');
+
+    if ($_GET["purge"] == "hard") {
+        // clear cache
+        apc_delete('json');
+        echo "OK";
+    }
 }
 
 $ttl = apc_fetch('ttl');
 $cache = apc_fetch('json');
+
+if ($_GET["restore"]) {
+    apc_delete('json');
+    apc_delete('ttl');
+    $cache = file_get_contents("cache/" . date("Y-m-d") . ".json", true);
+}
 
 if ($ttl && $cache) {
     echo $cache;
@@ -45,11 +57,15 @@ if ($ttl && $cache) {
     $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
     $ukData->regional = json_decode(portal_curl_return("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true"));
 
-    $globalData = json_decode(portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all"));
+    $globalDataRaw = portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all");
+    $globalData = json_decode($globalDataRaw);
 
-    $res->isUpToDate = $ukData->now && $globalData;
+    $usData = portal_curl_return("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv");
+
+    $res->isUpToDate = $ukData->now && $globalData && strlen($globalDataRaw) > 1000 && $usData;
     $res->uk = $ukData;
     $res->global = $globalData;
+    $res->us = $usData;
 
     $json = json_encode($res);
 
@@ -58,8 +74,9 @@ if ($ttl && $cache) {
         apc_store('ttl', date("Y-m-d"), 300);
     } else {
         // not up to date
-        $json = json_decode($cache);
+        $json = is_string($cache) ? json_decode($cache) : $cache;
         $json->needUpdate = true;
+        $json->isUpToDate = false;
         apc_store('json', json_encode($json));
         apc_store('ttl', date("Y-m-d"), 100);
     }
@@ -67,7 +84,7 @@ if ($ttl && $cache) {
     echo $json;
 
     //save local copy
-    if (strlen($json) > 1000 && $res->isUpToDate) {
+    if (strlen($json) > 3000 && $res->isUpToDate) {
 
         $CSSEGIBaseUrl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/";
         $rawCSSEGI;

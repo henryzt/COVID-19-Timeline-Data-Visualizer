@@ -268,7 +268,7 @@
         },
         mounted() {
             let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            if (this.isWeChat() && this.isMiniApp) {
+            if (this.isWeChat()) {
                 this.$i18n.locale = "zh";
             }
             // miniapp china redirect
