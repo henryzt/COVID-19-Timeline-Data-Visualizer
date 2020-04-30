@@ -6,7 +6,12 @@
                 <div style="margin-top: -2px;"><LocateIcon/></div>
             </button>
 
-            <input class="form-control" id="postcode" placeholder="UK Postcode" style="margin: 0 20px;" v-model="inputValue">
+            <div  style="margin: 0 20px;width: 100%;">
+                <input v-if="currentCountry==='UK'" class="form-control" id="postcode" placeholder="UK Postcode" v-model="inputValue">
+                <vSelect v-else-if="mainLocation" class="select" :clearable="false" :value="usDropdownValue" :options="mainLocation" label="Combined_Key"
+                         @input="findUSCounty"></vSelect>
+                <div v-else style="text-align: center">Loading...</div>
+            </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100px;" @click="findUKPostcode">{{$t('nearBy.search')}}</button>
 
@@ -17,28 +22,47 @@
             </div>
         </div>
         <div class="displayInfo" style="text-align: center;" v-html="displayInfo"></div>
+
+        <div v-if="isResult" style="text-align: center;margin-top: 20px; color: silver;">
+            <a href="javascript: void(0)" v-if="currentCountry==='US'" @click="switchStateCounty">Switch State/County Data<br></a>
+            <a href="#regionData">Go to Regional Data Section</a>
+            <hr>
+            <ShareIcons style="margin-top: 20px;"></ShareIcons>
+        </div>
+
     </div>
 
 </template>
 
 <script>
     import LocateIcon from 'mdi-vue/NearMe'
+    import ShareIcons from "./ShareIcons.vue";
+    import vSelect from 'vue-select'
     export default {
         name: "NearbyCasesFinder",
         props: ["regionData", "currentCountry"],
         components:{
-            LocateIcon
+            LocateIcon,
+            ShareIcons,
+            vSelect
         },
         data: function(){
             return {
                 inputValue: "",
                 displayInfo: "<div style='opacity: 0.7; font-size: 14px;'>" + (this.currentCountry==="UK"?this.$t('nearBy.ukDefault'):this.$t('nearBy.usDefault')) +"</div>",
                 mainLocation: null,
-                statesLocation: null
+                statesLocation: null,
+                usInfo: {
+                    county: null,
+                    state: null
+                },
+                isResult: false,
+                usDropdownValue: null
             }
         },
         methods:{
             findUKPostcode(){
+                this.isResult = false;
                 window.ga('send', 'event', "nearby", "postcode", this.inputValue);
                 fetch("https://api.postcodes.io/postcodes/"+this.inputValue).then( async (res) => {
                     let data = await res.json();
@@ -60,21 +84,25 @@
                     let index = this.regionData.findIndex(obj=> obj.id === location.id);
                     this.displayInfo = this.$t('nearBy.ukResult', [location.location, location.number, location.change, index])
                     window.ga('send', 'event', "nearby", "uk-region-found", location.location+", "+regionName + ", "+ district);
+                    this.isResult = true;
                 }else {
                     this.displayInfo = this.$t('nearBy.notFound', [regionName]);
                     window.ga('send', 'event', "nearby", "uk-region-notfound", regionName + ", "+ district);
                 }
             },
             locateUserGPS(){
+                this.isResult = false;
                 window.ga('send', 'event', "nearby", "start-locating", "");
                 if (navigator.geolocation) {
                     this.displayInfo = this.$t('nearBy.locating');
                     navigator.geolocation.getCurrentPosition(async (position)=>{
                         window.ga('send', 'event', "nearby", "location-found", "");
-                       // this.getUKPostcodeUsingLocation(position);
-                        console.log("OK")
-                       await this.getUSLocationData();
-                       this.calculateDistanceFromLocation(position);
+                        if(this.currentCountry === "UK"){
+                            this.getUKPostcodeUsingLocation(position);
+                        }else {
+                            await this.getUSLocationData();
+                            this.calculateDistanceFromLocation(position);
+                        }
                     },()=>{
                         window.ga('send', 'event', "nearby", "location-rejected", "");
                         this.displayInfo = this.$t('nearBy.rejected');
@@ -110,7 +138,7 @@
                         let json = await csv().fromString(data.global);
                         let usStates = await csv().fromString(data.us);
                         console.log(json, usStates);
-                        this.mainLocation = json.sort((a, b) => b.Active - a.Active);
+                        this.mainLocation = json.sort((a, b) => b.Active - a.Active).filter(ele=>ele.Country_Region==="US");
                         this.statesLocation = usStates.sort((a, b) => b.Active - a.Active);
                         resolve(json);
                     })
@@ -135,21 +163,48 @@
                             min = region;
                         }
                     }
-                    min.idx = list.findIndex(ele=>ele===min);
+                    min.idx = list.findIndex(ele=>ele===min) + 1;
                     console.log(list,min);
                     return min;
                 };
 
-                let usCounties = this.mainLocation.filter(ele=>ele.Country_Region==="US");
+                let usCounties = this.mainLocation;
                 let cmin = getClosest(usCounties); // county min
                 let smin = getClosest(this.statesLocation); // state min
 
-                this.displayInfo = this.$t('nearBy.usResult',
+                this.usDropdownValue = cmin.Combined_Key;
+
+                this.usInfo.county = this.$t('nearBy.usResult',
                     [cmin.Combined_Key, cmin.Active, cmin.Confirmed, cmin.Deaths, (cmin.Deaths/cmin.Confirmed*100).toFixed(2),
-                        cmin.Recovered!=0?cmin.Recovered:"-", cmin.Recovered!=0?(cmin.Recovered/cmin.Confirmed*100).toFixed(2):"-", cmin.idx,
-                        smin.Province_State, smin.People_Tested, Number(smin.Testing_Rate).toFixed(2), smin.Confirmed, smin.People_Hospitalized,
-                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered, smin.Active, smin.idx ])
+                        cmin.Recovered!=0?cmin.Recovered:"-", cmin.Recovered!=0?(cmin.Recovered/cmin.Confirmed*100).toFixed(2):"-", cmin.idx])
+                this.usInfo.state = this.$t('nearBy.usStateResult',
+                    [smin.Province_State, smin.People_Tested, (Number(smin.Testing_Rate)/1000).toFixed(2), smin.Confirmed, smin.People_Hospitalized?smin.People_Hospitalized:"-",
+                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered?smin.Recovered:"-", Number(smin.Active).toFixed(0), smin.idx ])
+
+                this.displayInfo = this.usInfo.county;
+                this.isResult = true;
+            },
+            findUSCounty(e){
+                this.usDropdownValue = e;
+                let postition = {
+                    coords:{
+                        latitude: e["Lat"],
+                        longitude: e["Long_"]
+                    }
+                };
+                this.calculateDistanceFromLocation(postition);
+            },
+            switchStateCounty(){
+                if(this.displayInfo == this.usInfo.county){
+                    this.displayInfo = this.usInfo.state;
+                }else {
+                    this.displayInfo = this.usInfo.county;
+                }
             }
+        },
+        mounted() {
+            if(this.currentCountry === "US")
+                this.getUSLocationData()
         }
     }
 </script>
