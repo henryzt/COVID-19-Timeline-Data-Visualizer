@@ -39,6 +39,7 @@
                 </div>
             </div>
 
+<!--            near by cases -->
             <div v-if="countryName==='UK' || countryName==='US'">
                 <div class="title">{{ $t('subtitles.nearby') }}</div>
                 <div class="mBlock">
@@ -49,8 +50,7 @@
 <!--            nav bar -->
             <div id="navPlaceholder" ref="navPlaceholder"></div>
             <div class="mNav" ref="nav" id="mNavbar">
-                <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}"
-                    v-scroll-spy-link>
+                <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}">
                     <li class="nav-item">
                         <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
                     </li>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="mSection">
-
+<!--                share -->
                 <div v-if="!isLocaleCN">
                     <div class="title">Share to Friends</div>
                     <ShareIcons></ShareIcons>
@@ -191,9 +191,9 @@
             </div>
         </div>
 
-<!--        WeChat indicator -->
-        <div class="fix_bottom" v-if="isLocaleCN && isWeChat()" :class="{'hide-popup': !showWechatPopup}">
-            将此页面设为微信浮窗，方便第一时间获取更新
+<!--        launch indicator -->
+        <div class="fix_bottom" style="font-size: 14px;font-weight: bold;" :class="{'hide-popup': !showWechatPopup}">
+            {{$t('launchIndicator')[Math.floor(Math.random() * $t('launchIndicator').length)]}}
         </div>
     </div>
 </template>
