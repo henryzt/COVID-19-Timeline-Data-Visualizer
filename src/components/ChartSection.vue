@@ -20,6 +20,25 @@
             ></Chart>
 
         <div v-if="showMore">
+
+            <div v-if="!isUk" class="title">{{ $t('dataSwitch.cured') }}</div>
+            <Chart  v-if="!isUk"
+                    id="curedChart"
+                    type="bar"
+                    :dataHistory="ChartData"
+                    :seriesData="curedChart5"
+                    :colors='["#0e9100"]'
+            ></Chart>
+
+            <div class="title">{{ $t('dataSwitch.active') }}</div>
+            <Chart
+                    id="activeChart"
+                    type="area"
+                    :dataHistory="ChartData"
+                    :seriesData="activeChart4"
+                    :colors='["#ff8600","#00a004"]'
+            ></Chart>
+
             <div class="title">{{ $t('subtitles.rates') }}</div>
             <Chart
                     id="rateChart3"
@@ -28,6 +47,7 @@
                     :seriesData="rateChart3"
                     :colors='["#ca0011","#0088ff"]'
             ></Chart>
+
         </div>
 
         <div class="more" @click="showMore = !showMore">
@@ -44,7 +64,7 @@
     import LessIcon from 'mdi-vue/ChevronUp'
     export default {
         name: "ChartSection",
-        props: ["ChartData"],
+        props: ["ChartData", "isUk"],
         components: {
             Chart,
             MoreIcon,
@@ -82,7 +102,7 @@
                         data: this.ChartData.map(a => {
                             let newConfirmed = a.confirmed - lastConfirmed;
                             lastConfirmed = a.confirmed;
-                            return newConfirmed
+                            return newConfirmed > 0 ? newConfirmed : 0;
                         })
                     },
                     {
@@ -90,7 +110,7 @@
                         data: this.ChartData.map(a => {
                             let newDeath = a.death - lastDeath;
                             lastDeath = a.death;
-                            return newDeath
+                            return newDeath > 0 ? newDeath : 0;
                         })
                     }
 
@@ -101,15 +121,46 @@
                     {
                         name:  this.$t('deathRate'),
                         data: this.ChartData.map(a => {
-                            let rate = (a.death / a.confirmed).toPrecision(2) ;
+                            let rate = (a.death / a.confirmed*100).toPrecision(2) ;
                             return rate
                         })
                     },
                     {
                         name:  this.$t('cureRate'),
                         data: this.ChartData.map(a => {
-                            let rate = (a.cured / a.confirmed).toPrecision(2) ;
+                            let rate = (a.cured / a.confirmed*100).toPrecision(2) ;
                             return rate
+                        })
+                    }
+                ]
+            },
+            activeChart4:function () {
+                return [
+                    {
+                        name:  this.$t('dataSwitch.active'),
+                        data: this.ChartData.map(a => {
+                            let rate = a.confirmed - a.cured - a.death ;
+                            return rate > 0 ? rate : 0;
+                        })
+                    },
+                    {
+                        name:  this.$t('dataSwitch.cured'),
+                        data: this.ChartData.map(a => {
+                            let rate = a.cured ;
+                            return rate
+                        })
+                    }
+                ]
+            },
+            curedChart5:function () {
+                let lastCured = 0;
+                return [
+                    {
+                        name:  this.$t('dataSwitch.cured'),
+                        data: this.ChartData.map(a => {
+                            let newCured = a.cured - lastCured;
+                            lastCured = a.cured;
+                            return newCured > 0 ? newCured : 0;
                         })
                     }
                 ]

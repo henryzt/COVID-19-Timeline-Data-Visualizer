@@ -66,7 +66,7 @@
             <div v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
 <!--                charts -->
                 <div class="mSection" id="charts" style="padding-top: 0">
-                    <ChartSection :chart-data="chartData ? chartData : dataCurrent.history"></ChartSection>
+                    <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
 <!--               animations -->
@@ -193,7 +193,7 @@
 
 <!--        launch indicator -->
         <div class="fix_bottom" style="font-size: 14px;font-weight: bold;" :class="{'hide-popup': !showWechatPopup}">
-            {{$t('launchIndicator')[Math.floor(Math.random() * $t('launchIndicator').length)]}}
+            {{launchIndicator}}
         </div>
     </div>
 </template>
@@ -271,7 +271,8 @@
                 showWechatPopup: true,
                 currentDate: null,
                 mainDate: null,
-                lastUpdated: "NEVER"
+                lastUpdated: "NEVER",
+                launchIndicator: ""
             };
         },
         mounted() {
@@ -289,6 +290,7 @@
             this.isLocaleCN = this.$i18n.locale === "zh";
             document.title = this.$t('pageTitle');
             window.dateFormat = this.$t('dateFormat');
+            this.launchIndicator = this.$t('launchIndicator')[Math.floor(Math.random() * this.$t('launchIndicator').length)];
 
             let performanceTimeStart = performance.now();
             fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
