@@ -342,10 +342,10 @@
 
                     dayText.html(that.day);
 
-                    let currentMoment = moment(that.day+'/2020', 'DD/MM/YYYY');
-                    let endMoment = moment(data[data.length-1].day+'/2020', 'DD/MM/YYYY');
+                    let currentMoment = moment(that.day+' 2020', window.dateFormat + ' YYYY');
+                    let endMoment = moment(data[data.length-1].day+' 2020', window.dateFormat + ' YYYY');
                     // day = d3.format('.1f')((+day) + 0.1);
-                    that.day = currentMoment.add(1, 'days').format("DD/MM");
+                    that.day = currentMoment.add(1, 'days').format(window.dateFormat);
                     if(currentMoment.isAfter(endMoment)) that.day= data[0].day;
                     // console.log(day)
                     // console.log(day)

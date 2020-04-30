@@ -51,7 +51,7 @@
         methods: {
             calculateDate: function(){
                 const moment = require('moment');
-                const dateFormat = 'DD/MM/YYYY';
+                const dateFormat = window.dateFormat + ' YYYY';
 
                 // console.log(this.startDate, this.endDate, this.dateData, this.enableEvenIfPaused)
 
@@ -61,9 +61,9 @@
                 let count = 0;
                 while(doContinue && count<10000){
                     this.dateData.push(dateNow);
-                    let currentMoment = moment(dateNow+'/2020', dateFormat);
-                    dateNow = currentMoment.add(1, 'days').format("DD/MM");
-                    doContinue = currentMoment.isSameOrBefore(moment(this.endDate+'/2020', dateFormat));
+                    let currentMoment = moment(dateNow+' 2020', dateFormat);
+                    dateNow = currentMoment.add(1, 'days').format(window.dateFormat);
+                    doContinue = currentMoment.isSameOrBefore(moment(this.endDate+' 2020', dateFormat));
                     count++;
                 }
             },

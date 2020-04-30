@@ -95,7 +95,7 @@ export default {
                   })
                   .slice(this.range),
           labels: {
-            format: "dd/MM",
+            format: "MM/dd",
             rotate: -10
           }
         }

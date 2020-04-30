@@ -275,6 +275,7 @@
             };
         },
         mounted() {
+            window.dateFormat = "DD MMM";
             let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if (this.isWeChat()) {
                 this.$i18n.locale = "zh";
@@ -287,6 +288,7 @@
             }
             this.isLocaleCN = this.$i18n.locale === "zh";
             document.title = this.$t('pageTitle');
+            window.dateFormat = this.$t('dateFormat');
 
             let performanceTimeStart = performance.now();
             fetch("https://henryz.cc/projects/covid/api.php").then(async res => {
@@ -360,8 +362,8 @@
                 this.tableData.hasData = true;
                 this.dataCurrent.history = getCountryHistoryData(countryData);
                 console.log("country loaded", this.dataCurrent);
-                this.startDate = moment(this.dataCurrent.history[0].date).format("DD/MM");
-                this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format("DD/MM");
+                this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
+                this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format(window.dateFormat);
                 this.currentDate = this.endDate;
                 this.calculateDisplay(this.dataCurrent.history.length - 1)
             },

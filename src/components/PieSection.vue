@@ -33,8 +33,8 @@
         },
         mounted(){
             const moment = require('moment');
-            this.startDate = moment(this.allHistoryData[0].date).format('DD/MM');
-            this.endDate = moment(this.allHistoryData[this.allHistoryData.length-1].date).format('DD/MM');
+            this.startDate = moment(this.allHistoryData[0].date).format(window.dateFormat);
+            this.endDate = moment(this.allHistoryData[this.allHistoryData.length-1].date).format(window.dateFormat);
             this.currentData = this.allHistoryData[this.allHistoryData.length-1];
             this.date = this.endDate;
         },
@@ -55,13 +55,13 @@
         },
         methods:{
             changeDate: function(date){
-                let idx = this.allHistoryData.findIndex(ele=> moment(ele.date).format('DD/MM') == date);
+                let idx = this.allHistoryData.findIndex(ele=> moment(ele.date).format(window.dateFormat) == date);
                 this.date = date;
                 this.changeDateIdx(idx)
             },
             changeDateIdx(e){
                 this.currentData = this.allHistoryData[e];
-                this.date = moment(this.currentData.date).format('DD/MM');
+                this.date = moment(this.currentData.date).format(window.dateFormat);
             }
         }
     }

@@ -15,6 +15,7 @@ const messages = {
     'en': {
         pageTitle: "COVID-19 Realtime Data Visualization and Timeline - Coronavirus Nearby Cases Finder",
         title: "Realtime Data Tracking<br>& Timeline",
+        dateFormat: "DD MMM",
         subtitles: {
             today: "Today Overview",
             country: "Country Overview",
@@ -89,22 +90,22 @@ const messages = {
         table: {
             default: "Sort by",
             byRegion: "Region",
-            byCases:"Cases",
-            byChanges:"Changes",
+            byCases: "Cases",
+            byChanges: "Changes",
             region: "Region",
-            cases:"Confirmed",
-            changes:"Changes",
+            cases: "Confirmed",
+            changes: "Changes",
             showAll: "Show All",
             showLess: "Show Less"
         },
-        selector:{
+        selector: {
             uk: "🇬🇧 UK Realtime",
             us: "🇺🇸 US Realtime",
             world: "🌎 Worldwide"
         },
         compareNote: "Data is aligned by the date when confirmed cases reaches 50 in each region",
         compareSelect: "Select any countries below to add for comparision",
-        dataSwitch:{
+        dataSwitch: {
             number: "Confirmed Cases",
             confirmed: "Confirmed Cases",
             active: "Active Cases",
@@ -122,6 +123,7 @@ const messages = {
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
         title: "实时数据动态",
+        dateFormat: "MM/DD",
         subtitles: {
             today: "今日概览",
             country: "国家概览",
@@ -191,22 +193,22 @@ const messages = {
         table: {
             default: "默认排序",
             byRegion: "按地区",
-            byCases:"数据",
-            byChanges:"按变化",
+            byCases: "数据",
+            byChanges: "按变化",
             region: "地区",
             cases: "确诊人数",
             changes: "较上次",
             showAll: "显示全部",
             showLess: "收起"
         },
-        selector:{
+        selector: {
             uk: "🇬🇧英国实时数据",
             us: "🇺🇸美国实时数据",
             world: "🌎世界实时数据"
         },
         compareNote: "数据以国家确诊首次超过50例作为起点对齐",
         compareSelect: "从下列输入框可选择其他任何国家进行对比",
-        dataSwitch:{
+        dataSwitch: {
             number: "累计确诊",
             confirmed: "累计确诊",
             active: "现存确诊",
