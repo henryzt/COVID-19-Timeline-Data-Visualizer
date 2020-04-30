@@ -9,7 +9,7 @@
             <div  style="margin: 0 20px;width: 100%;">
                 <input v-if="currentCountry==='UK'" class="form-control" id="postcode" placeholder="UK Postcode" v-model="inputValue">
                 <vSelect v-else-if="mainLocation" class="select" :clearable="false" :value="usDropdownValue" :options="mainLocation" label="Combined_Key"
-                         @input="findUSCounty" placeholder="Select County..."></vSelect>
+                         @input="findUSCounty" placeholder="Search..."></vSelect>
                 <div v-else style="text-align: center">Loading...</div>
             </div>
 
@@ -40,6 +40,13 @@
     import LocateIcon from 'mdi-vue/NearMe'
     import ShareIcons from "./ShareIcons.vue";
     import vSelect from 'vue-select'
+    const getGetOrdinal = function(n) {
+        //ref https://community.shopify.com/c/Shopify-Design/Ordinal-Number-in-javascript-1st-2nd-3rd-4th/td-p/72156
+        const s=["th","st","nd","rd"],
+            v=n%100;
+        return n+(s[(v-20)%10]||s[v]||s[0]);
+    };
+
     export default {
         name: "NearbyCasesFinder",
         props: ["regionData", "currentCountry"],
@@ -84,7 +91,7 @@
                 if(res && res[0]) {
                     let location = res[0];
                     let index = this.regionData.findIndex(obj=> obj.id === location.id);
-                    this.displayInfo = this.$t('nearBy.ukResult', [location.location, location.number, location.change, index])
+                    this.displayInfo = this.$t('nearBy.ukResult', [location.location, location.number, location.change, getGetOrdinal(index)])
                     window.ga('send', 'event', "nearby", "uk-region-found", location.location+", "+regionName + ", "+ district);
                     this.isResult = true;
                 }else {
@@ -142,7 +149,7 @@
                         let json = await csv().fromString(data.global);
                         let usStates = await csv().fromString(data.us);
                         console.log(json, usStates);
-                        this.mainLocation = json.sort((a, b) => b.Active - a.Active).filter(ele=>ele.Country_Region==="US");
+                        this.mainLocation = json.filter(ele=>ele.Country_Region==="US");
                         this.statesLocation = usStates.sort((a, b) => b.Active - a.Active);
                         resolve(json);
                     })
@@ -159,7 +166,8 @@
                     return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
                 };
 
-                const getClosest = (list)=>{
+                const getClosest = (inputList)=>{
+                    let list = inputList.sort((a, b) => b.Active - a.Active);
                     let min = {distance: Infinity};
                     for(let region of list){
                         region.distance = calculateDist(region["Lat"],region["Long_"],position.coords.latitude, position.coords.longitude);
@@ -193,11 +201,11 @@
 
                 this.usInfo.county = this.$t('nearBy.usResult',
                     [cmin.Combined_Key, cmin.Active, cmin.Confirmed, cmin.Deaths, (cmin.Deaths/cmin.Confirmed*100).toFixed(2),
-                        cmin.Recovered!=0?cmin.Recovered:"-", cmin.Recovered!=0?(cmin.Recovered/cmin.Confirmed*100).toFixed(2):"-", cmin.idx])
+                        cmin.Recovered!=0?cmin.Recovered:"-", cmin.Recovered!=0?(cmin.Recovered/cmin.Confirmed*100).toFixed(2):"-", getGetOrdinal(cmin.idx)])
                 this.usInfo.state = this.$t('nearBy.usStateResult',
                     [smin.Province_State, smin.People_Tested, (Number(smin.Testing_Rate)/1000).toFixed(2), smin.Confirmed, smin.People_Hospitalized?smin.People_Hospitalized:"-",
-                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered?smin.Recovered:"-", Number(smin.Active).toFixed(0), smin.idx,
-                        smin.tRateRank ])
+                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered?smin.Recovered:"-", Number(smin.Active).toFixed(0), getGetOrdinal(smin.idx),
+                        getGetOrdinal(smin.tRateRank) ])
 
                 this.displayInfo = this.usInfo.county;
                 this.isResult = true;
