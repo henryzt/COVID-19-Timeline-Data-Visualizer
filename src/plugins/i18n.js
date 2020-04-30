@@ -60,12 +60,16 @@ const messages = {
             all: "All Data",
         },
         nearBy: {
-            default: "Search cases in NHS region by postcode, or tap the left-side icon to locate.",
+            ukDefault: "Search cases in NHS region by postcode, or tap the left-side icon to locate.",
+            usDefault: "Search cases and rankings by county, or tap the left-side icon to locate.",
             postcodeErr: "Sorry, the UK postcode your entered is invalid.",
-            result: `Currently, there are<span>{1}</span>confirmed cases in<span>{0}</span>, with a change of <span>{2}</span> cases，it is ranked No.<span>{3}</span> in all NHS regions.`,
+            ukResult: `Currently, there are<span>{1}</span>confirmed cases in<span>{0}</span>, with a change of <span>{2}</span> cases，it is ranked No.<span>{3}</span> in all NHS regions.`,
+            usResult: `Currently, there are<span>{1}</span>active cases in<span>{0}</span>, in total of <span>{2}</span> confirmed cases, <span>{3}</span>deaths<span>({4}%)</span> 
+                       and <span>{5}</span>recovered<span>({6}%)</span>. It is ranked No.<span>{7}</span> in all US counties.`,
             notFound: `Sorry, we cannot find any data on <span>{0}</span>`,
             locating: "Locating, please wait...",
             notUk: "Sorry, but we cannot locate you onto an UK region.",
+            notUs: "Sorry, but we cannot locate you onto an US county.",
             rejected: "Sorry, but you have denied the GPS permission.",
             unsupported: "Sorry, Geolocation is not supported by this browser.",
             search: "Search"
@@ -158,12 +162,15 @@ const messages = {
             all: "全部数据",
         },
         nearBy: {
-            default: "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+            ukDefault: "搜索County名即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+            usDefault: "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
             postcodeErr: "抱歉，您输入的邮编有误",
-            result: `目前，<span>{0}</span>区共有<span>{1}</span>例确诊，相较上次变化<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。`,
+            ukResult: `目前，<span>{0}</span>区共有<span>{1}</span>例确诊，相较上次变化<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。`,
+            usResult: `目前，<span>{0}</span>区共有<span>{1}</span>例确诊，相较上次变化<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。`,
             notFound: `抱歉，我们无法找到<span>{0}</span>的相关信息`,
             locating: "定位中，请稍候...",
             notUk: "很抱歉，我们无法定位您到英国的地区",
+            notUs: "很抱歉，我们无法定位您到美国的地区",
             rejected: "很抱歉，我们无法定位，因为您已拒绝位置授权",
             unsupported: "很抱歉，您的浏览器不支持定位",
             search: "查询"

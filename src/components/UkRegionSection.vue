@@ -24,23 +24,16 @@
             </div>
         </div>
 
-        <div class="title">{{ $t('subtitles.nearby') }}</div>
-        <div class="mBlock">
-            <NearbyCasesFinder :regionData="sortedRegionData"></NearbyCasesFinder>
-        </div>
-
     </div>
 </template>
 
 <script>
-    import NearbyCasesFinder from "./NearbyCasesFinder.vue";
     import ICountUp from 'vue-countup-v2';
     export default {
         name: "UkRegionSection",
-        props: ["dataUk", "sortedRegionData"],
+        props: ["dataUk"],
         components:{
-            ICountUp,
-            NearbyCasesFinder
+            ICountUp
         }
     }
 </script>

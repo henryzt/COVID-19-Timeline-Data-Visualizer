@@ -17,8 +17,7 @@
             <TodayNumberSection :display="display"></TodayNumberSection>
 
 <!--            UK number display and postcode -->
-            <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk"
-                             :sortedRegionData="sortedRegionData"></UkRegionSection>
+            <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk"></UkRegionSection>
 
 <!--            time machine -->
             <div v-if="!dataCurrent.isUk">
@@ -37,6 +36,13 @@
                      :class="{'hide-popup': (currentDate === endDate || section)}">
                     {{ $t('tmSticky') }} ({{currentDate}})
                     <span style="margin-left: 5px;text-decoration: underline;cursor: pointer;" @click="revertTM">{{ $t('tmRevert') }}</span>
+                </div>
+            </div>
+
+            <div v-if="countryName==='UK' || countryName==='US'">
+                <div class="title">{{ $t('subtitles.nearby') }}</div>
+                <div class="mBlock">
+                    <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
                 </div>
             </div>
 
@@ -205,6 +211,7 @@
     import CountryCompareSection from "./components/CountryCompareSection.vue";
     import MiniAppPostOverlay from "./components/MiniAppPostOverlay.vue";
     import ShareIcons from "./components/ShareIcons.vue";
+    import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
     import vSelect from 'vue-select'
     import 'vue-select/dist/vue-select.css';
     import {
@@ -233,7 +240,8 @@
             SlideController,
             CountryCompareSection,
             MiniAppPostOverlay,
-            ShareIcons
+            ShareIcons,
+            NearbyCasesFinder
         },
         data: () => {
             return {
