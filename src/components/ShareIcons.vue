@@ -26,6 +26,8 @@
         mounted() {
             if(this.title){
                 this.addTitle()
+            }else{
+                this.shareTitle = "COVID-19 Realtime Data Visualization and Timeline - Coronavirus Nearby Cases Finder (covid19track.site) \n#Covid19 #Coronavirus #NearByCases"
             }
         },
         methods: {

@@ -17,7 +17,7 @@ const messages = {
         title: "Realtime Data Tracking<br>& Timeline",
         dateFormat: "DD MMM",
         launchIndicator: ["Stay home, stay safe.", "Protect yourself, protect others :)", "For easier access, add us to home page or bookmark.",
-            "Add us to the home page or bookmark for faster access", "To keep you updated, bookmark or add us to the home page.", "Tips: tap chart legend to hide data set"],
+            "Add us to the home page or bookmark for faster access", "To keep you updated, bookmark or add us to the home page.", "Tips: tap chart legend to hide specific data set"],
         subtitles: {
             today: "Today Overview",
             country: "Country Overview",
