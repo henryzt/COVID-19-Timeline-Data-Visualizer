@@ -13,7 +13,7 @@ const barRaceColor = {
 
 const messages = {
     'en': {
-        pageTitle: "COVID-19 Realtime Data Visualization and Timeline",
+        pageTitle: "COVID-19 Realtime Data Visualization and Timeline - Coronavirus Nearby Cases Finder",
         title: "Realtime Data Tracking<br>& Timeline",
         subtitles: {
             today: "Today Overview",
@@ -66,15 +66,18 @@ const messages = {
             ukResult: `Currently, there are<span>{1}</span>confirmed cases in<span>{0}</span>, with a change of <span>{2}</span> cases，it is ranked No.<span>{3}</span> in all NHS regions.`,
             usResult: `Currently, there are<span>{1}</span>active cases in<span>{0}</span>, in total of <span>{2}</span> confirmed cases, <span>{3}</span>deaths<span>({4}%)</span> 
                        and <span>{5}</span>recovered<span>({6}%)</span>. It is ranked No.<span>{7}</span> in all US counties.`,
-            usStateResult: `In State of {0}, there are<span>{1}</span>people tested in total, the average testing rate is<span>{2}%</span>. Of those<span>{3}</span>tested positive, <span>{4}</span>are hospitalized 
-                        ({5}%),<span>{6}</span>deaths ({7}%), <span>{8}</span>recovered. Currently<span>{9}</span>are active cases. It is ranked No.<span>{10}</span> in all states.`,
+            usStateResult: `In the State of {0}, there are<span>{1}</span>people tested in total, the average testing rate is<span>{2}%</span>, ranked No.<span>{11}</span>highest testing rate in all states. 
+                        Of those<span>{3}</span>tested positive, <span>{4}</span>are hospitalized 
+                        ({5}%),<span>{6}</span>deaths ({7}%), <span>{8}</span>recovered. Currently there are<span>{9}</span>active cases. It is ranked No.<span>{10}</span> in all states.`,
             notFound: `Sorry, we cannot find any data on <span>{0}</span>`,
             locating: "Locating, please wait...",
             notUk: "Sorry, but we cannot locate you onto an UK region.",
             notUs: "Sorry, but we cannot locate you onto an US county.",
             rejected: "Sorry, but you have denied the GPS permission.",
             unsupported: "Sorry, Geolocation is not supported by this browser.",
-            search: "Search"
+            search: "Search",
+            switchCountyState: "Switch State/County Data",
+            goToRegional: "Go to Regional Data Section"
         },
         barRace: {
             global: "Global",
@@ -130,7 +133,7 @@ const messages = {
             regionList: "地域确诊列表",
             source: "数据来源",
             about: "关于",
-            map: "英国地区确诊地图",
+            map: "国家地区确诊地图",
             ratio: "人数占比",
             timeMachine: "时光机",
             countryCompare: "国家和地区数据分析"
@@ -164,18 +167,19 @@ const messages = {
             all: "全部数据",
         },
         nearBy: {
-            ukDefault: "搜索County名即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
-            usDefault: "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+            usDefault: "搜索州或郡名即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+            ukDefault: "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
             postcodeErr: "抱歉，您输入的邮编有误",
             ukResult: `目前，<span>{0}</span>区共有<span>{1}</span>例确诊，相较上次变化<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。`,
-            usResult: `目前，<span>{0}</span>区共有<span>{1}</span>例确诊，相较上次变化<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。`,
             notFound: `抱歉，我们无法找到<span>{0}</span>的相关信息`,
             locating: "定位中，请稍候...",
             notUk: "很抱歉，我们无法定位您到英国的地区",
             notUs: "很抱歉，我们无法定位您到美国的地区",
             rejected: "很抱歉，我们无法定位，因为您已拒绝位置授权",
             unsupported: "很抱歉，您的浏览器不支持定位",
-            search: "查询"
+            search: "查询",
+            switchCountyState: "切换州或郡数据",
+            goToRegional: "前往地区数据版块"
         },
         barRace: {
             global: "全球",

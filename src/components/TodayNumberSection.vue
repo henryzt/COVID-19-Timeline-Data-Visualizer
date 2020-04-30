@@ -4,22 +4,22 @@
         <div class="overview mBlock">
             <div class="overview_item" style="color: #ff5151;">
                 <div class="overview_title">{{ $t('totalConfirmed') }}</div>
-                <div class="overview_number"><ICountUp :endVal="display.confirmed"/></div>
+                <div class="overview_number"><ICountUp :endVal="displayData.confirmed"/></div>
                 <div class="daily-increase">{{ '+' + display.confirmedChange }}</div>
             </div>
             <div class="overview_item" style="color: #575757;">
                 <div class="overview_title">{{ $t('totalDeaths') }}</div>
-                <div class="overview_number"><ICountUp :endVal="display.deaths "/></div>
+                <div class="overview_number"><ICountUp :endVal="displayData.deaths "/></div>
                 <div class="daily-increase">{{ '+' + display.deathsChange}}</div>
             </div>
             <div class="overview_item" style="color: #0094b9;" v-if="display.tested">
                 <div class="overview_title">{{ $t('totalTests') }}</div>
-                <div class="overview_number"><ICountUp :endVal=" display.tested "/></div>
+                <div class="overview_number"><ICountUp :endVal=" displayData.tested "/></div>
                 <div class="daily-increase"> {{ '+' + display.testedChange }} </div>
             </div>
             <div class="overview_item" style="color: #28ca00;">
                 <div class="overview_title">{{ $t('totalCured') }}</div>
-                <div class="overview_number"><ICountUp :endVal=" display.cured "/></div>
+                <div class="overview_number"><ICountUp :endVal=" displayData.cured "/></div>
                 <div class="daily-increase">{{ '+' + display.curedChange }}</div>
             </div>
         </div>
@@ -28,9 +28,31 @@
 
 <script>
     import ICountUp from 'vue-countup-v2';
+    let timeout = null;
     export default {
         name: "TodayNumberSection",
         props: ["display"],
+        data: function(){
+            return {
+                displayData: {
+                    confirmed: 0,
+                    deaths: 0,
+                    tested: 0,
+                    cured: 0
+                }
+            }
+        },
+        watch: {
+          display: function () {
+              clearTimeout(timeout);
+              timeout = setTimeout(()=>{
+                this.displayData = this.display;
+              },100);
+          }
+        },
+        mounted(){
+            this.displayData = this.display;
+        },
         components:{
             ICountUp
         }

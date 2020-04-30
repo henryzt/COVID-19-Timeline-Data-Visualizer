@@ -9,7 +9,7 @@
             <div  style="margin: 0 20px;width: 100%;">
                 <input v-if="currentCountry==='UK'" class="form-control" id="postcode" placeholder="UK Postcode" v-model="inputValue">
                 <vSelect v-else-if="mainLocation" class="select" :clearable="false" :value="usDropdownValue" :options="mainLocation" label="Combined_Key"
-                         @input="findUSCounty"></vSelect>
+                         @input="findUSCounty" placeholder="Select County..."></vSelect>
                 <div v-else style="text-align: center">Loading...</div>
             </div>
 
@@ -24,10 +24,12 @@
         <div class="displayInfo" style="text-align: center;" v-html="displayInfo"></div>
 
         <div v-if="isResult" style="text-align: center;margin-top: 20px; color: silver;">
-            <a href="javascript: void(0)" v-if="currentCountry==='US'" @click="switchStateCounty">Switch State/County Data<br></a>
-            <a href="#regionData">Go to Regional Data Section</a>
-            <hr>
-            <ShareIcons style="margin-top: 20px;"></ShareIcons>
+            <a href="javascript: void(0)" v-if="currentCountry==='US'" @click="switchStateCounty">{{$t('nearBy.switchCountyState')}}<br></a>
+            <a href="#regionData">{{$t('nearBy.goToRegional')}}</a>
+            <div v-if="$i18n.locale !== 'zh'">
+                <hr>
+                <ShareIcons style="margin-top: 20px;"></ShareIcons>
+            </div>
         </div>
 
     </div>
@@ -114,14 +116,16 @@
 
             },
             getUKPostcodeUsingLocation(position){
-                fetch(`https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}`).then( async res=>{
-                    window.ga('send', 'event', "nearby", "uk-postcode-found", "");
+                let requestUrl = `https://api.postcodes.io/postcodes?lon=${position.coords.longitude}&lat=${position.coords.latitude}`;
+                fetch(requestUrl).then( async res=>{
+                    window.ga('send', 'event', "nearby", "location-found", requestUrl);
                     let data = await res.json();
                     if(data.result && data.result[0]){
                         this.inputValue = data.result[0].postcode;
+                        window.ga('send', 'event', "nearby", "uk-postcode-found", this.inputValue );
                         this.findUKPostcode()
                     }else {
-                        window.ga('send', 'event', "nearby", "location-invalid", position.coords.longitude + ", "+ position.coords.latitude);
+                        window.ga('send', 'event', "nearby", "location-invalid", requestUrl);
                         this.displayInfo = this.$t('nearBy.notUk');
                     }
                 })
@@ -165,12 +169,25 @@
                     }
                     min.idx = list.findIndex(ele=>ele===min) + 1;
                     console.log(list,min);
+
+                    if(min.Testing_Rate){
+                        let tRateList = list.sort((a, b) => b.Testing_Rate - a.Testing_Rate);
+                        min.tRateRank = tRateList.findIndex(ele=>ele.UID===min.UID) + 1;
+                    }
                     return min;
                 };
 
                 let usCounties = this.mainLocation;
                 let cmin = getClosest(usCounties); // county min
                 let smin = getClosest(this.statesLocation); // state min
+
+                if(cmin.distance> 500){
+                    this.displayInfo = this.$t('nearBy.notUs');
+                    window.ga('send', 'event', "nearby", "not-us", cmin.Combined_Key+ " - " +cmin.distance);
+                    return;
+                }
+
+                window.ga('send', 'event', "nearby", "us-county-found", cmin.Combined_Key);
 
                 this.usDropdownValue = cmin.Combined_Key;
 
@@ -179,12 +196,14 @@
                         cmin.Recovered!=0?cmin.Recovered:"-", cmin.Recovered!=0?(cmin.Recovered/cmin.Confirmed*100).toFixed(2):"-", cmin.idx])
                 this.usInfo.state = this.$t('nearBy.usStateResult',
                     [smin.Province_State, smin.People_Tested, (Number(smin.Testing_Rate)/1000).toFixed(2), smin.Confirmed, smin.People_Hospitalized?smin.People_Hospitalized:"-",
-                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered?smin.Recovered:"-", Number(smin.Active).toFixed(0), smin.idx ])
+                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered?smin.Recovered:"-", Number(smin.Active).toFixed(0), smin.idx,
+                        smin.tRateRank ])
 
                 this.displayInfo = this.usInfo.county;
                 this.isResult = true;
             },
             findUSCounty(e){
+                window.ga('send', 'event', "nearby", "us-county-dropdown", e.Combined_Key);
                 this.usDropdownValue = e;
                 let postition = {
                     coords:{
@@ -195,6 +214,7 @@
                 this.calculateDistanceFromLocation(postition);
             },
             switchStateCounty(){
+                window.ga('send', 'event', "nearby", "us-county-state-switched", '');
                 if(this.displayInfo == this.usInfo.county){
                     this.displayInfo = this.usInfo.state;
                 }else {

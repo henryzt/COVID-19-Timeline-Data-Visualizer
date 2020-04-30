@@ -423,7 +423,7 @@
             onTMDragEnd: function (idx) {
                 console.log(idx);
                 this.chartData = this.dataCurrent.history.slice(0, idx);
-                this.mainDate = this.currentDate
+                this.mainDate = this.currentDate;
                 window.ga('send', 'event', "time-machine", "drag-end", idx);
             },
             revertTM: function () {
