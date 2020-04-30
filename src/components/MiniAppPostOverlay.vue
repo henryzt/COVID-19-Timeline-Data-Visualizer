@@ -2,18 +2,18 @@
 <template>
     <div class="ma-overlay" v-if="posts">
         <div class="title_bg" :class="{'hidden-title': !showMore}">
-            <div>❤️学联社区疫情互助讨论</div>
+            <div :style="{color: showMore?'black':'white'}">❤️学联社区疫情互助讨论</div>
             <div style="color: #007BFF" @click="showMore = !showMore"><MoreIcon v-if="showMore"/><LessIcon v-else/>{{showMore?'隐藏':'打开'}}</div>
         </div>
-        <div style="background: white;" v-if="showMore">
+        <div v-if="showMore">
             <div style="display: flex;overflow-y: scroll; margin:0;">
-                <div class="post-block" v-for="post of posts" :key="post.id" @click="goToPost(post.id)">
+                <div class="post-block" v-for="post of posts" :key="post.id" @click="goToPost(post.post_id)">
                     <div style="float: right; color: #007BFF">查看详情</div>
                     <div style="opacity:0.5">{{post.user}}</div>
-                    <div style="max-height: 10vh; overflow: hidden;">{{post.content}}</div>
+                    <div style="max-height: 10vh; overflow: scroll;">{{post.content}}</div>
                 </div>
             </div>
-            <div style="display: flex; justify-content: space-around;opacity: 0.7; padding: 10px;">
+            <div style="display: flex; justify-content: space-around; padding: 10px; color:white;">
                 <div @click="goToCommunity">查看更多</div>
                 <div @click="goToPublish">发布动态</div>
             </div>
@@ -69,12 +69,12 @@
 
 <style scoped>
     .title_bg{
-        background: linear-gradient(rgba(255, 255, 255, 0) 0%, white 70%);
+        /*background: linear-gradient(rgba(0, 0, 0, 0) 0%, black 70%);*/
         display:flex;
         justify-content: space-between;
         padding: 0 10px;
         padding-top: 25px;
-        text-shadow: 2px 2px 4px white;
+        text-shadow: 0px 0px 2px white;
     }
 
     .hidden-title{
@@ -83,12 +83,13 @@
     }
 
     .ma-overlay{
-
+        background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
         position: fixed;
         left: 0;
         bottom: 0;
         width: 100%;
         z-index: 100;
+
     }
 
     .post-block{
