@@ -65,7 +65,10 @@ const messages = {
             postcodeErr: "Sorry, the UK postcode your entered is invalid.",
             ukResult: `Currently, there are<span>{1}</span>confirmed cases in<span>{0}</span>, with a change of <span>{2}</span> cases，it is ranked No.<span>{3}</span> in all NHS regions.`,
             usResult: `Currently, there are<span>{1}</span>active cases in<span>{0}</span>, in total of <span>{2}</span> confirmed cases, <span>{3}</span>deaths<span>({4}%)</span> 
-                       and <span>{5}</span>recovered<span>({6}%)</span>. It is ranked No.<span>{7}</span> in all US counties.`,
+                       and <span>{5}</span>recovered<span>({6}%)</span>. It is ranked No.<span>{7}</span> in all US counties.
+                        <br><br>
+                        In State of {8}, there are<span>{9}</span>people tested in total, the average testing rate is<span>{10}</span>. In those<span>{11}</span>tested positive, <span>{12}</span>hospitalized 
+                        ({13}), <span>{14}</span>deaths ({15}), <span>{16}</span>recovered. Currently<span>{17}</span>are active cases. It is ranked No.<span>{18}</span> in all states.`,
             notFound: `Sorry, we cannot find any data on <span>{0}</span>`,
             locating: "Locating, please wait...",
             notUk: "Sorry, but we cannot locate you onto an UK region.",

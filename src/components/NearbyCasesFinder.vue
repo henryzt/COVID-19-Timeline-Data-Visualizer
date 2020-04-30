@@ -33,7 +33,8 @@
             return {
                 inputValue: "",
                 displayInfo: "<div style='opacity: 0.7; font-size: 14px;'>" + (this.currentCountry==="UK"?this.$t('nearBy.ukDefault'):this.$t('nearBy.usDefault')) +"</div>",
-                mainLocation: null
+                mainLocation: null,
+                statesLocation: null
             }
         },
         methods:{
@@ -99,14 +100,18 @@
             },
             async getUSLocationData(){
                 return new Promise((resolve => {
-                    if(this.mainLocation)
+                    if(this.mainLocation) {
                         resolve(this.mainLocation);
+                        return;
+                    }
                     fetch(`https://henryz.cc/projects/covid/api_current.php`).then( async res=>{
                         let data = await res.json();
                         const csv=require('csvtojson');
                         let json = await csv().fromString(data.global);
-                        console.log(json);
-                        this.mainLocation = json;
+                        let usStates = await csv().fromString(data.us);
+                        console.log(json, usStates);
+                        this.mainLocation = json.sort((a, b) => b.Active - a.Active);
+                        this.statesLocation = usStates.sort((a, b) => b.Active - a.Active);
                         resolve(json);
                     })
                 }))
@@ -122,16 +127,28 @@
                     return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
                 };
 
-                let min = {distance: Infinity};
-
-                for(let region of this.mainLocation){
-                    region.distance = calculateDist(region["Lat"],region["Long_"],position.coords.latitude, position.coords.longitude)
-                    if(region.distance < min.distance){
-                        min = region;
+                const getClosest = (list)=>{
+                    let min = {distance: Infinity};
+                    for(let region of list){
+                        region.distance = calculateDist(region["Lat"],region["Long_"],position.coords.latitude, position.coords.longitude);
+                        if(region.distance < min.distance){
+                            min = region;
+                        }
                     }
-                }
-                console.log(this.mainLocation,min);
-                this.displayInfo = this.$t('nearBy.usResult', [min.Combined_Key, min.Active, min.Confirmed, min.Deaths, (min.Deaths/min.Confirmed*100).toFixed(2), min.Recovered, (min.Recovered/min.Confirmed*100).toFixed(2), 1])
+                    min.idx = list.findIndex(ele=>ele===min);
+                    console.log(list,min);
+                    return min;
+                };
+
+                let usCounties = this.mainLocation.filter(ele=>ele.Country_Region==="US");
+                let cmin = getClosest(usCounties); // county min
+                let smin = getClosest(this.statesLocation); // state min
+
+                this.displayInfo = this.$t('nearBy.usResult',
+                    [cmin.Combined_Key, cmin.Active, cmin.Confirmed, cmin.Deaths, (cmin.Deaths/cmin.Confirmed*100).toFixed(2),
+                        cmin.Recovered!=0?cmin.Recovered:"-", cmin.Recovered!=0?(cmin.Recovered/cmin.Confirmed*100).toFixed(2):"-", cmin.idx,
+                        smin.Province_State, smin.People_Tested, Number(smin.Testing_Rate).toFixed(2), smin.Confirmed, smin.People_Hospitalized,
+                        Number(smin.Hospitalization_Rate).toFixed(2), smin.Deaths, Number(smin.Mortality_Rate).toFixed(2), smin.Recovered, smin.Active, smin.idx ])
             }
         }
     }
