@@ -28,7 +28,7 @@
             <a href="#regionData">{{$t('nearBy.goToRegional')}}</a>
             <div v-if="$i18n.locale !== 'zh'">
                 <hr>
-                <ShareIcons style="margin-top: 20px;"></ShareIcons>
+                <ShareIcons style="margin-top: 20px;" :title="displayInfo"></ShareIcons>
             </div>
         </div>
 

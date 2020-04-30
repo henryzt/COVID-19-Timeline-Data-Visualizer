@@ -1,6 +1,6 @@
 <template>
     <div class="share-icon">
-        <AddThis publicId="ra-5ea72e1d012d376e" />
+        <AddThis publicId="ra-5ea72e1d012d376e" :data-title="shareTitle" data-media="https://covid19track.site/thumbnail.png"/>
     </div>
 
 </template>
@@ -9,8 +9,29 @@
     import AddThis from 'vue-simple-addthis-share'
     export default {
         name: "ShareIcons",
+        props: ["title"],
+        data: function () {
+            return {
+                shareTitle: null
+            }
+        },
         components:{
             AddThis
+        },
+        watch: {
+            title: function () {
+                this.addTitle()
+            }
+        },
+        mounted() {
+            if(this.title){
+                this.addTitle()
+            }
+        },
+        methods: {
+            addTitle(){
+                this.shareTitle = this.title.replace(/<span>/g, " ").replace(/<\/span>/g, "") + " \nhttps://covid19track.site/ \n#Covid19 #Coronavirus #NearByCases \nFind out cases in my area: "
+            }
         }
     }
 </script>
