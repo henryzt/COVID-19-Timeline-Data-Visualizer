@@ -117,7 +117,12 @@ const messages = {
         showAllCharts: "Show All Charts",
         showLess: "Hide",
         noData: "No data available for this view, you can try other data types.",
-        barRaceColor: barRaceColor
+        barRaceColor: barRaceColor,
+        fab: {
+            share: "Share",
+            dashboard: "Dashboard View",
+            scroll: "Scroll View"
+        }
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -221,7 +226,12 @@ const messages = {
         showAllCharts: "显示全部图表",
         showLess: "收起",
         noData: "暂无数据，您可以查看其他数据类型或国家",
-        barRaceColor: barRaceColor
+        barRaceColor: barRaceColor,
+        fab: {
+            share: "分享",
+            dashboard: "瀑布布局",
+            scroll: "滚动布局"
+        }
     }
 };
 

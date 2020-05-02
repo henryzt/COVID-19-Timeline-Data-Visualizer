@@ -82,6 +82,7 @@ body {
 
   text-overflow: fade;
   white-space: nowrap;
+  overflow-x: hidden;
 }
 
 .overview_item {

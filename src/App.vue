@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="fix_bottom" style="background: orange;"
-                         :class="{'hide-popup': (currentDate === endDate || section)}">
+                         :class="{'hide-popup': (currentDate === endDate || (section && !desktopLayout))}">
                         {{ $t('tmSticky') }} ({{currentDate}})
                         <span style="margin-left: 5px;text-decoration: underline;cursor: pointer;" @click="revertTM">{{ $t('tmRevert') }}</span>
                     </div>
@@ -102,7 +102,7 @@
             </div>
             </div>
 
-            <div class="mSection" :class="{mContent:desktopLayout}">
+            <div class="mSection" id="share" :class="{mContent:desktopLayout}">
 <!--                share -->
                 <div v-if="!isLocaleCN">
                     <div class="title">Share to Friends</div>
@@ -191,6 +191,8 @@
                 <MiniAppPostOverlay></MiniAppPostOverlay>
             </div>
 
+            <FAB v-if="isDesktop" @switchLayout="desktopLayout=$event"></FAB>
+
         </div>
 
 <!--        loading indicator -->
@@ -223,6 +225,7 @@
     import MiniAppPostOverlay from "./components/MiniAppPostOverlay.vue";
     import ShareIcons from "./components/ShareIcons.vue";
     import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
+    import FAB from "./components/FAB.vue";
     import vSelect from 'vue-select'
     import 'vue-select/dist/vue-select.css';
     import {
@@ -252,7 +255,8 @@
             CountryCompareSection,
             MiniAppPostOverlay,
             ShareIcons,
-            NearbyCasesFinder
+            NearbyCasesFinder,
+            FAB
         },
         data: () => {
             return {
@@ -485,7 +489,7 @@
 
                 let checkLayout = ()=>{
                     this.isDesktop = (window.innerWidth>1200);
-                    this.desktopLayout = (window.innerWidth>1200);
+                    this.desktopLayout = (window.innerWidth>1400);
                 };
 
                 window.onresize = checkLayout;
@@ -566,7 +570,7 @@
 
     .mSectionDesktop{
         width: 30vw;
-        margin: 1.5vw;
+        margin: 1.3vw;
         padding-top: 0;
     }
 
