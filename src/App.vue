@@ -1,55 +1,64 @@
 <template>
     <div id="app">
-        <div class="mContent" v-if="dataCurrent && shouldRender">
-<!--          header section -->
-            <div class="covid_header">
-                <div>
-                    <vSelect class="select" :clearable="false" :value="currentCountry" :options="countryList"
-                             @input="switchCountry"></vSelect>
-                </div>
-                <div class="header_title">
-                    <h2>COVID-19</h2>
-                    <h3 v-html="$t('title')"></h3>
-                </div>
-            </div>
-
-<!--            number display-->
-            <TodayNumberSection :display="display"></TodayNumberSection>
-
-<!--            UK number display and postcode -->
-            <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk"></UkRegionSection>
-
-<!--            time machine -->
-            <div v-if="!dataCurrent.isUk">
-                <div class="title">{{ $t('subtitles.timeMachine') }}</div>
-                <div class="mBlock">
-                    <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true"
-                                     :disableClick="true"
-                                     :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate"
-                                     @dragEnded="onTMDragEnd"
-                                     :enableEvenIfPaused="true" :playing="false"></SlideController>
-                    <div class="displayInfo" style="text-align: center; opacity:0.5;padding-top:6px">{{ $t('tmHint')
-                        }}
+        <div class="mContent" v-if="dataCurrent && shouldRender" :class="{mContentDesktop: desktopLayout}">
+            <div :class="{'d-flex': desktopLayout}">
+            <div :class="{'mSectionDesktop': desktopLayout}">
+    <!--          header section -->
+                <div class="covid_header">
+                    <div>
+                        <vSelect class="select" :clearable="false" :value="currentCountry" :options="countryList"
+                                 @input="switchCountry"></vSelect>
+                    </div>
+                    <div class="header_title">
+                        <h2>COVID-19</h2>
+                        <h3 v-html="$t('title')"></h3>
                     </div>
                 </div>
-                <div class="fix_bottom" style="background: orange;"
-                     :class="{'hide-popup': (currentDate === endDate || section)}">
-                    {{ $t('tmSticky') }} ({{currentDate}})
-                    <span style="margin-left: 5px;text-decoration: underline;cursor: pointer;" @click="revertTM">{{ $t('tmRevert') }}</span>
-                </div>
-            </div>
 
-<!--            near by cases -->
-            <div v-if="countryName==='UK' || countryName==='US'">
-                <div class="title">{{ $t('subtitles.nearby') }}</div>
-                <div class="mBlock">
-                    <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
+    <!--            number display-->
+                <TodayNumberSection :display="display"></TodayNumberSection>
+
+    <!--            UK number display and postcode -->
+                <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk"></UkRegionSection>
+
+    <!--            time machine -->
+                <div v-if="!dataCurrent.isUk">
+                    <div class="title">{{ $t('subtitles.timeMachine') }}</div>
+                    <div class="mBlock">
+                        <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true"
+                                         :disableClick="true"
+                                         :current-date="currentDate" @changeIndex="changeDateIdx" @change="changeDate"
+                                         @dragEnded="onTMDragEnd"
+                                         :enableEvenIfPaused="true" :playing="false"></SlideController>
+                        <div class="displayInfo" style="text-align: center; opacity:0.5;padding-top:6px">{{ $t('tmHint')
+                            }}
+                        </div>
+                    </div>
+                    <div class="fix_bottom" style="background: orange;"
+                         :class="{'hide-popup': (currentDate === endDate || section)}">
+                        {{ $t('tmSticky') }} ({{currentDate}})
+                        <span style="margin-left: 5px;text-decoration: underline;cursor: pointer;" @click="revertTM">{{ $t('tmRevert') }}</span>
+                    </div>
                 </div>
+
+    <!--            near by cases -->
+                <div v-if="countryName==='UK' || countryName==='US'">
+                    <div class="title">{{ $t('subtitles.nearby') }}</div>
+                    <div class="mBlock">
+                        <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
+                    </div>
+                </div>
+
+    <!--                charts (show on desktop layout) -->
+                <div class="mSection" v-if="desktopLayout" style="padding-top: 0">
+                    <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
+                </div>
+
             </div>
 
 <!--            nav bar -->
-            <div id="navPlaceholder" ref="navPlaceholder"></div>
-            <div class="mNav" ref="nav" id="mNavbar">
+            <div id="navPlaceholder" ref="navPlaceholder" v-if="!desktopLayout"></div>
+            <div class="mNav" ref="nav" id="mNavbar" v-if="!desktopLayout">
                 <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}">
                     <li class="nav-item">
                         <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
@@ -63,14 +72,14 @@
                 </ul>
             </div>
 
-            <div v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
-<!--                charts -->
-                <div class="mSection" id="charts" style="padding-top: 0">
+            <div :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
+<!--                charts (show on mobile layout) -->
+                <div class="mSection" v-if="!desktopLayout" id="charts" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
 <!--               animations -->
-                <div class="mSection" id="animation">
+                <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
                     <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                     <BarRaceSection v-if="tableData.hasData" :table-data="tableData" :is-uk="dataCurrent.isUk"></BarRaceSection>
                     <div class="title">{{ $t('subtitles.ratio') }}</div>
@@ -81,7 +90,7 @@
                 </div>
 
 <!--                map and table -->
-                <div class="mSection" id="regionData">
+                <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="regionData">
                     <div class="title">{{ $t('subtitles.map') }}</div>
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
                     <br>
@@ -90,8 +99,9 @@
                 </div>
 
             </div>
+            </div>
 
-            <div class="mSection">
+            <div class="mSection" :class="{mContent:desktopLayout}">
 <!--                share -->
                 <div v-if="!isLocaleCN">
                     <div class="title">Share to Friends</div>
@@ -272,7 +282,9 @@
                 currentDate: null,
                 mainDate: null,
                 lastUpdated: "NEVER",
-                launchIndicator: ""
+                launchIndicator: "",
+                isDesktop: false,
+                desktopLayout: false
             };
         },
         mounted() {
@@ -459,15 +471,24 @@
             },
             getNavScrollAnchor: function () {
                 document.addEventListener('scroll', () => {
-                    if (window.scrollY > this.$refs["navPlaceholder"].offsetTop) {
-                        this.$refs["nav"].classList.add("fixed_nav");
-                        this.$refs["navPlaceholder"].classList.add("navPlaceholder");
-                    } else {
-                        this.$refs["nav"].classList.remove("fixed_nav");
-                        this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
+                    if(this.$refs["navPlaceholder"]) {
+                        if (window.scrollY > this.$refs["navPlaceholder"].offsetTop) {
+                            this.$refs["nav"].classList.add("fixed_nav");
+                            this.$refs["navPlaceholder"].classList.add("navPlaceholder");
+                        } else {
+                            this.$refs["nav"].classList.remove("fixed_nav");
+                            this.$refs["navPlaceholder"].classList.remove("navPlaceholder");
+                        }
                     }
                 });
 
+                let checkLayout = ()=>{
+                    this.isDesktop = (window.innerWidth>1200);
+                    this.desktopLayout = (window.innerWidth>1200);
+                };
+
+                window.onresize = checkLayout;
+                checkLayout();
             }
         },
         computed: {
@@ -476,6 +497,11 @@
                 let url = new URL(window.location.href);
                 let query = url.searchParams.get("source");
                 return query === "apptab";
+            }
+        },
+        watch: {
+            desktopLayout: function () {
+                this.forceReload()
             }
         }
 
@@ -509,8 +535,7 @@
 
     .fix_bottom {
         position: fixed;
-        bottom: 0;
-        left: 0;
+        bottom: 20px;
         width: 100%;
         background: deepskyblue;
         color: white;
@@ -518,6 +543,10 @@
         text-align: center;
         transition: 2s;
         z-index: 100;
+        max-width: 500px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 6px;
     }
 
     .hide-popup {
@@ -528,6 +557,16 @@
     .select {
         width: 190px;
 
+    }
+
+    .mContentDesktop{
+        max-width: 100%;
+    }
+
+    .mSectionDesktop{
+        width: 30vw;
+        margin: 1.5vw;
+        padding-top: 0;
     }
 
 
@@ -545,6 +584,15 @@
 
         .header_title h3 {
             font-size: 25px;
+        }
+
+        .fix_bottom{
+            max-width: 100%;
+            margin-bottom: 0px;
+            left: 0;
+            bottom: 0;
+            transform: none;
+            border-radius: 0;
         }
     }
 </style>

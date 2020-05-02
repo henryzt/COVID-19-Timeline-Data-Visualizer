@@ -200,3 +200,26 @@ div.btn-group {
     font-size: 1em;
   }
 }
+
+.mSectionDesktop .btn-group-wrap {
+  text-align: center;
+  margin: auto;
+}
+.mSectionDesktop .overview_number {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.mSectionDesktop .overview_item{
+  margin: 1px 10px;
+  /*overflow: scroll;*/
+}
+.mSectionDesktop .overview_title {
+  font-size: 0.9em;
+}
+
+.mSectionDesktop .country-death {
+  font-size: 1em;
+}
+.mSectionDesktop .daily-increase {
+  font-size: 1em;
+}

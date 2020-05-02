@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :ref="'parent'+id">
         <div class="bar_race" :id="'barRace'+id"></div>
         <SlideController :start-date="startDate" :end-date="endDate" :current-date="day" @change="changeDate" @playPause="playing = $event"></SlideController>
     </div>
@@ -34,15 +34,17 @@
             }
         },
         created() {
-            window.addEventListener("resize", this.resizeEventHandler);
+            // window.addEventListener("resize", this.resizeEventHandler);
         },
         destroyed() {
             // console.log("destoryed");
-            window.removeEventListener("resize", this.resizeEventHandler);
+            // window.removeEventListener("resize", this.resizeEventHandler);
         },
         methods: {
-            resizeEventHandler(e) {
-                this.width = window.innerWidth>510?510: window.innerWidth-55;
+            resizeEventHandler() {
+                this.width= this.$refs['parent'+this.id].clientWidth - 10;
+                return this.$refs['parent'+this.id].clientWidth - 10;
+                // this.width = window.innerWidth>510?510: window.innerWidth-55;
                 // console.log(this.width)
             },
             changeDate(e){
@@ -205,6 +207,7 @@
 
                 let ticker = d3.interval(e => {
                     if(!that.playing) return;
+                    that.resizeEventHandler();
 
                     daySlice = data.filter(d => d.day == that.day && !isNaN(d.value))
                         .sort((a,b) => b.value - a.value);
