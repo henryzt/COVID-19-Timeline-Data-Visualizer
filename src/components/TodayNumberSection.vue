@@ -44,14 +44,19 @@
         },
         watch: {
           display: function () {
-              clearTimeout(timeout);
-              timeout = setTimeout(()=>{
-                this.displayData = this.display;
-              },100);
+              this.updateDisplay()
           }
         },
         mounted(){
-            this.displayData = this.display;
+            this.updateDisplay()
+        },
+        methods:{
+          updateDisplay(){
+              clearTimeout(timeout);
+              timeout = setTimeout(()=>{
+                  this.displayData = this.display;
+              },100);
+          }
         },
         components:{
             ICountUp

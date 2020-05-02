@@ -44,6 +44,7 @@
     import MoreIcon from 'mdi-vue/ChevronRight'
     import DataSwitch from './DataSwitch';
     import CountrySwitch from './CountrySwitch';
+    import { getSmallerDate } from '../js/locationUtils'
     export default {
         name: "RegionTable",
         props: ["regionData","mainDate","isUk","currentCountry"],
@@ -75,7 +76,8 @@
         watch: {
             mainDate: function () {
                 if(this.mainDate) {
-                    this.changeDate(this.mainDate)
+                    let dateToChange = getSmallerDate(this.mainDate, this.currentData[this.currentData.length-1].date);
+                    this.changeDate(dateToChange)
                 }
             }
         },

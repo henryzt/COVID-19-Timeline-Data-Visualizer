@@ -316,3 +316,13 @@ export async function getUSRegionData(usStates) {
     console.log("us daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
+
+export function getSmallerDate(mainDate, largestDate) {
+    const yearDateFormat = window.dateFormat + ' YYYY';
+    let currentMoment = moment(mainDate+' 2020', yearDateFormat);
+    if(currentMoment.isAfter(moment(largestDate+' 2020', yearDateFormat))){
+        return largestDate;
+    }else{
+        return mainDate;
+    }
+}

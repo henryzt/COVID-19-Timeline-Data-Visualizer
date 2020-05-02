@@ -3,10 +3,10 @@
         <button type="button" class="btn btn-secondary btn-lg circle" @click="onPlayPause" v-if="!hidePlayButton">
             <div style="margin-top: -2px;"><PauseIcon v-if="playPause"/><PlayIcon v-else/></div>
         </button>
-        <div style="font-size: 30px;font-weight: bold;opacity: 0.6;" v-else>
+        <div style="font-size: 30px;font-weight: bold;opacity: 0.6; min-width:100px;text-align: center;" v-else>
             {{currentDate}}
         </div>
-        <div style="flex-grow: 1; margin-left: 30px">
+        <div style="flex-grow: 1; margin-left: 20px">
             <VueSlider :value="currentDate" @change="onDateChange" @drag-end="onDragEnd" :data="dateData" :disabled="!enableEvenIfPaused && !playPause" :lazy="lazy" :clickable="!disableClick"></VueSlider>
         </div>
     </div>

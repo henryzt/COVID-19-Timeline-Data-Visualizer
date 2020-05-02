@@ -12,7 +12,7 @@
         <div style="text-align: left;opacity: 0.3;">*Data is incomplete, source: GOV.UK, isjeffcom and JHU.</div>
 
         <SlideController v-if="date" :start-date="currentData[0].date" :end-date="currentData[currentData.length-1].date"
-                         :hidePlayButton="true" :current-date="date" @change="changeDate" :lazy="true"
+                         :hidePlayButton="true" :current-date="date" @change="changeDate" :lazy="false"
                          :enableEvenIfPaused="true" :playing="false"></SlideController>
     </div>
 </template>
@@ -24,7 +24,8 @@
     import {
         combineUKHighCharts,
         combineUSHighCharts,
-        combineWorldHighCharts
+        combineWorldHighCharts,
+        getSmallerDate
     } from "../js/locationUtils"
     import SlideController from './SlideController'
     export default {
@@ -61,7 +62,8 @@
         watch: {
             mainDate: function () {
                 if(this.mainDate) {
-                    this.changeDate(this.mainDate)
+                    let dateToChange = getSmallerDate(this.mainDate, this.currentData[this.currentData.length-1].date);
+                    this.changeDate(dateToChange)
                 }
             }
         },
