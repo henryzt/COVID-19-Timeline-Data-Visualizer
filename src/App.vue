@@ -95,7 +95,8 @@
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
                     <br>
                     <div class="title">{{ $t('subtitles.regionList') }}</div>
-                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk" @switchCountry="switchCountry" :current-country="currentCountry"></RegionTable>
+                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk"
+                                 @switchCountry="switchCountry" :current-country="currentCountry" :desktop-layout="desktopLayout"></RegionTable>
                 </div>
 
             </div>

@@ -326,3 +326,10 @@ export function getSmallerDate(mainDate, largestDate) {
         return mainDate;
     }
 }
+
+export function isDateValid(mainDate, smallestDate, largestDate) {
+    const yearDateFormat = window.dateFormat + ' YYYY';
+    let currentMoment = moment(mainDate+' 2020', yearDateFormat);
+    return (currentMoment.isBetween(moment(smallestDate+' 2020', yearDateFormat),
+        moment(largestDate+' 2020', yearDateFormat), null, '[]'))
+}

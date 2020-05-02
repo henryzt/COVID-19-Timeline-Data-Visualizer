@@ -6,9 +6,11 @@
         </div>
 
         <BarRace v-if="global && tab===0" :raceData="global" :title="$t('barRace.globalTitle')" :is-rate="dataType.includes('Rate')" :color="$t('barRaceColor.'+dataType)"
-                 :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"></BarRace>
+                 :subtitle="$t('barRace.unit')" source="Source: Johns Hopkins University" :change-label-position="true" id="2"
+                 :main-date="currentDate" @dateChange="currentDate=$event"></BarRace>
         <BarRace v-if="country && country.length>0 && tab===1" :raceData="country" :title="$t('barRace.localTitle')" :is-rate="dataType.includes('Rate')"  :color="$t('barRaceColor.'+dataType)"
-                 :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk"  id="1"></BarRace>
+                 :subtitle="$t('barRace.unit')" :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'" :change-label-position="!isUk" id="1"
+                 :main-date="currentDate" @dateChange="currentDate=$event"></BarRace>
         <div v-else v-show="tab===1" style="padding: 30px;text-align: center;">{{$t('noData')}}</div>
 
     </div>
@@ -38,7 +40,8 @@
                 tab:0,
                 dataType: "confirmed",
                 global: null,
-                country: null
+                country: null,
+                currentDate: null
             }
         },
         methods:{

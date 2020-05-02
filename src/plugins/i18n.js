@@ -14,7 +14,7 @@ const barRaceColor = {
 const messages = {
     'en': {
         pageTitle: "COVID-19 Realtime Data Visualization and Timeline - Coronavirus Nearby Cases Finder",
-        title: "Realtime Data Tracking<br>& Timeline",
+        title: "Realtime Tracking<br>& Timeline",
         dateFormat: "DD MMM",
         launchIndicator: ["Stay home, stay safe.", "For easier access, add us to home page or bookmark.",
             "Add us to the home page or bookmark for faster access", "To keep you updated, bookmark or add us to the home page.", "Tips: tap chart legend to hide specific data set"],

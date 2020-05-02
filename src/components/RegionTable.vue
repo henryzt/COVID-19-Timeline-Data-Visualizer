@@ -7,7 +7,7 @@
         </div>
 
         <div v-if="tableData">
-            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; ">
+            <table class="table table-striped table-hover" style="position: relative;border-collapse: collapse; " :class="{topZero: desktopLayout}">
                 <thead>
                 <tr>
                     <th scope="col" :class="{active: sort===1}" @click="sortByAlphabet()">{{$t('table.region')}}<SortIcon/></th>
@@ -47,7 +47,7 @@
     import { getSmallerDate } from '../js/locationUtils'
     export default {
         name: "RegionTable",
-        props: ["regionData","mainDate","isUk","currentCountry"],
+        props: ["regionData","mainDate","isUk","currentCountry","desktopLayout"],
         components: {
             SlideController,
             SortIcon,
@@ -192,6 +192,10 @@
         background: white;
         z-index: 50;
     }
+    .topZero th{
+        top:-1px;
+    }
+
     .showAll{
         text-align: center;
         cursor: pointer;

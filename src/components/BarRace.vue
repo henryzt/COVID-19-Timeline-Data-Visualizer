@@ -1,6 +1,6 @@
 <template>
-    <div :ref="'parent'+id">
-        <div class="bar_race" :id="'barRace'+id"></div>
+    <div ref="parent">
+        <div class="bar_race" id="barRace"></div>
         <SlideController :start-date="startDate" :end-date="endDate" :current-date="day" @change="changeDate" @playPause="playing = $event"></SlideController>
     </div>
 
@@ -9,6 +9,7 @@
 <script>
     /* eslint-disable */
     import SlideController from './SlideController'
+    import {isDateValid} from '../js/locationUtils'
     export default {
         name: "BarRace",
         components: {
@@ -22,7 +23,8 @@
             id:String,
             changeLabelPosition: Boolean,
             isRate: Boolean,
-            color: String
+            color: String,
+            mainDate: String
         },
         data:function () {
             return {
@@ -42,13 +44,18 @@
         },
         methods: {
             resizeEventHandler() {
-                this.width= this.$refs['parent'+this.id].clientWidth - 10;
-                return this.$refs['parent'+this.id].clientWidth - 10;
+                if(this.$refs.parent){
+                    this.width = this.$refs.parent.clientWidth;
+                }
                 // this.width = window.innerWidth>510?510: window.innerWidth-55;
                 // console.log(this.width)
             },
             changeDate(e){
                 this.day = e;
+                this.emitDateChange(e)
+            },
+            emitDateChange(e){
+                this.$emit('dateChange', e)
             }
         },
         mounted() {
@@ -59,7 +66,7 @@
             const d3 = require('d3');
             //ref https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f NEED REFACTOR THO, no time yet
             // Feel free to change or delete any of the code you see in this editor!
-            let svg = d3.select("#barRace"+this.id).append("svg")
+            let svg = d3.select("#barRace").append("svg")
                 .attr("width", this.width)
                 .attr("height", 500);
 
@@ -95,7 +102,7 @@
                 .style('text-anchor', 'end')
                 .html("©covid19track.site | Data ©JHU");
 
-            this.day = this.raceData[0].day;
+            this.day =  this.mainDate && isDateValid(this.mainDate, this.raceData[0].day, this.raceData[this.raceData.length-1].day ) ? this.mainDate :  this.raceData[0].day;
 
             let totalString = this.$t('total');
             let that = this;
@@ -344,6 +351,7 @@
                         .remove();
 
                     dayText.html(that.day);
+                    that.emitDateChange(that.day);
 
                     let currentMoment = moment(that.day+' 2020', window.dateFormat + ' YYYY');
                     let endMoment = moment(data[data.length-1].day+' 2020', window.dateFormat + ' YYYY');
