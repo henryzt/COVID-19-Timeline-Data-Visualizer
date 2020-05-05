@@ -22,14 +22,15 @@
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
+// import VueApexCharts from "vue-apexcharts";
 
 // written by https://github.com/DaviesXue/UCLCSSA_COVID19
 
 export default {
   name: "Chart",
   components: {
-    VueApexCharts
+    // VueApexCharts
+    VueApexCharts: () => import(/* webpackChunkName: "vue-apexcharts" */ 'vue-apexcharts'),
   },
   props: {seriesData: Array,
     dataHistory:Array,
