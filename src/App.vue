@@ -299,11 +299,11 @@
                 this.$i18n.locale = "zh";
             }
             // miniapp china redirect
-            if (this.isMiniApp && timeZone == "Asia/Shanghai") {
-                window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
-                window.ga('send', 'event', "china-redirected", "mini-app-tab", "");
-                return;
-            }
+            // if (this.isMiniApp && timeZone == "Asia/Shanghai") {
+            //     window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
+            //     window.ga('send', 'event', "china-redirected", "mini-app-tab", "");
+            //     return;
+            // }
             this.isLocaleCN = this.$i18n.locale === "zh";
             document.title = this.$t('pageTitle');
             window.dateFormat = this.$t('dateFormat');
