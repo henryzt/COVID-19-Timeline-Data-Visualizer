@@ -60,7 +60,7 @@
                 this.changeDateIdx(idx)
             },
             changeDateIdx(e){
-                this.currentData = this.allHistoryData[e];
+                this.currentData = this.allHistoryData[e>0?e-1:0];
                 this.date = moment(this.currentData.date).format(window.dateFormat);
             }
         }

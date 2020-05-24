@@ -448,6 +448,7 @@
                 window.ga('send', 'event', "time-machine", "drag-end", idx);
             },
             revertTM: function () {
+                console.log("OK")
                 this.currentDate = this.endDate;
                 this.chartData = this.dataCurrent.history;
                 this.calculateDisplay(this.dataCurrent.history.length - 1);
@@ -554,11 +555,6 @@
         border-radius: 6px;
     }
 
-    .hide-popup {
-        bottom: -40px;
-        opacity: 0;
-    }
-
     .select {
         width: 190px;
 
@@ -599,5 +595,10 @@
             transform: none;
             border-radius: 0;
         }
+    }
+
+        .hide-popup {
+        bottom: -40px;
+        opacity: 0;
     }
 </style>
