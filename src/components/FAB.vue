@@ -5,19 +5,24 @@
         <i class="fab-action-button__icon"><SettingsIcon></SettingsIcon></i>
     </span>
         <ul class="fab-buttons">
-            <li class="fab-buttons__item">
+            <li class="fab-buttons__item" @click="share">
                 <a href="#share" class="fab-buttons__link" :data-tooltip="$t('fab.share')">
                     <ShareIcon></ShareIcon>
                 </a>
             </li>
-            <li class="fab-buttons__item" @click="$emit('switchLayout', true)">
+            <li class="fab-buttons__item" @click="$emit('switchLayout', true)" v-if="!isDesktop">
                 <a href="javascript:;" class="fab-buttons__link" :data-tooltip="$t('fab.dashboard')">
                     <DashboardIcon></DashboardIcon>
                 </a>
             </li>
-            <li class="fab-buttons__item" @click="$emit('switchLayout', false)">
+            <li class="fab-buttons__item" @click="$emit('switchLayout', false)" v-else>
                 <a href="javascript:;" class="fab-buttons__link" :data-tooltip="$t('fab.scroll')">
                     <ScrollIcon></ScrollIcon>
+                </a>
+            </li>
+            <li class="fab-buttons__item" @click="goToGithub">
+                <a href="javascript:;" class="fab-buttons__link" :data-tooltip="$t('fab.github')">
+                    <GithubIcon></GithubIcon>
                 </a>
             </li>
         </ul>
@@ -29,13 +34,16 @@
     import ScrollIcon from 'mdi-vue/ViewDay'
     import ShareIcon from 'mdi-vue/ShareVariant'
     import SettingsIcon from 'mdi-vue/Cog'
+    import GithubIcon from 'mdi-vue/Github'
     export default {
         name: "FAB",
+        props: ["isDesktop"],
         components: {
             DashboardIcon,
             ScrollIcon,
             ShareIcon,
-            SettingsIcon
+            SettingsIcon,
+            GithubIcon
         },
         methods: {
             share(){
@@ -48,6 +56,10 @@
                 } else {
                     console.log("not supported")
                 }
+            },
+            goToGithub(){
+                window.ga('send', 'event', "fab", "fab-github", '');
+                window.location.href = "https://github.com/henryz00/COVID-19-Timeline-Data-Visualizer";
             }
         }
     }

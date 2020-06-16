@@ -191,7 +191,7 @@
                 <MiniAppPostOverlay></MiniAppPostOverlay>
             </div>
 
-            <FAB v-if="isDesktop && !hideFab" @switchLayout="desktopLayout=$event"></FAB>
+            <FAB v-if="isDesktop && !hideFab" :isDesktop="desktopLayout" @switchLayout="desktopLayout=$event"></FAB>
 
         </div>
 

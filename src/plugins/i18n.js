@@ -121,14 +121,15 @@ const messages = {
         fab: {
             share: "Share",
             dashboard: "Dashboard View",
-            scroll: "Scroll View"
+            scroll: "Scroll View",
+            github: "Source Code"
         }
     },
     'zh': {
         pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
         title: "实时数据动态",
         dateFormat: "MM/DD",
-        launchIndicator: ["在微信中将此页面设为浮窗，方便第一时间获取更新", "请保护好自己：）", "添加到收藏夹或主屏幕，方便下次访问！", "提示：点击图表标识可以隐藏某一个数据"] ,
+        launchIndicator: ["在微信中将此页面设为浮窗，方便第一时间获取更新", "请保护好自己：）", "添加到收藏夹或主屏幕，方便下次访问！", "提示：点击图表标识可以隐藏某一个数据"],
         subtitles: {
             today: "今日概览",
             country: "国家概览",
@@ -230,7 +231,8 @@ const messages = {
         fab: {
             share: "分享",
             dashboard: "瀑布布局",
-            scroll: "滚动布局"
+            scroll: "滚动布局",
+            github: "Github源码"
         }
     }
 };
