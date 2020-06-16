@@ -198,8 +198,12 @@
 <!--        loading indicator -->
         <div v-else>
             <div class="vertical-center">
-                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"  v-if="!networkError">
                     <span class="sr-only">Loading...</span>
+                </div>
+                <div v-else>
+                    Network Error
+                    <a href="/">Retry</a>
                 </div>
             </div>
         </div>
@@ -289,7 +293,8 @@
                 lastUpdated: "NEVER",
                 launchIndicator: "",
                 isDesktop: false,
-                desktopLayout: false
+                desktopLayout: false,
+                networkError: false
             };
         },
         mounted() {
@@ -330,6 +335,9 @@
                 let performanceTime = Math.round(performance.now() - performanceTimeStart);
                 console.log("Data loaded", resTime, performanceTime);
                 window.ga('send', 'event', "net-request", "initial-fetch-loaded", `loaded-${resTime}ms;calculated-${performanceTime}ms;`);
+            }).catch((err)=>{
+                this.networkError = true;
+                console.error(err)
             });
 
             setTimeout(() => {

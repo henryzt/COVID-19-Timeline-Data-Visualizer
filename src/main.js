@@ -8,6 +8,7 @@ import HighchartsVue from 'highcharts-vue';
 import addUKMap from "./js/ukmap";
 import addUSMap from "./js/usmap";
 import addWorldMap from "./js/worldmap";
+import './registerServiceWorker'
 
 Vue.use(scrollSpy, {
   easing: Easing.Quartic.InOut
