@@ -79,6 +79,9 @@
                     let dateToChange = getSmallerDate(this.mainDate, this.currentData[this.currentData.length-1].date);
                     this.changeDate(dateToChange)
                 }
+            },
+            limit: function () {
+                this.$emit("expanded", this.limit!==10)
             }
         },
         computed:{

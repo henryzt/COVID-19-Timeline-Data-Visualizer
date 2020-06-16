@@ -95,7 +95,7 @@
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
                     <br>
                     <div class="title">{{ $t('subtitles.regionList') }}</div>
-                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk"
+                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk" @expanded="hideFab=$event"
                                  @switchCountry="switchCountry" :current-country="currentCountry" :desktop-layout="desktopLayout"></RegionTable>
                 </div>
 
@@ -191,7 +191,7 @@
                 <MiniAppPostOverlay></MiniAppPostOverlay>
             </div>
 
-            <FAB v-if="isDesktop" @switchLayout="desktopLayout=$event"></FAB>
+            <FAB v-if="isDesktop && !hideFab" @switchLayout="desktopLayout=$event"></FAB>
 
         </div>
 
@@ -202,7 +202,7 @@
                     <span class="sr-only">Loading...</span>
                 </div>
                 <div v-else>
-                    Network Error
+                    Network Error<br>
                     <a href="/">Retry</a>
                 </div>
             </div>
@@ -294,7 +294,8 @@
                 launchIndicator: "",
                 isDesktop: false,
                 desktopLayout: false,
-                networkError: false
+                networkError: false,
+                hideFab: false
             };
         },
         mounted() {
@@ -337,7 +338,8 @@
                 window.ga('send', 'event', "net-request", "initial-fetch-loaded", `loaded-${resTime}ms;calculated-${performanceTime}ms;`);
             }).catch((err)=>{
                 this.networkError = true;
-                console.error(err)
+                console.error(err);
+                window.ga('send', 'event', "net-request", "errored", `initial-load-failed`);
             });
 
             setTimeout(() => {
