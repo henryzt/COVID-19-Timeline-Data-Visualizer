@@ -331,11 +331,13 @@
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
                 this.initLocation(timeZone);
+                const lastCountry = localStorage.getItem('lastCountry');
+                if(lastCountry) this.switchCountry(lastCountry);
 
                 this.getNavScrollAnchor();
                 let performanceTime = Math.round(performance.now() - performanceTimeStart);
                 console.log("Data loaded", resTime, performanceTime);
-                window.ga('send', 'event', "net-request", "initial-fetch-loaded", `loaded-${resTime}ms;calculated-${performanceTime}ms;`);
+                window.ga('send', 'event', "net-request", "initial-fetch-loaded", `country-${this.currentCountry};loaded-${resTime}ms;calculated-${performanceTime}ms;`);
             }).catch((err)=>{
                 this.networkError = true;
                 console.error(err);
@@ -366,6 +368,7 @@
                 // console.log(e);
                 this.chartData = null;
                 this.currentCountry = e;
+                localStorage.setItem('lastCountry', e);
                 window.ga('send', 'event', "country", "country-changed", e);
                 if (e === this.countryList[0]) {
                     this.loadCountryData("world");
