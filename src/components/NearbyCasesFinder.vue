@@ -75,7 +75,7 @@
                 window.ga('send', 'event', "nearby", "postcode", this.inputValue);
                 fetch("https://api.postcodes.io/postcodes/"+this.inputValue).then( async (res) => {
                     let data = await res.json();
-                    console.log(data);
+                    // console.log(data);
 
                     if(data.status == 200){
                         this.findByUKRegionName(data.result.nhs_ha, data.result.admin_district)
@@ -148,7 +148,7 @@
                         const csv=require('csvtojson');
                         let json = await csv().fromString(data.global);
                         let usStates = await csv().fromString(data.us);
-                        console.log(json, usStates);
+                        // console.log(json, usStates);
                         this.mainLocation = json.filter(ele=>ele.Country_Region==="US");
                         this.statesLocation = usStates.sort((a, b) => b.Active - a.Active);
                         resolve(json);
@@ -176,7 +176,7 @@
                         }
                     }
                     min.idx = list.findIndex(ele=>ele===min) + 1;
-                    console.log(list,min);
+                    // console.log(list,min);
 
                     if(min.Testing_Rate){
                         let tRateList = list.sort((a, b) => b.Testing_Rate - a.Testing_Rate);

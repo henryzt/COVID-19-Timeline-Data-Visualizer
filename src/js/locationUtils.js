@@ -102,7 +102,7 @@ function combineAllCountryData(globalData, combineProvince) {
             filteredLocations.push(main)
         }
     }
-    console.log("combined results", filteredLocations);
+    // console.log("combined results", filteredLocations);
     return filteredLocations;
 }
 
@@ -313,23 +313,23 @@ export async function getUSRegionData(usStates) {
         let dayData = { arr: value, date: key };
         dailyLocationJson.push(dayData)
     }
-    console.log("us daily location json", dailyLocationJson);
+    // console.log("us daily location json", dailyLocationJson);
     return dailyLocationJson;
 }
 
 export function getSmallerDate(mainDate, largestDate) {
     const yearDateFormat = window.dateFormat + ' YYYY';
-    let currentMoment = moment(mainDate+' 2020', yearDateFormat);
-    if(currentMoment.isAfter(moment(largestDate+' 2020', yearDateFormat))){
+    let currentMoment = moment(mainDate + ' 2020', yearDateFormat);
+    if (currentMoment.isAfter(moment(largestDate + ' 2020', yearDateFormat))) {
         return largestDate;
-    }else{
+    } else {
         return mainDate;
     }
 }
 
 export function isDateValid(mainDate, smallestDate, largestDate) {
     const yearDateFormat = window.dateFormat + ' YYYY';
-    let currentMoment = moment(mainDate+' 2020', yearDateFormat);
-    return (currentMoment.isBetween(moment(smallestDate+' 2020', yearDateFormat),
-        moment(largestDate+' 2020', yearDateFormat), null, '[]'))
+    let currentMoment = moment(mainDate + ' 2020', yearDateFormat);
+    return (currentMoment.isBetween(moment(smallestDate + ' 2020', yearDateFormat),
+        moment(largestDate + ' 2020', yearDateFormat), null, '[]'))
 }

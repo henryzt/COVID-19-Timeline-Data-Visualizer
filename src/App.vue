@@ -322,7 +322,7 @@
                 this.dataUk = data.uk;
                 this.dataUs = data.us;
                 this.dataGlobal = data.global;
-                console.log(data);
+                // console.log(data);
                 this.lastUpdated = `Global data updated ${moment(data.global.confirmed.last_updated).fromNow()},
                           UK data updated ${moment(data.uk.now[0].ts).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
                           Data might not reflect the real number, and might be delayed.`;
@@ -363,7 +363,7 @@
             },
             switchCountry: async function (e) {
                 this.shouldRender = false;
-                console.log(e);
+                // console.log(e);
                 this.chartData = null;
                 this.currentCountry = e;
                 window.ga('send', 'event', "country", "country-changed", e);
@@ -382,7 +382,7 @@
             loadCountryData: function (countryName) {
                 this.countryName = countryName;
                 let countryData = getCountryData(this.dataGlobal, countryName);
-                console.log(countryData.confirmed.locations);
+                // console.log(countryData.confirmed.locations);
                 this.dataCurrent = {};
                 this.dataCurrent.isUk = false;
                 //history data
@@ -390,7 +390,7 @@
                 this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
                 this.tableData.hasData = true;
                 this.dataCurrent.history = getCountryHistoryData(countryData);
-                console.log("country loaded", this.dataCurrent);
+                // console.log("country loaded", this.dataCurrent);
                 this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
                 this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format(window.dateFormat);
                 this.currentDate = this.endDate;
@@ -424,7 +424,6 @@
                 let todayData = this.dataUk.history[this.dataUk.history.length - 1];
                 let yesterData = this.dataUk.history[this.dataUk.history.length - 2];
                 this.tableData.country = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
-                console.log(currentUkAreaData);
 
                 this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
                 this.tableData.hasData = true;
@@ -452,13 +451,11 @@
                 this.currentDate = date;
             },
             onTMDragEnd: function (idx) {
-                console.log(idx);
                 this.chartData = this.dataCurrent.history.slice(0, idx);
                 this.mainDate = this.currentDate;
                 window.ga('send', 'event', "time-machine", "drag-end", idx);
             },
             revertTM: function () {
-                console.log("OK")
                 this.currentDate = this.endDate;
                 this.chartData = this.dataCurrent.history;
                 this.calculateDisplay(this.dataCurrent.history.length - 1);

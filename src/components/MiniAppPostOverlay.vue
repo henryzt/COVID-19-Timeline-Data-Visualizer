@@ -34,11 +34,11 @@
         data: function(){
             return {
                 posts: null,
-                showMore: true
+                showMore: false
             }
         },
         mounted() {
-            wx.miniProgram.getEnv(function(res) { console.log(res.miniprogram) })
+            // wx.miniProgram.getEnv(function(res) { console.log(res.miniprogram) })
             fetch("https://uclcssa.cn/post/getPostEndpoint.php?auth=ucl&space=13").then(async res=>{
                 let data = await res.json();
                 this.posts = data.posts;

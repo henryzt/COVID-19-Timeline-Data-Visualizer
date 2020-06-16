@@ -85,7 +85,7 @@
                             }
                         })
                     }});
-                console.log(data);
+                // console.log(data);
                 let maxLen = Math.max.apply(Math, data.map(a => a.data.length));
                 let dateArr = Array.from(Array(maxLen).keys());
                 // ref https://stackoverflow.com/questions/3746725/
