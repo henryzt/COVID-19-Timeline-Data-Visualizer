@@ -37,7 +37,7 @@
     "weixin-js-sdk": "^1.4.0-test"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-babel": "~4.4.6",
     "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-plugin-pwa": "~4.4.0",
     "@vue/cli-service": "~4.3.0",
