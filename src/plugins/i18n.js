@@ -99,6 +99,7 @@ const messages = {
         },
         selector: {
             uk: "🇬🇧 UK Realtime",
+            ukHistory: "🇬🇧 UK Data Archive",
             us: "🇺🇸 US Realtime",
             world: "🌎 Worldwide"
         },
@@ -209,6 +210,7 @@ const messages = {
         },
         selector: {
             uk: "🇬🇧英国实时数据",
+            ukHistory: "🇬🇧英国历史数据",
             us: "🇺🇸美国实时数据",
             world: "🌎世界实时数据"
         },

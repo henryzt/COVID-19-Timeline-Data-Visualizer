@@ -329,7 +329,7 @@
                 //global data
                 this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
-                this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
+                this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.ukHistory'), this.$t('selector.us'),  ...countryArr];
                 this.initLocation(timeZone);
                 const lastCountry = localStorage.getItem('lastCountry');
                 if(lastCountry) this.switchCountry(lastCountry);
@@ -355,7 +355,7 @@
                     this.currentCountry = this.countryList[1];
                     this.loadUkData();
                 }else if(timezone.includes("America")){
-                    this.currentCountry = this.countryList[2];
+                    this.currentCountry = this.countryList[3];
                     this.loadUsData();
                 }else{
                     this.currentCountry = this.countryList[0];
@@ -375,7 +375,9 @@
 
                 } else if (e === this.countryList[1]) {
                     this.loadUkData();
-                } else if (e === this.countryList[2] || e === "US") {
+                } else if (e === this.countryList[2]) {
+                    this.loadUkHistoryData();
+                } else if (e === this.countryList[3] || e === "US") {
                     await this.loadUsData();
                 } else {
                     this.loadCountryData(e)
@@ -419,6 +421,9 @@
 
             },
             loadUkData: function () {
+                this.loadCountryData("United Kingdom");
+            },
+            loadUkHistoryData: function () {
                 this.countryName = "UK";
                 this.dataCurrent = this.dataUk;
                 this.dataCurrent.isUk = true;
@@ -470,7 +475,8 @@
                 document.title = this.$t('pageTitle');
                 this.countryList[0] = this.$t('selector.world');
                 this.countryList[1] = this.$t('selector.uk');
-                this.countryList[2] = this.$t('selector.us');
+                this.countryList[2] = this.$t('selector.ukHistory');
+                this.countryList[3] = this.$t('selector.us');
                 // this.currentCountry = this.countryList[0];
                 this.forceReload()
             },
