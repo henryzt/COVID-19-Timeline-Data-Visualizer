@@ -316,7 +316,7 @@
             this.launchIndicator = this.$t('launchIndicator')[Math.floor(Math.random() * this.$t('launchIndicator').length)];
 
             let performanceTimeStart = performance.now();
-            fetch("https://uk.henryz.cc/covid/api.php").then(async res => {
+            fetch("data-20200718.json").then(async res => {
                 let data = await res.json();
                 let resTime = Math.round(performance.now() - performanceTimeStart);
                 this.dataUk = data.uk;

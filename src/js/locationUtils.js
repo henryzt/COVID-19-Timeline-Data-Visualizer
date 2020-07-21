@@ -52,7 +52,7 @@ export function getD3Data(dailyLocationJson, dataTypeKey) {
     return locationData;
 }
 
-export function getRegionHistoryTableData(allHistory, todayArr) {
+export function getRegionHistoryTableData(allHistory) {
     let dailyLocationJson = [];
     for (let history of allHistory) {
         if (history.area) {
@@ -63,12 +63,12 @@ export function getRegionHistoryTableData(allHistory, todayArr) {
         }
     }
 
-    // add current data
-    let todayDate = moment().format(window.dateFormat);
-    if (dailyLocationJson[dailyLocationJson.length - 1].date != todayDate) {
-        let today = { arr: todayArr, date: todayDate };
-        dailyLocationJson.push(today);
-    }
+    // // add current data
+    // let todayDate = moment().format(window.dateFormat);
+    // if (dailyLocationJson[dailyLocationJson.length - 1].date != todayDate) {
+    //     let today = { arr: todayArr, date: todayDate };
+    //     dailyLocationJson.push(today);
+    // }
 
     // console.log("uk daily location json", dailyLocationJson);
     return dailyLocationJson;
