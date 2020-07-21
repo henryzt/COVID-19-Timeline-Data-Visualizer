@@ -41,7 +41,7 @@ export default {
   data: function () {
     return {
       showLabel: false,
-      range: -31,
+      range: 0,
     };
   },
   methods:{
