@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="mContent" v-if="dataCurrent && shouldRender" :class="{mContentDesktop: desktopLayout}">
+        <div class="mContent" v-if="dataGlobal" :class="{mContentDesktop: desktopLayout}">
             <div :class="{'d-flex': desktopLayout}">
             <div :class="{'mSectionDesktop': desktopLayout}">
     <!--          header section -->
@@ -16,13 +16,13 @@
                 </div>
 
     <!--            number display-->
-                <TodayNumberSection :display="display" v-if="!dataCurrent.isUk"></TodayNumberSection>
+                <TodayNumberSection :display="display" v-if="display"></TodayNumberSection>
 
     <!--            UK number display and postcode -->
-                <UkRegionSection v-if="isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
+                <UkRegionSection v-if="renderAll && isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
 
     <!--            time machine -->
-                <div v-if="!dataCurrent.isUk">
+                <div v-if="renderAll && !dataCurrent.isUk">
                     <div class="title">{{ $t('subtitles.timeMachine') }}</div>
                     <div class="mBlock">
                         <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true"
@@ -42,7 +42,7 @@
                 </div>
 
     <!--            near by cases -->
-                <div v-if="countryName==='UK' || countryName==='US'">
+                <div v-if="renderAll && (countryName==='UK' || countryName==='US')">
                     <div class="title">{{ $t('subtitles.nearby') }}</div>
                     <div class="mBlock">
                         <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
@@ -50,15 +50,15 @@
                 </div>
 
     <!--                charts (show on desktop layout) -->
-                <div class="mSection" v-if="desktopLayout" style="padding-top: 0">
+                <div class="mSection" v-if="renderAll && desktopLayout" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
             </div>
 
 <!--            nav bar -->
-            <div id="navPlaceholder" ref="navPlaceholder" v-if="!desktopLayout"></div>
-            <div class="mNav" ref="nav" id="mNavbar" v-if="!desktopLayout">
+            <div id="navPlaceholder" ref="navPlaceholder" v-if="renderAll && !desktopLayout"></div>
+            <div class="mNav" ref="nav" id="mNavbar" v-if="renderAll && !desktopLayout">
                 <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}">
                     <li class="nav-item">
                         <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
@@ -72,7 +72,7 @@
                 </ul>
             </div>
 
-            <div :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
+            <div v-if="renderAll" :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
 <!--                charts (show on mobile layout) -->
                 <div class="mSection" v-if="!desktopLayout" id="charts" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
@@ -104,7 +104,7 @@
 
             <div class="mSection" id="share" :class="{mContent:desktopLayout}">
 <!--                share -->
-                <div v-if="!isLocaleCN && !isMiniApp">
+                <div v-if="renderAll && !isLocaleCN && !isMiniApp">
                     <div class="title">Share to Friends</div>
                     <ShareIcons></ShareIcons>
                 </div>
@@ -272,11 +272,11 @@
                 currentCountry: null,
                 countryList: [],
                 display: {
-                    confirmed: 0,
+                    confirmed: 298325,
                     confirmedChange: 0,
-                    deaths: 0,
+                    deaths: 235,
                     deathsChange: 0,
-                    tested: 0,
+                    tested: 453,
                     testedChange: 0,
                     cured: 0,
                     curedChange: 0
@@ -297,7 +297,7 @@
                 hideFab: false
             };
         },
-        mounted() {
+        async mounted() {
             window.dateFormat = "DD MMM";
             let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if (this.isWeChat()) {
@@ -318,6 +318,7 @@
             fetch("https://uk.henryz.cc/covid/api.php").then(async res => {
                 let data = await res.json();
                 let resTime = Math.round(performance.now() - performanceTimeStart);
+                console.log(data)
                 this.dataUkNow = data.uk;
                 this.dataUs = data.us;
                 this.dataGlobal = data.global;
@@ -328,9 +329,12 @@
                 this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
-                this.initLocation(timeZone);
                 const lastCountry = localStorage.getItem('lastCountry');
-                if(lastCountry) this.switchCountry(lastCountry);
+                if(lastCountry){ 
+                    this.switchCountry(lastCountry);
+                }else{
+                    this.initLocation(timeZone);
+                }
 
                 this.getNavScrollAnchor();
                 let performanceTime = Math.round(performance.now() - performanceTimeStart);
@@ -348,7 +352,7 @@
 
         },
         methods: {
-            initLocation: function(timezone){
+            initLocation: async function(timezone){
                 if(timezone.includes("Europe/London") || this.isMiniApp){
                     this.currentCountry = this.countryList[1];
                     this.loadUkData();
@@ -368,6 +372,7 @@
                 this.currentCountry = e;
                 localStorage.setItem('lastCountry', e);
                 window.ga('send', 'event', "country", "country-changed", e);
+
                 if (e === this.countryList[0]) {
                     this.loadCountryData("world");
 
@@ -380,28 +385,28 @@
                 }
                 this.forceReload()
             },
-            loadCountryData: function (countryName) {
-                this.countryName = countryName;
-                let countryData = getCountryData(this.dataGlobal, countryName);
-                // console.log(countryData.confirmed.locations);
-                this.dataCurrent = {};
-                this.dataCurrent.isUk = false;
-                //history data
-                //console.log("data loaded", countryData);
-                this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
-                this.tableData.hasData = true;
-                this.dataCurrent.history = getCountryHistoryData(countryData);
-                // console.log("country loaded", this.dataCurrent);
-                this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
-                this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format(window.dateFormat);
-                this.currentDate = this.endDate;
-                this.calculateDisplay(this.dataCurrent.history.length - 1)
+            loadCountryData: async function (countryName) {
+                    this.countryName = countryName;
+                    let countryData = getCountryData(this.dataGlobal, countryName);
+                    // console.log(countryData.confirmed.locations);
+                    this.dataCurrent = {};
+                    this.dataCurrent.isUk = false;
+                    //history data
+                    //console.log("data loaded", countryData);
+                    this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
+                    this.tableData.hasData = true;
+                    this.dataCurrent.history = getCountryHistoryData(countryData);
+                    // console.log("country loaded", this.dataCurrent);
+                    this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
+                    this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format(window.dateFormat);
+                    this.currentDate = this.endDate;
+                    this.calculateDisplay(this.dataCurrent.history.length - 1)
             },
             loadUsData: async function (){
                 this.loadCountryData("US");
                 this.tableData.country = await getUSRegionData(this.dataUs);
             },
-            calculateDisplay: function (idx) {
+            calculateDisplay: async function (idx) {
                 let current = this.dataCurrent.history[idx];
                 let last = this.dataCurrent.history[idx - 1] ? this.dataCurrent.history[idx - 1] : current;
                 this.display = {
@@ -416,26 +421,8 @@
                 };
 
             },
-            loadUkData: function () {
+            loadUkData: async function () {
                 this.loadCountryData("United Kingdom");
-            },
-            loadUkHistoryData: async function () {
-                this.countryName = "UK";
-                const fetchRes = await fetch("uk-data-archive.json");
-                const data = await fetchRes.json();
-                this.dataUk = data.uk;
-                this.dataCurrent = data.uk;
-                this.dataCurrent.isUk = true;
-                let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
-                //history data
-                let todayData = this.dataUk.history[this.dataUk.history.length - 1];
-                let yesterData = this.dataUk.history[this.dataUk.history.length - 2];
-                this.tableData.country = getRegionHistoryTableData(this.dataUk.history, currentUkAreaData);
-
-                this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
-                this.tableData.hasData = true;
-                this.currentDate = null;
-                this.forceReload()
             },
             changeDateIdx: function (idx) {
                 this.calculateDisplay(idx)
@@ -506,6 +493,9 @@
             },
             isCurrentUk: function() {
                 return this.currentCountry === 'United Kingdom' || this.currentCountry === this.$t('selector.uk');
+            },
+            renderAll: function(){
+                return this.dataCurrent && this.shouldRender;
             }
         },
         watch: {
