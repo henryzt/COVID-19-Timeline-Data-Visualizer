@@ -19,7 +19,7 @@
                 <TodayNumberSection :display="display" v-if="!dataCurrent.isUk"></TodayNumberSection>
 
     <!--            UK number display and postcode -->
-                <UkRegionSection v-if="isCurrentUk && dataUkNow" :dataUk="dataUkNow"></UkRegionSection>
+                <UkRegionSection v-if="isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
 
     <!--            time machine -->
                 <div v-if="!dataCurrent.isUk">
@@ -104,7 +104,7 @@
 
             <div class="mSection" id="share" :class="{mContent:desktopLayout}">
 <!--                share -->
-                <div v-if="!isLocaleCN">
+                <div v-if="!isLocaleCN && !isMiniApp">
                     <div class="title">Share to Friends</div>
                     <ShareIcons></ShareIcons>
                 </div>
@@ -158,7 +158,6 @@
                         <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness
                             Icons - iconfinder</a></li>
                         <li>{{lastUpdated}}</li>
-                        <li v-if="isLocaleCN">感谢 <a href="https://github.com/isjeffcom/">@isjeff</a> 提供的英国数据API</li>
                     </ul>
 
 
@@ -328,7 +327,7 @@
                 //global data
                 this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
-                this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.ukHistory'), this.$t('selector.us'),  ...countryArr];
+                this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
                 this.initLocation(timeZone);
                 const lastCountry = localStorage.getItem('lastCountry');
                 if(lastCountry) this.switchCountry(lastCountry);
@@ -374,9 +373,7 @@
 
                 } else if (e === this.countryList[1]) {
                     this.loadUkData();
-                } else if (e === this.countryList[2]) {
-                    this.loadUkHistoryData();
-                } else if (e === this.countryList[3] || e === "US") {
+                } else if (e === this.countryList[2] || e === "US") {
                     await this.loadUsData();
                 } else {
                     this.loadCountryData(e)
@@ -439,21 +436,6 @@
                 this.tableData.hasData = true;
                 this.currentDate = null;
                 this.forceReload()
-
-                // let confirmedChange = this.dataUk.now[0].confirmed - todayData.confirmed;
-                // let deathsChange = this.dataUk.now[0].death - todayData.death;
-                // let testedChange = this.dataUk.now[0].tested - todayData.tested;
-
-                // this.display = {
-                //     confirmed: this.dataUk.now[0].confirmed,
-                //     confirmedChange: confirmedChange != 0 ? confirmedChange : (todayData.confirmed - yesterData.confirmed),
-                //     deaths: this.dataUk.now[0].death,
-                //     deathsChange: deathsChange != 0 ? deathsChange : (todayData.death - yesterData.death),
-                //     tested: this.dataUk.now[0].tested,
-                //     testedChange: testedChange != 0 ? testedChange : (todayData.tested - yesterData.tested),
-                //     cured: this.dataUk.now[1].cured,
-                //     curedChange: (this.dataUk.now[1].cured - todayData.cured)
-                // };
             },
             changeDateIdx: function (idx) {
                 this.calculateDisplay(idx)
@@ -478,8 +460,7 @@
                 document.title = this.$t('pageTitle');
                 this.countryList[0] = this.$t('selector.world');
                 this.countryList[1] = this.$t('selector.uk');
-                this.countryList[2] = this.$t('selector.ukHistory');
-                this.countryList[3] = this.$t('selector.us');
+                this.countryList[2] = this.$t('selector.us');
                 // this.currentCountry = this.countryList[0];
                 this.forceReload()
             },
@@ -590,6 +571,10 @@
         width: 30vw;
         margin: 1.3vw;
         padding-top: 0;
+    }
+
+    .disabled{
+        opacity: 0.5;
     }
 
 
