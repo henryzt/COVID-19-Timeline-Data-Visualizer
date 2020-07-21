@@ -16,10 +16,10 @@
                 </div>
 
     <!--            number display-->
-                <TodayNumberSection :display="display"></TodayNumberSection>
+                <TodayNumberSection :display="display" v-if="!dataCurrent.isUk"></TodayNumberSection>
 
     <!--            UK number display and postcode -->
-                <UkRegionSection v-if="dataCurrent.isUk && dataUk" :dataUk="dataUk"></UkRegionSection>
+                <UkRegionSection v-if="isCurrentUk && dataUkNow" :dataUk="dataUkNow"></UkRegionSection>
 
     <!--            time machine -->
                 <div v-if="!dataCurrent.isUk">
@@ -319,12 +319,11 @@
             fetch("https://uk.henryz.cc/covid/api.php").then(async res => {
                 let data = await res.json();
                 let resTime = Math.round(performance.now() - performanceTimeStart);
-                this.dataUk = data.uk;
+                this.dataUkNow = data.uk;
                 this.dataUs = data.us;
                 this.dataGlobal = data.global;
                 // console.log(data);
-                this.lastUpdated = `Global data updated ${moment(data.global.confirmed.last_updated).fromNow()},
-                          UK data updated ${moment(data.uk.now[0].ts).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
+                this.lastUpdated = `Data updated ${moment(data.global.confirmed.last_updated).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
                           Data might not reflect the real number, and might be delayed.`;
                 //global data
                 this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
@@ -423,9 +422,12 @@
             loadUkData: function () {
                 this.loadCountryData("United Kingdom");
             },
-            loadUkHistoryData: function () {
+            loadUkHistoryData: async function () {
                 this.countryName = "UK";
-                this.dataCurrent = this.dataUk;
+                const fetchRes = await fetch("uk-data-archive.json");
+                const data = await fetchRes.json();
+                this.dataUk = data.uk;
+                this.dataCurrent = data.uk;
                 this.dataCurrent.isUk = true;
                 let currentUkAreaData = parseLocationData(this.dataUk.now[0].area);
                 //history data
@@ -436,21 +438,22 @@
                 this.sortedRegionData = [...currentUkAreaData].sort((a, b) => b.number - a.number);
                 this.tableData.hasData = true;
                 this.currentDate = null;
+                this.forceReload()
 
-                let confirmedChange = this.dataUk.now[0].confirmed - todayData.confirmed;
-                let deathsChange = this.dataUk.now[0].death - todayData.death;
-                let testedChange = this.dataUk.now[0].tested - todayData.tested;
+                // let confirmedChange = this.dataUk.now[0].confirmed - todayData.confirmed;
+                // let deathsChange = this.dataUk.now[0].death - todayData.death;
+                // let testedChange = this.dataUk.now[0].tested - todayData.tested;
 
-                this.display = {
-                    confirmed: this.dataUk.now[0].confirmed,
-                    confirmedChange: confirmedChange != 0 ? confirmedChange : (todayData.confirmed - yesterData.confirmed),
-                    deaths: this.dataUk.now[0].death,
-                    deathsChange: deathsChange != 0 ? deathsChange : (todayData.death - yesterData.death),
-                    tested: this.dataUk.now[0].tested,
-                    testedChange: testedChange != 0 ? testedChange : (todayData.tested - yesterData.tested),
-                    cured: this.dataUk.now[1].cured,
-                    curedChange: (this.dataUk.now[1].cured - todayData.cured)
-                };
+                // this.display = {
+                //     confirmed: this.dataUk.now[0].confirmed,
+                //     confirmedChange: confirmedChange != 0 ? confirmedChange : (todayData.confirmed - yesterData.confirmed),
+                //     deaths: this.dataUk.now[0].death,
+                //     deathsChange: deathsChange != 0 ? deathsChange : (todayData.death - yesterData.death),
+                //     tested: this.dataUk.now[0].tested,
+                //     testedChange: testedChange != 0 ? testedChange : (todayData.tested - yesterData.tested),
+                //     cured: this.dataUk.now[1].cured,
+                //     curedChange: (this.dataUk.now[1].cured - todayData.cured)
+                // };
             },
             changeDateIdx: function (idx) {
                 this.calculateDisplay(idx)
@@ -519,6 +522,9 @@
                 let url = new URL(window.location.href);
                 let query = url.searchParams.get("source");
                 return query === "apptab";
+            },
+            isCurrentUk: function() {
+                return this.currentCountry === 'United Kingdom' || this.currentCountry === this.$t('selector.uk');
             }
         },
         watch: {

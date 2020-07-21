@@ -53,8 +53,8 @@ if ($ttl && $cache) {
     $globalData;
     $ukData;
 
-    $ukData->now = json_decode(portal_curl_return("https://api.covid19uk.live/"))->data;
-    $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
+    // $ukData->now = json_decode(portal_curl_return("https://api.covid19uk.live/"))->data;
+    // $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
     $ukData->regional = json_decode(portal_curl_return("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true"));
 
     $globalDataRaw = portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all");
@@ -62,7 +62,7 @@ if ($ttl && $cache) {
 
     $usData = portal_curl_return("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv");
 
-    $res->isUpToDate = $ukData->now && $globalData && strlen($globalDataRaw) > 1000 && $usData;
+    $res->isUpToDate = $globalData && strlen($globalDataRaw) > 1000 && $usData;
     $res->uk = $ukData;
     $res->global = $globalData;
     $res->us = $usData;
