@@ -1,9 +1,9 @@
 <template>
     <div id="app">
-        <div class="mContent" v-if="dataGlobal" :class="{mContentDesktop: desktopLayout}">
+        <div class="mContent" v-if="renderAll" :class="{mContentDesktop: desktopLayout}">
             <div :class="{'d-flex': desktopLayout}">
             <div :class="{'mSectionDesktop': desktopLayout}">
-    <!--          header section -->
+<!-- header section -->
                 <div class="covid_header">
                     <div>
                         <vSelect class="select" :clearable="false" :value="currentCountry" :options="countryList"
@@ -15,14 +15,14 @@
                     </div>
                 </div>
 
-    <!--            number display-->
+<!-- number display-->
                 <TodayNumberSection :display="display" v-if="display"></TodayNumberSection>
 
-    <!--            UK number display and postcode -->
-                <UkRegionSection v-if="renderAll && isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
+<!-- UK number display and postcode -->
+                <UkRegionSection v-if="isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
 
-    <!--            time machine -->
-                <div v-if="renderAll && !dataCurrent.isUk">
+<!-- time machine -->
+                <div v-if="!dataCurrent.isUk">
                     <div class="title">{{ $t('subtitles.timeMachine') }}</div>
                     <div class="mBlock">
                         <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true"
@@ -41,24 +41,24 @@
                     </div>
                 </div>
 
-    <!--            near by cases -->
-                <div v-if="renderAll && (countryName==='UK' || countryName==='US')">
+<!-- near by cases -->
+                <div v-if="countryName==='UK' || countryName==='US'">
                     <div class="title">{{ $t('subtitles.nearby') }}</div>
                     <div class="mBlock">
                         <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
                     </div>
                 </div>
 
-    <!--                charts (show on desktop layout) -->
-                <div class="mSection" v-if="renderAll && desktopLayout" style="padding-top: 0">
+<!-- charts (show on desktop layout) -->
+                <div class="mSection" v-if="desktopLayout" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
             </div>
 
-<!--            nav bar -->
-            <div id="navPlaceholder" ref="navPlaceholder" v-if="renderAll && !desktopLayout"></div>
-            <div class="mNav" ref="nav" id="mNavbar" v-if="renderAll && !desktopLayout">
+<!-- nav bar -->
+            <div id="navPlaceholder" ref="navPlaceholder" v-if="!desktopLayout"></div>
+            <div class="mNav" ref="nav" id="mNavbar" v-if="!desktopLayout">
                 <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}">
                     <li class="nav-item">
                         <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
@@ -72,13 +72,13 @@
                 </ul>
             </div>
 
-            <div v-if="renderAll" :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
-<!--                charts (show on mobile layout) -->
+            <div :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
+<!-- charts (show on mobile layout) -->
                 <div class="mSection" v-if="!desktopLayout" id="charts" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
-<!--               animations -->
+<!-- animations -->
                 <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
                     <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                     <BarRaceSection v-if="tableData.hasData" :table-data="tableData" :is-uk="dataCurrent.isUk"></BarRaceSection>
@@ -89,7 +89,7 @@
                                            :country-list="countryList"></CountryCompareSection>
                 </div>
 
-<!--                map and table -->
+<!-- map and table -->
                 <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="regionData">
                     <div class="title">{{ $t('subtitles.map') }}</div>
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
@@ -103,14 +103,14 @@
             </div>
 
             <div class="mSection" id="share" :class="{mContent:desktopLayout}">
-<!--                share -->
-                <div v-if="renderAll && !isLocaleCN && !isMiniApp">
+<!-- share -->
+                <div v-if="!isLocaleCN && !isMiniApp">
                     <div class="title">Share to Friends</div>
                     <ShareIcons></ShareIcons>
                 </div>
 
 
-<!--                 WeChat notification, for CN only -->
+<!-- WeChat notification, for CN only -->
                 <div v-if="isLocaleCN">
                     <div class="title">实时更新订阅</div>
                     <div class="mBlock" style="text-align: center;padding:30px">
@@ -128,7 +128,7 @@
                         </div>
                     </div>
 
-<!--                   Mini app fallback (as not external link should exists) -->
+<!-- Mini app fallback (as not external link should exists) -->
                     <div v-if="isMiniApp">
                         <br>
                         <div class="title">{{ $t('subtitles.about') }}</div>
@@ -141,7 +141,7 @@
 
                 </div>
 
-<!--                source and credits -->
+<!-- source and credits -->
                 <div v-if="!isLocaleCN || !isMiniApp">
                     <br>
                     <div class="title">{{ $t('subtitles.source') }}</div>
@@ -178,7 +178,7 @@
                         </div>
                 </div>
 
-<!--                logo and language switch -->
+<!-- logo and language switch -->
                 <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
                     <img src="./assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN"/>
                     <br><br>
@@ -194,8 +194,19 @@
 
         </div>
 
-<!--        loading indicator -->
+<!-- loading indicator and numbers -->
         <div v-else>
+            <div class="mContent">
+                <div class="covid_header">
+                    <div></div>
+                    <div class="header_title">
+                        <h2>COVID-19</h2>
+                        <h3 v-html="$t('title')"></h3>
+                    </div>
+                </div>
+
+                <TodayNumberSection :display="display" v-if="display" :instant="true"></TodayNumberSection>
+            </div>
             <div class="vertical-center">
                 <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"  v-if="!networkError">
                     <span class="sr-only">Loading...</span>
@@ -207,7 +218,7 @@
             </div>
         </div>
 
-<!--        launch indicator -->
+<!-- launch indicator -->
         <div class="fix_bottom" style="font-size: 14px;font-weight: bold;" :class="{'hide-popup': !showWechatPopup}">
             {{launchIndicator}}
         </div>
@@ -386,21 +397,21 @@
                 this.forceReload()
             },
             loadCountryData: async function (countryName) {
-                    this.countryName = countryName;
-                    let countryData = getCountryData(this.dataGlobal, countryName);
-                    // console.log(countryData.confirmed.locations);
-                    this.dataCurrent = {};
-                    this.dataCurrent.isUk = false;
-                    //history data
-                    //console.log("data loaded", countryData);
-                    this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
-                    this.tableData.hasData = true;
-                    this.dataCurrent.history = getCountryHistoryData(countryData);
-                    // console.log("country loaded", this.dataCurrent);
-                    this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
-                    this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format(window.dateFormat);
-                    this.currentDate = this.endDate;
-                    this.calculateDisplay(this.dataCurrent.history.length - 1)
+                this.countryName = countryName;
+                let countryData = getCountryData(this.dataGlobal, countryName);
+                // console.log(countryData.confirmed.locations);
+                this.dataCurrent = {};
+                this.dataCurrent.isUk = false;
+                //history data
+                //console.log("data loaded", countryData);
+                this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
+                this.tableData.hasData = true;
+                this.dataCurrent.history = getCountryHistoryData(countryData);
+                // console.log("country loaded", this.dataCurrent);
+                this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
+                this.endDate = moment(this.dataCurrent.history[this.dataCurrent.history.length - 1].date).format(window.dateFormat);
+                this.currentDate = this.endDate;
+                this.calculateDisplay(this.dataCurrent.history.length - 1)
             },
             loadUsData: async function (){
                 this.loadCountryData("US");

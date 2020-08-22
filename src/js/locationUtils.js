@@ -156,7 +156,7 @@ export function getCountryData(globalData, countryName) {
     countryData.confirmed.locations = globalData.confirmed.locations.filter(countryFilter);
     countryData.deaths.locations = globalData.deaths.locations.filter(countryFilter);
     countryData.recovered.locations = globalData.recovered.locations.filter(countryFilter);
-    // console.log("country data",countryData);
+    console.log("country data",countryData);
     return countryData;
 }
 
