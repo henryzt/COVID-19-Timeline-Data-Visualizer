@@ -37,12 +37,14 @@
     ></BarRace>
     <div v-else v-show="tab===1" style="padding: 30px;text-align: center;">{{$t('noData')}}</div>
   </div>
+  <Loading v-else></Loading>
 </template>
 
 <script>
 import BarRace from "./BarRace.vue";
 import DataSwitch from "./DataSwitch";
 import CountrySwitch from "./CountrySwitch";
+import Loading from "./Loading.vue";
 import { getD3Data } from "../js/locationUtils";
 
 export default {
@@ -51,6 +53,7 @@ export default {
     BarRace,
     DataSwitch,
     CountrySwitch,
+    Loading
   },
   props: {
     tableData: Object,
