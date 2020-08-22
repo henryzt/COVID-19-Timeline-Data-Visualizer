@@ -190,25 +190,33 @@
 </template>
 
 <script>
-/* eslint-disable */
-import RegionTable from "./components/RegionTable.vue";
-import UkRegionSection from "./components/UkRegionSection.vue";
+const RegionTable = () => ({
+  component: import("./components/RegionTable.vue")
+});
+const BarRaceSection = () => ({
+  component: import("./components/BarRaceSection.vue")
+});
+const MapSection = () => ({
+  component: import("./components/MapSection.vue")
+});
+const ChartSection = () => ({
+  component: import("./components/ChartSection.vue")
+});
+const CountryCompareSection = () => ({
+  component: import("./components/CountryCompareSection.vue")
+});
+const PieSection = () => ({
+  component: import("./components/PieSection.vue")
+});
 import TodayNumberSection from "./components/TodayNumberSection.vue";
-import BarRaceSection from "./components/BarRaceSection.vue";
-import MapSection from "./components/MapSection.vue";
-import ChartSection from "./components/ChartSection.vue";
 import SlideController from "./components/SlideController.vue";
-import PieSection from "./components/PieSection.vue";
-import CountryCompareSection from "./components/CountryCompareSection.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import FAB from "./components/FAB.vue";
 import Credits from "./components/Credits.vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import {
-  getRegionHistoryTableData,
   getGlobalHistoryTableData,
-  parseLocationData,
   getAllCountries,
   getCountryData,
   getCountryHistoryData,
@@ -225,7 +233,6 @@ export default {
     ChartSection,
     PieSection,
     TodayNumberSection,
-    UkRegionSection,
     vSelect,
     MapSection,
     SlideController,
