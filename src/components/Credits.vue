@@ -90,7 +90,9 @@
         <ul>
           <li>
             This project is open sourced at
-            <a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK">Github Repository</a>,
+            <a
+              href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK"
+            >Github Repository</a>,
             pull requests and issues welcomed!
           </li>
           <li>
