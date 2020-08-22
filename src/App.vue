@@ -384,14 +384,12 @@ export default {
     initLocation: async function (timezone) {
       if (timezone.includes("Europe/London") || this.isMiniApp) {
         this.currentCountry = this.countryList[1];
-        this.loadUkData();
       } else if (timezone.includes("America")) {
         this.currentCountry = this.countryList[3];
-        this.loadUsData();
       } else {
         this.currentCountry = this.countryList[0];
-        this.loadCountryData("world");
       }
+      this.switchCountry(this.currentCountry)
       window.ga(
         "send",
         "event",
