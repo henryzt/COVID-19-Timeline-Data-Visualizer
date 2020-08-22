@@ -131,7 +131,7 @@ import MiniAppPostOverlay from "./MiniAppPostOverlay.vue";
 
 export default {
   name: "Credits",
-  props: ["isMiniApp", "isLocaleCN", "showWechatPopup", "lastUpdated"],
+  props: ["isMiniApp", "isLocaleCN", "isWeChat", "showWechatPopup", "lastUpdated", "changeLang"],
   components: {
     MiniAppPostOverlay,
     ShareIcons,

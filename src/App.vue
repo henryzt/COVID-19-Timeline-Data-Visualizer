@@ -152,6 +152,8 @@
           :isLocaleCN="isLocaleCN"
           :showWechatPopup="showWechatPopup"
           :lastUpdated="lastUpdated"
+          :changeLang="changeLang"
+          :isWeChat="isWeChat"
         ></Credits>
         <FAB
           v-if="isDesktop && !hideFab"
@@ -190,31 +192,40 @@
 </template>
 
 <script>
-const RegionTable = () => ({
-  component: import("./components/RegionTable.vue")
-});
-const BarRaceSection = () => ({
-  component: import("./components/BarRaceSection.vue")
-});
-const MapSection = () => ({
-  component: import("./components/MapSection.vue")
-});
-const ChartSection = () => ({
-  component: import("./components/ChartSection.vue")
-});
-const CountryCompareSection = () => ({
-  component: import("./components/CountryCompareSection.vue")
-});
-const PieSection = () => ({
-  component: import("./components/PieSection.vue")
-});
 import TodayNumberSection from "./components/TodayNumberSection.vue";
 import SlideController from "./components/SlideController.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import FAB from "./components/FAB.vue";
 import Credits from "./components/Credits.vue";
+import Loading from "./components/Loading.vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+
+const RegionTable = () => ({
+  component: import("./components/RegionTable.vue"),
+  loading: Loading
+});
+const BarRaceSection = () => ({
+  component: import("./components/BarRaceSection.vue"),
+  loading: Loading
+});
+const MapSection = () => ({
+  component: import("./components/MapSection.vue"),
+  loading: Loading
+});
+const ChartSection = () => ({
+  component: import("./components/ChartSection.vue"),
+  loading: Loading
+});
+const CountryCompareSection = () => ({
+  component: import("./components/CountryCompareSection.vue"),
+  loading: Loading
+});
+const PieSection = () => ({
+  component: import("./components/PieSection.vue"),
+  loading: Loading
+});
+
 import {
   getGlobalHistoryTableData,
   getAllCountries,

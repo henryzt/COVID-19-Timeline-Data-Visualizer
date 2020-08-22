@@ -73,6 +73,7 @@ body {
   border-radius: 10px;
   padding: 30px;
   color: #252525;
+  animation: fadein 1s ease-out;
 }
 
 .overview {
@@ -224,4 +225,9 @@ div.btn-group {
 }
 .mSectionDesktop .daily-increase {
   font-size: 1.1em;
+}
+
+@keyframes fadein {
+    from { opacity: 0; transform: translateY(30px) }
+    to   { opacity: 1; }
 }
