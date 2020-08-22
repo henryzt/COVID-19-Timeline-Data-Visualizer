@@ -3,7 +3,7 @@
         <div class="mContent" v-if="dataGlobal" :class="{mContentDesktop: desktopLayout}">
             <div :class="{'d-flex': desktopLayout}">
             <div :class="{'mSectionDesktop': desktopLayout}">
-    <!--          header section -->
+    <!-- header section -->
                 <div class="covid_header">
                     <div>
                         <vSelect class="select" :clearable="false" :value="currentCountry" :options="countryList"
@@ -15,13 +15,10 @@
                     </div>
                 </div>
 
-    <!--            number display-->
+    <!-- number display-->
                 <TodayNumberSection :display="display" v-if="display"></TodayNumberSection>
 
-    <!--            UK number display and postcode -->
-                <UkRegionSection v-if="renderAll && isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
-
-    <!--            time machine -->
+    <!-- time machine -->
                 <div v-if="renderAll && !dataCurrent.isUk">
                     <div class="title">{{ $t('subtitles.timeMachine') }}</div>
                     <div class="mBlock">
@@ -41,7 +38,7 @@
                     </div>
                 </div>
 
-    <!--            near by cases -->
+    <!-- near by cases -->
                 <div v-if="renderAll && (countryName==='UK' || countryName==='US')">
                     <div class="title">{{ $t('subtitles.nearby') }}</div>
                     <div class="mBlock">
@@ -49,14 +46,14 @@
                     </div>
                 </div>
 
-    <!--                charts (show on desktop layout) -->
+    <!-- charts (show on desktop layout) -->
                 <div class="mSection" v-if="renderAll && desktopLayout" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
             </div>
 
-<!--            nav bar -->
+<!-- nav bar -->
             <div id="navPlaceholder" ref="navPlaceholder" v-if="renderAll && !desktopLayout"></div>
             <div class="mNav" ref="nav" id="mNavbar" v-if="renderAll && !desktopLayout">
                 <ul class="nav nav-pills nav-fill" v-scroll-spy-active="{selector: 'li a', class: 'active'}">
@@ -73,12 +70,12 @@
             </div>
 
             <div v-if="renderAll" :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
-<!--                charts (show on mobile layout) -->
+<!-- charts (show on mobile layout) -->
                 <div class="mSection" v-if="!desktopLayout" id="charts" style="padding-top: 0">
                     <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
                 </div>
 
-<!--               animations -->
+<!-- animations -->
                 <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
                     <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
                     <BarRaceSection v-if="tableData.hasData" :table-data="tableData" :is-uk="dataCurrent.isUk"></BarRaceSection>
@@ -89,7 +86,7 @@
                                            :country-list="countryList"></CountryCompareSection>
                 </div>
 
-<!--                map and table -->
+<!-- map and table -->
                 <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="regionData">
                     <div class="title">{{ $t('subtitles.map') }}</div>
                     <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
@@ -103,14 +100,14 @@
             </div>
 
             <div class="mSection" id="share" :class="{mContent:desktopLayout}">
-<!--                share -->
+<!-- share -->
                 <div v-if="renderAll && !isLocaleCN && !isMiniApp">
                     <div class="title">Share to Friends</div>
                     <ShareIcons></ShareIcons>
                 </div>
 
 
-<!--                 WeChat notification, for CN only -->
+<!-- WeChat notification, for CN only -->
                 <div v-if="isLocaleCN">
                     <div class="title">实时更新订阅</div>
                     <div class="mBlock" style="text-align: center;padding:30px">
@@ -128,7 +125,7 @@
                         </div>
                     </div>
 
-<!--                   Mini app fallback (as not external link should exists) -->
+<!-- Mini app fallback (as not external link should exists) -->
                     <div v-if="isMiniApp">
                         <br>
                         <div class="title">{{ $t('subtitles.about') }}</div>
@@ -141,7 +138,7 @@
 
                 </div>
 
-<!--                source and credits -->
+<!-- source and credits -->
                 <div v-if="!isLocaleCN || !isMiniApp">
                     <br>
                     <div class="title">{{ $t('subtitles.source') }}</div>
@@ -178,7 +175,7 @@
                         </div>
                 </div>
 
-<!--                logo and language switch -->
+<!-- logo and language switch -->
                 <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
                     <img src="./assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN"/>
                     <br><br>
@@ -194,7 +191,7 @@
 
         </div>
 
-<!--        loading indicator -->
+<!-- loading indicator -->
         <div v-else>
             <div class="vertical-center">
                 <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"  v-if="!networkError">
@@ -207,7 +204,7 @@
             </div>
         </div>
 
-<!--        launch indicator -->
+<!-- launch indicator -->
         <div class="fix_bottom" style="font-size: 14px;font-weight: bold;" :class="{'hide-popup': !showWechatPopup}">
             {{launchIndicator}}
         </div>
@@ -314,8 +311,10 @@
             window.dateFormat = this.$t('dateFormat');
             this.launchIndicator = this.$t('launchIndicator')[Math.floor(Math.random() * this.$t('launchIndicator').length)];
 
+            console.time("fetch");
             let performanceTimeStart = performance.now();
             fetch("https://uk.henryz.cc/covid/api.php").then(async res => {
+                console.timeEnd("fetch");
                 let data = await res.json();
                 let resTime = Math.round(performance.now() - performanceTimeStart);
                 console.log(data)
@@ -326,8 +325,12 @@
                 this.lastUpdated = `Data updated ${moment(data.global.confirmed.last_updated).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
                           Data might not reflect the real number, and might be delayed.`;
                 //global data
+                console.time("getGlobalHistoryTableData");
                 this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
+                console.timeEnd("getGlobalHistoryTableData");
+                console.time("getAllCountries");
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
+                console.timeEnd("getAllCountries");
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
                 const lastCountry = localStorage.getItem('lastCountry');
                 if(lastCountry){ 
@@ -366,6 +369,7 @@
                 window.ga('send', 'event', "timezone-acquired", this.currentCountry, timezone);
             },
             switchCountry: async function (e) {
+                console.time("switchCountry");
                 this.shouldRender = false;
                 // console.log(e);
                 this.chartData = null;
@@ -384,6 +388,7 @@
                     this.loadCountryData(e)
                 }
                 this.forceReload()
+                console.timeEnd("switchCountry");
             },
             loadCountryData: async function (countryName) {
                     this.countryName = countryName;

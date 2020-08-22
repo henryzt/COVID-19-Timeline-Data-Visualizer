@@ -36,7 +36,7 @@
         },
         data: function () {
             return {
-                renderComponent:true,
+                renderComponent:false,
                 tab:0,
                 dataType: "confirmed",
                 global: null,
@@ -50,11 +50,13 @@
                 this.forceRerender()
             },
             changeDataType(type){
+                console.time("D3")
                 this.dataType = type;
                 this.global = getD3Data(this.tableData.global, type);
                 if(this.tableData.country)
                     this.country = getD3Data(this.tableData.country, this.isUk?"number":type);
                 this.forceRerender()
+                console.timeEnd("D3")
             },
             forceRerender() {
                 this.renderComponent = false;
@@ -64,7 +66,9 @@
             }
         },
         mounted() {
-            this.changeDataType(this.dataType)
+            setImmediate(()=>{
+                this.changeDataType(this.dataType)
+            })
         }
     }
 </script>
