@@ -19,7 +19,7 @@
                 <TodayNumberSection :display="display" v-if="display"></TodayNumberSection>
 
     <!-- time machine -->
-                <div v-if="renderAll && !dataCurrent.isUk">
+                <div v-if="renderAll && endDate && !dataCurrent.isUk">
                     <div class="title">{{ $t('subtitles.timeMachine') }}</div>
                     <div class="mBlock">
                         <SlideController :start-date="startDate" :end-date="endDate" :hidePlayButton="true"
@@ -72,15 +72,15 @@
             <div v-if="renderAll" :class="{'d-flex': desktopLayout}" v-scroll-spy="{data: 'section', offset: 100, allowNoActive: false}">
 <!-- charts (show on mobile layout) -->
                 <div class="mSection" v-if="!desktopLayout" id="charts" style="padding-top: 0">
-                    <ChartSection :chart-data="chartData ? chartData : dataCurrent.history" :is-uk="dataCurrent.isUk"></ChartSection>
+                    <ChartSection v-if="dataCurrent.history || chartData" :chart-data="chartData ? chartData : dataCurrent.history"></ChartSection>
                 </div>
 
 <!-- animations -->
                 <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
                     <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
-                    <BarRaceSection v-if="tableData.hasData" :table-data="tableData" :is-uk="dataCurrent.isUk"></BarRaceSection>
+                    <BarRaceSection v-if="hasTableData" :table-data="tableData"></BarRaceSection>
                     <div class="title">{{ $t('subtitles.ratio') }}</div>
-                    <PieSection :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
+                    <PieSection v-if="dataCurrent.history" :allHistoryData="dataCurrent.history" :mainDate="mainDate"></PieSection>
                     <div class="title">{{ $t('subtitles.countryCompare') }}</div>
                     <CountryCompareSection :global-data="dataGlobal"
                                            :country-list="countryList"></CountryCompareSection>
@@ -89,10 +89,10 @@
 <!-- map and table -->
                 <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="regionData">
                     <div class="title">{{ $t('subtitles.map') }}</div>
-                    <MapSection :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
+                    <MapSection v-if="hasTableData" :tableData="tableData" :countryName="countryName" :mainDate="mainDate"></MapSection>
                     <br>
                     <div class="title">{{ $t('subtitles.regionList') }}</div>
-                    <RegionTable :regionData="tableData" v-if="tableData.hasData" :mainDate="mainDate" :is-uk="dataCurrent.isUk" @expanded="hideFab=$event"
+                    <RegionTable :regionData="tableData" v-if="hasTableData" :mainDate="mainDate" :is-uk="dataCurrent.isUk" @expanded="hideFab=$event"
                                  @switchCountry="switchCountry" :current-country="currentCountry" :desktop-layout="desktopLayout"></RegionTable>
                 </div>
 
@@ -279,6 +279,8 @@
                     curedChange: 0
                 },
                 tableData: {
+                    country: null,
+                    global: null,
                     hasData: false
                 },
                 chartData: null,
@@ -291,7 +293,9 @@
                 isDesktop: false,
                 desktopLayout: false,
                 networkError: false,
-                hideFab: false
+                hideFab: false,
+                startDate: null,
+                endDate: null
             };
         },
         async mounted() {
@@ -326,11 +330,11 @@
                           Data might not reflect the real number, and might be delayed.`;
                 //global data
                 console.time("getGlobalHistoryTableData");
-                this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
+                setImmediate(()=>{
+                  this.tableData.global = getGlobalHistoryTableData(this.dataGlobal, false, true);
+                })
                 console.timeEnd("getGlobalHistoryTableData");
-                console.time("getAllCountries");
                 let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
-                console.timeEnd("getAllCountries");
                 this.countryList = [this.$t('selector.world'), this.$t('selector.uk'), this.$t('selector.us'),  ...countryArr];
                 const lastCountry = localStorage.getItem('lastCountry');
                 if(lastCountry){ 
@@ -391,6 +395,7 @@
                 console.timeEnd("switchCountry");
             },
             loadCountryData: async function (countryName) {
+                    this.shouldRender = false;
                     this.countryName = countryName;
                     let countryData = getCountryData(this.dataGlobal, countryName);
                     // console.log(countryData.confirmed.locations);
@@ -398,8 +403,11 @@
                     this.dataCurrent.isUk = false;
                     //history data
                     //console.log("data loaded", countryData);
-                    this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
-                    this.tableData.hasData = true;
+                    if(countryName==="US"){
+                      this.tableData.country = await getUSRegionData(this.dataUs);
+                    }else{
+                      this.tableData.country = countryName === "world" ? null : getGlobalHistoryTableData(countryData, true);
+                    }
                     this.dataCurrent.history = getCountryHistoryData(countryData);
                     // console.log("country loaded", this.dataCurrent);
                     this.startDate = moment(this.dataCurrent.history[0].date).format(window.dateFormat);
@@ -409,7 +417,6 @@
             },
             loadUsData: async function (){
                 this.loadCountryData("US");
-                this.tableData.country = await getUSRegionData(this.dataUs);
             },
             calculateDisplay: async function (idx) {
                 let current = this.dataCurrent.history[idx];
@@ -490,21 +497,24 @@
             }
         },
         computed: {
-            isMiniApp: function () {
+            isMiniApp() {
                 // WeChat Mini app
                 let url = new URL(window.location.href);
                 let query = url.searchParams.get("source");
                 return query === "apptab";
             },
-            isCurrentUk: function() {
+            isCurrentUk() {
                 return this.currentCountry === 'United Kingdom' || this.currentCountry === this.$t('selector.uk');
             },
-            renderAll: function(){
-                return this.dataCurrent && this.shouldRender;
+            renderAll(){
+                return this.dataCurrent && this.shouldRender && this.hasTableData;
+            },
+            hasTableData(){
+                return (this.tableData.global && !(this.currentCountry==="US" && !this.tableData.country));
             }
         },
         watch: {
-            desktopLayout: function () {
+            desktopLayout() {
                 this.forceReload()
             }
         }

@@ -50,24 +50,34 @@
                 isUs: false,
                 isDataAvailable: true,
                 date: null,
-                renderComponent: true,
+                renderComponent: false,
                 dataType: "confirmed"
             }
         },
         mounted() {
-            this.isUk = this.countryName==="UK";
-            this.isUs = this.countryName==="US";
-            this.changeTab(this.isUk || this.isUs ? 1 : 0);
+            this.init();
         },
         watch: {
-            mainDate: function () {
+            mainDate() {
                 if(this.mainDate) {
                     let dateToChange = getSmallerDate(this.mainDate, this.currentData[this.currentData.length-1].date);
                     this.changeDate(dateToChange)
                 }
+            },
+            'tableData.country'(){
+                this.init();
+            },
+            'tableData.global'(){
+                this.init();
             }
+
         },
         methods: {
+            init(){
+                this.isUk = this.countryName==="UK";
+                this.isUs = this.countryName==="US";
+                this.changeTab(this.isUk || this.isUs ? 1 : 0);
+            },
             changeDate: function(date){
                 this.date = date;
                 this.loadMap()
@@ -79,6 +89,7 @@
                 }else {
                     this.currentData = this.tableData.global;
                 }
+                if(!this.currentData) return;
                 this.date = this.currentData[this.currentData.length-1].date;
                 this.loadMap(true)
             },
@@ -87,20 +98,26 @@
                 this.loadMap()
             },
             async loadMap(rerender){
-                 let idx = this.currentData.findIndex(ele=>ele.date === this.date);
-                this.isDataAvailable = true;
-                 if(this.tab === 1) {
-                     if(this.isUk) {
-                         this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
-                     }else {
-                         this.isDataAvailable = !(this.isUs && (this.dataType === "cured" || this.dataType === "cRate"));
-                         this.locationsData = combineUSHighCharts(this.currentData[idx].arr, this.dataType);
-                     }
-                 }else{
-                     this.locationsData = combineWorldHighCharts(this.currentData[idx].arr, this.dataType);
-                 }
-                 if(rerender)
-                    this.forceRerender()
+                setImmediate(()=>{
+                    console.time("map")
+                    this.renderComponent= false;
+                    let idx = this.currentData.findIndex(ele=>ele.date === this.date);
+                    this.isDataAvailable = true;
+                    if(this.tab === 1) {
+                        if(this.isUk) {
+                            this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
+                        }else {
+                            this.isDataAvailable = !(this.isUs && (this.dataType === "cured" || this.dataType === "cRate"));
+                            this.locationsData = combineUSHighCharts(this.currentData[idx].arr, this.dataType);
+                        }
+                    }else{
+                        this.locationsData = combineWorldHighCharts(this.currentData[idx].arr, this.dataType);
+                    }
+                    if(rerender)
+                        this.forceRerender()
+                    this.renderComponent= true;
+                    console.timeEnd("map")
+                })
               },
               forceRerender() {
                     this.renderComponent = false;

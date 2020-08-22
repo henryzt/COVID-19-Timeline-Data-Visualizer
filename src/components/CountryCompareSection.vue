@@ -40,7 +40,7 @@
                 selectedCountries: ["United Kingdom", "Spain", "France", "Italy", "Germany"],
                 dates: null,
                 dataType: "confirmed",
-                series: null
+                series: null,
             }
         },
         mounted(){
@@ -48,7 +48,11 @@
                 window.calculatedCountryData = {}
             }
             this.countryListFiltered = this.countryList.slice(3);
-            this.getSeries();
+            setImmediate(()=>{
+                console.time("series")
+                this.getSeries();
+                console.timeEnd("series")
+            })
         },
         watch:{
           selectedCountries:function () {
