@@ -23,8 +23,11 @@
           <!-- number display-->
           <TodayNumberSection :display="display" v-if="display"></TodayNumberSection>
 
+          <!-- UK number display and postcode -->
+          <UkRegionSection v-if="renderAll && isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
+
           <!-- time machine -->
-          <div v-if="renderAll && endDate && !dataCurrent.isUk">
+          <div v-if="renderAll && endDate">
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
               <SlideController
@@ -69,7 +72,7 @@
           <div class="mSection" v-if="renderAll && desktopLayout" style="padding-top: 0">
             <ChartSection
               :chart-data="chartData ? chartData : dataCurrent.history"
-              :is-uk="dataCurrent.isUk"
+              :is-uk="isCurrentUk"
             ></ChartSection>
           </div>
         </div>
@@ -103,6 +106,7 @@
             <ChartSection
               v-if="dataCurrent.history || chartData"
               :chart-data="chartData ? chartData : dataCurrent.history"
+              :is-uk="isCurrentUk"
             ></ChartSection>
           </div>
 
@@ -135,7 +139,7 @@
               :regionData="tableData"
               v-if="hasTableData"
               :mainDate="mainDate"
-              :is-uk="dataCurrent.isUk"
+              :is-uk="isCurrentUk"
               @expanded="hideFab=$event"
               @switchCountry="switchCountry"
               :current-country="currentCountry"
@@ -193,6 +197,7 @@
 
 <script>
 import TodayNumberSection from "./components/TodayNumberSection.vue";
+import UkRegionSection from "./components/UkRegionSection.vue";
 import SlideController from "./components/SlideController.vue";
 import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
 import FAB from "./components/FAB.vue";
@@ -244,6 +249,7 @@ export default {
     ChartSection,
     PieSection,
     TodayNumberSection,
+    UkRegionSection,
     vSelect,
     MapSection,
     SlideController,

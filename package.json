@@ -14,6 +14,7 @@
   },
   "main": "index.js",
   "dependencies": {
+    "@publichealthengland/uk-covid19": "^1.2.5",
     "apexcharts": "^3.18.1",
     "core-js": "^3.6.4",
     "countup.js": "^2.0.4",
