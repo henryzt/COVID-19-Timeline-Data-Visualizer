@@ -1,61 +1,74 @@
 <template>
   <div>
     <div class="title">{{ $t('subtitles.country') }}</div>
-    <div class="overview mBlock" v-if="dataUk">
-      <div class="overview_item">
-        <div class="overview_title">{{ $t('england') }}</div>
-        <div class="overview_number">{{dataUk.regional.englandConfirmed }}</div>
-        <div class="country-death">{{ dataUk.regional.englandDeceased }}</div>
+    <div class="mBlock" v-if="dataUk">
+      <div class="overview">
+        <div class="overview_item">
+          <div class="overview_title">{{ $t('england') }}</div>
+          <div class="overview_number">{{ getCumData("England") }}</div>
+          <div class="country-death">{{ getNewData("England") }}</div>
+        </div>
+        <div class="overview_item">
+          <div class="overview_title">{{ $t('scotland') }}</div>
+          <div class="overview_number">{{ getCumData("Scotland") }}</div>
+          <div class="country-death">{{ getNewData("Scotland") }}</div>
+        </div>
+        <div class="overview_item">
+          <div class="overview_title">{{ $t('wales') }}</div>
+          <div class="overview_number">{{ getCumData("Wales") }}</div>
+          <div class="country-death">{{ getNewData("Wales") }}</div>
+        </div>
+        <div class="overview_item">
+          <div class="overview_title">{{ $t('nIreland') }}</div>
+          <div class="overview_number">{{ getCumData("Northern Ireland") }}</div>
+          <div class="country-death">{{ getNewData("Northern Ireland") }}</div>
+        </div>
       </div>
-      <div class="overview_item">
-        <div class="overview_title">{{ $t('scotland') }}</div>
-        <div class="overview_number">{{ dataUk.regional.scotlandConfirmed }}</div>
-        <div class="country-death">{{ dataUk.regional.scotlandDeceased }}</div>
-      </div>
-      <div class="overview_item">
-        <div class="overview_title">{{ $t('wales') }}</div>
-        <div class="overview_number">{{dataUk.regional.walesConfirmed }}</div>
-        <div class="country-death">{{ dataUk.regional.walesDeceased }}</div>
-      </div>
-      <div class="overview_item">
-        <div class="overview_title">{{ $t('nIreland') }}</div>
-        <div class="overview_number">{{dataUk.regional.northenIrelandConfirmed }}</div>
-        <div class="country-death">{{ dataUk.regional.northenIrelandDeceased }}</div>
-      </div>
+      <data-switch-uk style="margin:auto;margin-top:10px;" v-model="tag"></data-switch-uk>
     </div>
+    <Loading v-else></Loading>
   </div>
 </template>
 
 <script>
-import Cov19API from "@publichealthengland/uk-covid19";
+import Loading from "./Loading.vue";
+import DataSwitchUk from "./DataSwitchUk.vue";
+
 export default {
   name: "UkRegionSection",
-  data(){
+  data() {
     return {
       dataUk: null,
+      tag: "hospitalCases",
     };
   },
-  components: {},
+  components: {
+    DataSwitchUk,
+    Loading,
+  },
   async mounted() {
-    const casesAndDeaths = {
-      date: "date",
-      areaName: "areaName",
-      areaCode: "areaCode",
-      newCasesByPublishDate: "newCasesByPublishDate",
-      cumCasesByPublishDate: "cumCasesByPublishDate",
-      newDeathsByDeathDate: "newDeaths28DaysByPublishDate",
-      cumDeathsByDeathDate: "cumDeaths28DaysByPublishDate",
-    };
-    const allNations = ["areaType=nation"];
-
-    const latestData = new Cov19API({
-      filters: allNations,
-      structure: casesAndDeaths,
-    });
-
-    const data = await latestData.getJSON();
-
-    console.log(data);
+    fetch("https://uk.henryz.cc/covid/uk-test/nations.json").then(
+      async (res) => {
+        let data = await res.json();
+        this.dataUk = data.data;
+        console.log(data);
+      }
+    );
+  },
+  methods: {
+    getCumData(nation) {
+      let data = this.dataUk.filter((e) => e.areaName === nation);
+      return data[0][this.tag] ?? data[1][this.tag] ?? data[2][this.tag] ?? "-";
+    },
+    getNewData(nation) {
+      let data = this.dataUk.filter((e) => e.areaName === nation);
+      const today = data[0][this.tag];
+      const yesterday = data[1][this.tag];
+      if (!today) return "+0";
+      if (!yesterday) return "-";
+      const diff = today - yesterday;
+      return (diff > 0 ? "+" : "") + diff;
+    },
   },
 };
 </script>

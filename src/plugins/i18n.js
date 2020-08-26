@@ -114,6 +114,12 @@ const messages = {
             cured: "Recovered Cases",
             cRate: "Recover Rate (%)"
         },
+        dataSwitchUk: {
+            cumCasesByPublishDate: "Total Confirmed",
+            cumDeathsByDeathDate: "Total Death",
+            hospitalCases: "Current Admitted",
+            covidOccupiedMVBeds: "Current Severe",
+        },
         total: "Total",
         showAllCharts: "Show All Charts",
         showLess: "Hide",
@@ -224,6 +230,12 @@ const messages = {
             dRate: "死亡率 (%)",
             cured: "累计治愈",
             cRate: "治愈率 (%)"
+        },
+        dataSwitchUk: {
+            cumCasesByPublishDate: "累计确诊",
+            cumDeathsByDeathDate: "累计死亡",
+            hospitalCases: "现存住院",
+            covidOccupiedMVBeds: "现存重症",
         },
         total: "累计",
         showAllCharts: "显示全部图表",
