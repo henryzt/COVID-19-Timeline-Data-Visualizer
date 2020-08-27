@@ -20,10 +20,10 @@
 
     <div
       style="text-align: left;opacity: 0.3;"
-    >*Data is incomplete, source: GOV.UK, isjeffcom and JHU.</div>
+    >*Data is incomplete, source: GOV.UK and JHU.</div>
 
     <SlideController
-      v-if="date"
+      v-if="date && !(tab===1 && isUk)"
       :start-date="currentData[0].date"
       :end-date="currentData[currentData.length-1].date"
       :hidePlayButton="true"
@@ -86,6 +86,9 @@ export default {
         this.changeDate(dateToChange);
       }
     },
+    "tableData.uk"() {
+      this.init();
+    },
     "tableData.country"() {
       this.init();
     },
@@ -106,7 +109,7 @@ export default {
     changeTab(tab) {
       this.tab = tab;
       if ((this.isUk || this.isUs) && this.tab === 1) {
-        this.currentData = this.tableData.country;
+        this.currentData = this.isUk ? this.tableData.uk : this.tableData.country;
       } else {
         this.currentData = this.tableData.global;
       }
@@ -126,7 +129,7 @@ export default {
         this.isDataAvailable = true;
         if (this.tab === 1) {
           if (this.isUk) {
-            this.locationsData = combineUKHighCharts(this.currentData[idx].arr);
+            this.locationsData = combineUKHighCharts(this.currentData);
           } else {
             this.isDataAvailable = !(
               this.isUs &&

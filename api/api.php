@@ -14,15 +14,11 @@ function portal_curl_return($path)
     curl_setopt($ch, CURLOPT_ENCODING, 'identity');
 
     $res = curl_exec($ch);
-    // echo $res;
     return $res;
 }
 
 function output($data){
     echo $data;
-    // $output = json_decode($data);
-    // unset($output->us);
-    // echo json_encode($output);
 }
 
 if ($_GET["purge"]) {
@@ -64,8 +60,6 @@ if ($ttl && $cache) {
 
     $ukGovApi = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation&structure={"date":"date","areaName":"areaName","areaCode":"areaCode","cumAdmissions":"cumAdmissions","hospitalCases":"hospitalCases","covidOccupiedMVBeds":"covidOccupiedMVBeds","cumCasesBySpecimenDateRate":"cumCasesBySpecimenDateRate","newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate","newDeathsByDeathDate":"newDeaths28DaysByPublishDate","cumDeathsByDeathDate":"cumDeaths28DaysByPublishDate"}';
 
-    // $ukData->now = json_decode(portal_curl_return("https://api.covid19uk.live/"))->data;
-    // $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
     $ukData->nation = json_decode(portal_curl_return($ukGovApi));
 
     $globalDataRaw = portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all");
@@ -89,7 +83,6 @@ if ($ttl && $cache) {
         $json = is_string($cache) ? json_decode($cache) : $cache;
         $json->needUpdate = true;
         $json->isUpToDate = false;
-        // $json->uk = $ukData; //TODO REMOVE
         $json = json_encode($json);
         apc_store('json', $json);
         apc_store('ttl', date("Y-m-d"), 100);

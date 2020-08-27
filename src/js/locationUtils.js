@@ -217,12 +217,12 @@ export function combineUKHighCharts(currentUkAreaData) {
     }
     // console.log(keys);
 
-    for (let jeffArea of currentUkAreaData) {
-        if (names.includes(jeffArea.location)) {
-            const index = names.indexOf(jeffArea.location);
+    for (let area of currentUkAreaData) {
+        if (names.includes(area.location)) {
+            const index = names.indexOf(area.areaName);
             if (index > -1)
                 //names.splice(i1, 1);
-                commonLocationsData.push([keys[index], jeffArea.number]);
+                commonLocationsData.push([keys[index], area.cumCasesByPublishDate]);
         }
     }
     // console.log(this.commonLocationsData);
