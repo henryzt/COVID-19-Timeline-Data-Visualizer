@@ -112,7 +112,7 @@ export default {
     }
   },
   watch: {
-    mainDate: function () {
+    mainDate() {
       if (this.mainDate && !this.isUk) {
         let dateToChange = getSmallerDate(
           this.mainDate,
@@ -121,8 +121,14 @@ export default {
         this.changeDate(dateToChange);
       }
     },
-    limit: function () {
+    limit() {
       this.$emit("expanded", this.limit !== 10);
+    },
+    "regionData.uk"() {
+      this.changeTab(this.tab);
+    },
+    "regionData.country"() {
+      this.changeTab(this.tab);
     },
   },
   computed: {
@@ -199,6 +205,7 @@ export default {
     },
 
     getUkTableData: function () {
+      if (!this.regionData?.uk) return;
       this.regionData.uk.forEach((element) => {
         element.location = element.areaName;
         element.death = element.cumDeathsByDeathDate;

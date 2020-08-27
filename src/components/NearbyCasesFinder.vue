@@ -16,7 +16,7 @@
           label="areaName"
           :value="inputValue"
           @input="inputValue=$event.areaName;findUKPostcode();"
-          placeholder="Enter a name or UK Postcode..."
+          :placeholder="$t('nearBy.ukPlaceholder')"
           :clearSearchOnBlur="()=>false"
           push-tags
           taggable

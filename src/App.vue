@@ -285,6 +285,7 @@ export default {
       tableData: {
         country: null,
         global: null,
+        uk: null,
         hasData: false,
       },
       chartData: null,
@@ -419,7 +420,7 @@ export default {
 
       if (e === this.countryList[0]) {
         this.loadCountryData("world");
-      } else if (e === this.countryList[1]) {
+      } else if (e === this.countryList[1] || e === "United Kingdom") {
         this.loadUkData();
       } else if (e === this.countryList[2] || e === "US") {
         await this.loadUsData();

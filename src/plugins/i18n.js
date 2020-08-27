@@ -85,6 +85,7 @@ const messages = {
       switchCountyState: "Switch State/County Data",
       goToRegional: "Go to Regional Data Section",
       empty: "Please select an area or the value you entered",
+      ukPlaceholder: "Enter a name or UK Postcode..."
     },
     barRace: {
       global: "Global",
@@ -126,11 +127,12 @@ const messages = {
       cumDeathsByDeathDate: "Total Death",
       hospitalCases: "Current Admitted",
       covidOccupiedMVBeds: "Current Severe",
+      cumCasesBySpecimenDateRate: "Infect Rate %"
     },
     total: "Total",
     showAllCharts: "Show All Charts",
     showLess: "Hide",
-    noData: "No data available for this view, you can try other data types.",
+    noData: "Data is loading or no data available for this view, you can try other data types.",
     barRaceColor: barRaceColor,
     fab: {
       share: "Share",
@@ -208,6 +210,7 @@ const messages = {
       switchCountyState: "切换州或郡数据",
       goToRegional: "前往地区数据版块",
       empty: "请选择一个区域或者您输入的邮编",
+      ukPlaceholder: "选择区域或输入邮编"
     },
     barRace: {
       global: "全球",
@@ -247,13 +250,14 @@ const messages = {
     dataSwitchUk: {
       cumCasesByPublishDate: "累计确诊",
       cumDeathsByDeathDate: "累计死亡",
-      hospitalCases: "现存住院",
+      hospitalCases: "现存在院",
       covidOccupiedMVBeds: "现存重症",
+      cumCasesBySpecimenDateRate: "感染率%"
     },
     total: "累计",
     showAllCharts: "显示全部图表",
     showLess: "收起",
-    noData: "暂无数据，您可以查看其他数据类型或国家",
+    noData: "数据正在载入或暂无数据，您可以查看其他数据类型或国家",
     barRaceColor: barRaceColor,
     fab: {
       share: "分享",

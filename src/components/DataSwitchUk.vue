@@ -24,6 +24,7 @@ export default {
         "cumDeathsByDeathDate",
         "hospitalCases",
         "covidOccupiedMVBeds",
+        "cumCasesBySpecimenDateRate"
       ],
     };
   },
