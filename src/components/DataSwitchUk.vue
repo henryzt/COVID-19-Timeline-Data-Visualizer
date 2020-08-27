@@ -1,5 +1,6 @@
 <template>
-  <div style="width:fit-content">
+<div>
+  <div class="tabs">
     <ul class="nav nav-pills">
       <li class="nav-item" v-for="type in options" :key="type">
         <a
@@ -10,6 +11,9 @@
         >{{ $t('dataSwitchUk.'+[type]) }}</a>
       </li>
     </ul>
+  </div>
+  <div style="height: 30px;">
+  </div>
   </div>
 </template>
 
@@ -38,6 +42,27 @@ export default {
 
 <style scoped>
 .nav-link {
-  padding: 0.1rem 0.5rem;
+  padding: 5px 0.5rem;
+  border-radius: 0;
+  color: rgb(180, 180, 180);
 }
+.nav-link:hover{
+  background: rgb(243, 243, 243);
+}
+.active{
+    background: #007bff !important;
+}
+.tabs{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+}
+.nav-item{
+    flex-grow: 1;
+}
+
 </style>

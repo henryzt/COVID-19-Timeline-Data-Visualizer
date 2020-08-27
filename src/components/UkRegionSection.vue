@@ -2,6 +2,8 @@
   <div>
     <div class="title">{{ $t('subtitles.country') }}</div>
     <div class="mBlock" v-if="dataUk">
+      <data-switch-uk v-model="tag"></data-switch-uk>
+
       <div class="overview">
         <div class="overview_item">
           <div class="overview_title">{{ $t('england') }}</div>
@@ -24,7 +26,6 @@
           <div class="country-death">{{ getNewData("Northern Ireland") }}</div>
         </div>
       </div>
-      <data-switch-uk style="margin:auto;margin-top:10px;" v-model="tag"></data-switch-uk>
     </div>
     <Loading v-else></Loading>
   </div>
