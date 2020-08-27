@@ -8,13 +8,19 @@
       </button>
 
       <div style="margin: 0 20px;width: 100%;">
-        <input
-          v-if="currentCountry==='UK'"
-          class="form-control"
-          id="postcode"
-          placeholder="UK Postcode"
-          v-model="inputValue"
-        />
+        <vSelect
+          v-if="currentCountry==='UK' && regionData"
+          class="select"
+          :clearable="false"
+          :options="regionData"
+          label="areaName"
+          :value="inputValue"
+          @input="inputValue=$event.areaName;findUKPostcode();"
+          placeholder="Enter a name or UK Postcode..."
+          :clearSearchOnBlur="()=>false"
+          push-tags
+          taggable
+        ></vSelect>
         <vSelect
           v-else-if="mainLocation"
           class="select"
@@ -97,7 +103,10 @@ export default {
   methods: {
     findUKPostcode() {
       this.isResult = false;
+      if (!this.inputValue) {this.displayInfo = this.$t("nearBy.empty"); return;}
       window.ga("send", "event", "nearby", "postcode", this.inputValue);
+      if (this.findByUKRegionName(this.inputValue, null, true)) return;
+      this.displayInfo = this.$t("nearBy.locating");
       fetch("https://api.postcodes.io/postcodes/" + this.inputValue).then(
         async (res) => {
           let data = await res.json();
@@ -121,20 +130,23 @@ export default {
         }
       );
     },
-    findByUKRegionName(regionName, district) {
+    findByUKRegionName(regionName, district, slient) {
       let res = this.regionData.filter(
-        (obj) =>
-          obj.areaName == regionName ||
-          obj.areaName == district
+        (obj) => obj.areaName == regionName || obj.areaName == district
       );
       if (res && res[0]) {
         let location = res[0];
-        let index = this.regionData.findIndex((obj) => obj.areaName === location.areaName);
+        let index = this.regionData.findIndex(
+          (obj) => obj.areaName === location.areaName
+        );
         this.displayInfo = this.$t("nearBy.ukResult", [
           location.areaName,
           location.cumCasesByPublishDate,
           location.newCasesByPublishDate,
           getGetOrdinal(index),
+          location.cumCasesBySpecimenDateRate ?? "-",
+          location.cumDeathsByDeathDate ?? "-",
+          location.newDeathsByDeathDate ?? "-",
         ]);
         window.ga(
           "send",
@@ -144,7 +156,9 @@ export default {
           location.areaName + ", " + regionName + ", " + district
         );
         this.isResult = true;
+        return true;
       } else {
+        if (slient) return false;
         this.displayInfo = this.$t("nearBy.notFound", [regionName]);
         window.ga(
           "send",
@@ -162,7 +176,7 @@ export default {
         this.displayInfo = this.$t("nearBy.locating");
         navigator.geolocation.getCurrentPosition(
           async (position) => {
-            window.ga("send", "event", "nearby", "location-found", "");
+            window.ga("send", "event", "nearby", "location-found", JSON.stringify(position));
             if (this.currentCountry === "UK") {
               this.getUKPostcodeUsingLocation(position);
             } else {

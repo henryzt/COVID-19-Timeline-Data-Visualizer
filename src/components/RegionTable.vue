@@ -207,7 +207,7 @@ export default {
         element.confirmRate = element.cumCasesBySpecimenDateRate;
       });
       this.tableData = this.regionData.uk;
-      return;
+      this.sortTable();
     },
 
     sortTable: function () {
