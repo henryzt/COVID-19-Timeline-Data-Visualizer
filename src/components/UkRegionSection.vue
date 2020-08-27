@@ -1,9 +1,8 @@
 <template>
   <div>
     <div class="title">{{ $t('subtitles.country') }}</div>
+    <data-switch-uk style="margin:auto;margin-bottom:10px;" v-model="tag"></data-switch-uk>
     <div class="mBlock" v-if="dataUk">
-      <data-switch-uk v-model="tag"></data-switch-uk>
-
       <div class="overview">
         <div class="overview_item">
           <div class="overview_title">{{ $t('england') }}</div>
@@ -37,24 +36,15 @@ import DataSwitchUk from "./DataSwitchUk.vue";
 
 export default {
   name: "UkRegionSection",
+  props: ["dataUk"],
   data() {
     return {
-      dataUk: null,
       tag: "hospitalCases",
     };
   },
   components: {
     DataSwitchUk,
     Loading,
-  },
-  async mounted() {
-    fetch("https://uk.henryz.cc/covid/uk-test/nations.json").then(
-      async (res) => {
-        let data = await res.json();
-        this.dataUk = data.data;
-        console.log(data);
-      }
-    );
   },
   methods: {
     getCumData(nation) {

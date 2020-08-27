@@ -24,7 +24,19 @@
           <TodayNumberSection :display="display" v-if="display"></TodayNumberSection>
 
           <!-- UK number display and postcode -->
-          <UkRegionSection v-if="renderAll && isCurrentUk && dataUkNow" :dataUk="dataUkNow" :class="{disabled:currentDate != endDate}"></UkRegionSection>
+          <UkRegionSection
+            v-if="renderAll && isCurrentUk"
+            :dataUk="dataCurrent.uk"
+            :class="{disabled:currentDate != endDate}"
+          ></UkRegionSection>
+
+          <!-- near by cases -->
+          <div v-if="renderAll && (isCurrentUk || countryName==='US')">
+            <div class="title">{{ $t('subtitles.nearby') }}</div>
+            <div class="mBlock">
+              <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
+            </div>
+          </div>
 
           <!-- time machine -->
           <div v-if="renderAll && endDate">
@@ -57,14 +69,6 @@
                 style="margin-left: 5px;text-decoration: underline;cursor: pointer;"
                 @click="revertTM"
               >{{ $t('tmRevert') }}</span>
-            </div>
-          </div>
-
-          <!-- near by cases -->
-          <div v-if="renderAll && (countryName==='UK' || countryName==='US')">
-            <div class="title">{{ $t('subtitles.nearby') }}</div>
-            <div class="mBlock">
-              <NearbyCasesFinder :regionData="sortedRegionData" :currentCountry="countryName"></NearbyCasesFinder>
             </div>
           </div>
 
@@ -208,27 +212,27 @@ import "vue-select/dist/vue-select.css";
 
 const RegionTable = () => ({
   component: import("./components/RegionTable.vue"),
-  loading: Loading
+  loading: Loading,
 });
 const BarRaceSection = () => ({
   component: import("./components/BarRaceSection.vue"),
-  loading: Loading
+  loading: Loading,
 });
 const MapSection = () => ({
   component: import("./components/MapSection.vue"),
-  loading: Loading
+  loading: Loading,
 });
 const ChartSection = () => ({
   component: import("./components/ChartSection.vue"),
-  loading: Loading
+  loading: Loading,
 });
 const CountryCompareSection = () => ({
   component: import("./components/CountryCompareSection.vue"),
-  loading: Loading
+  loading: Loading,
 });
 const PieSection = () => ({
   component: import("./components/PieSection.vue"),
-  loading: Loading
+  loading: Loading,
 });
 
 import {
@@ -325,7 +329,6 @@ export default {
         let data = await res.json();
         let resTime = Math.round(performance.now() - performanceTimeStart);
         console.log(data);
-        this.dataUkNow = data.uk;
         this.dataUs = data.us;
         this.dataGlobal = data.global;
         // console.log(data);
@@ -395,7 +398,7 @@ export default {
       } else {
         this.currentCountry = this.countryList[0];
       }
-      this.switchCountry(this.currentCountry)
+      this.switchCountry(this.currentCountry);
       window.ga(
         "send",
         "event",
@@ -431,7 +434,6 @@ export default {
       let countryData = getCountryData(this.dataGlobal, countryName);
       // console.log(countryData.confirmed.locations);
       this.dataCurrent = {};
-      this.dataCurrent.isUk = false;
       //history data
       //console.log("data loaded", countryData);
       if (countryName === "US") {
@@ -474,6 +476,14 @@ export default {
     },
     loadUkData: async function () {
       this.loadCountryData("United Kingdom");
+      this.countryName = "UK";
+      fetch("https://uk.henryz.cc/covid/uk-test/nations.json").then(
+        async (res) => {
+          let data = await res.json();
+          this.dataCurrent.uk = data.data;
+          console.log(data);
+        }
+      );
     },
     changeDateIdx: function (idx) {
       this.calculateDisplay(idx);
@@ -545,6 +555,7 @@ export default {
     isCurrentUk() {
       return (
         this.currentCountry === "United Kingdom" ||
+        this.currentCountry.includes("UK Realtime") ||
         this.currentCountry === this.$t("selector.uk")
       );
     },

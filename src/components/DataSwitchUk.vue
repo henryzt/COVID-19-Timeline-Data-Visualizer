@@ -1,5 +1,4 @@
 <template>
-<div>
   <div class="tabs">
     <ul class="nav nav-pills">
       <li class="nav-item" v-for="type in options" :key="type">
@@ -7,13 +6,10 @@
           class="nav-link"
           href="#"
           :class="{active: value===type}"
-          @click="changeType(type)"
+          @click.prevent="changeType(type)"
         >{{ $t('dataSwitchUk.'+[type]) }}</a>
       </li>
     </ul>
-  </div>
-  <div style="height: 30px;">
-  </div>
   </div>
 </template>
 
@@ -42,27 +38,31 @@ export default {
 
 <style scoped>
 .nav-link {
-  padding: 5px 0.5rem;
+  padding: 0px;
   border-radius: 0;
-  color: rgb(180, 180, 180);
-}
-.nav-link:hover{
-  background: rgb(243, 243, 243);
-}
-.active{
-    background: #007bff !important;
-}
-.tabs{
-    position:absolute;
-    top:0;
-    left:0;
-    width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    overflow: hidden;
-}
-.nav-item{
-    flex-grow: 1;
+  color: #afafaf;
+  margin: 0 0.5rem;
 }
 
+.active {
+  background: none !important;
+  color: #007bff !important;
+  border-bottom: 1px solid #007bff;
+}
+
+.tabs {
+  max-width: calc(100% - 20px);
+  width: fit-content;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+}
+
+.nav {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
 </style>
