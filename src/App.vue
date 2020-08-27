@@ -330,6 +330,7 @@ export default {
         let resTime = Math.round(performance.now() - performanceTimeStart);
         console.log(data);
         this.dataUs = data.us;
+        this.dataUk = data.uk;
         this.dataGlobal = data.global;
         // console.log(data);
         this.lastUpdated = `Data updated ${moment(
@@ -477,13 +478,14 @@ export default {
     loadUkData: async function () {
       this.loadCountryData("United Kingdom");
       this.countryName = "UK";
-      fetch("https://uk.henryz.cc/covid/uk-test/nations.json").then(
-        async (res) => {
-          let data = await res.json();
-          this.dataCurrent.uk = data.data;
-          console.log(data);
-        }
-      );
+      this.dataCurrent.uk = {};
+      this.dataCurrent.uk.nation = this.dataUk.nation.data;
+      // fetch("https://uk.henryz.cc/covid/uk-test/nations.json").then(
+      //   async (res) => {
+      //     let data = await res.json();
+      //     console.log(data);
+      //   }
+      // );
     },
     changeDateIdx: function (idx) {
       this.calculateDisplay(idx);

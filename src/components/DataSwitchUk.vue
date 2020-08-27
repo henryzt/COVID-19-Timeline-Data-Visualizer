@@ -42,6 +42,7 @@ export default {
   border-radius: 0;
   color: #afafaf;
   margin: 0 0.5rem;
+  border-bottom: 1px solid transparent;
 }
 
 .active {

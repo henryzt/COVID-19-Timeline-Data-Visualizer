@@ -11,9 +11,18 @@ function portal_curl_return($path)
     curl_setopt($ch, CURLOPT_URL, $path);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_ENCODING, 'identity');
 
     $res = curl_exec($ch);
+    // echo $res;
     return $res;
+}
+
+function output($data){
+    echo $data;
+    // $output = json_decode($data);
+    // unset($output->us);
+    // echo json_encode($output);
 }
 
 if ($_GET["purge"]) {
@@ -37,12 +46,12 @@ if ($_GET["restore"]) {
 }
 
 if ($ttl && $cache) {
-    echo $cache;
+    output($cache);
 
 } else {
 
     if ($cache) {
-        echo $cache;
+        output($cache);
         fastcgi_finish_request();
         sleep(2);
         ignore_user_abort(true);
@@ -53,11 +62,14 @@ if ($ttl && $cache) {
     $globalData;
     $ukData;
 
+    $ukGovApi = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation&structure={"date":"date","areaName":"areaName","areaCode":"areaCode","cumAdmissions":"cumAdmissions","hospitalCases":"hospitalCases","covidOccupiedMVBeds":"covidOccupiedMVBeds","cumCasesBySpecimenDateRate":"cumCasesBySpecimenDateRate","newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate","newDeathsByDeathDate":"newDeaths28DaysByPublishDate","cumDeathsByDeathDate":"cumDeaths28DaysByPublishDate"}';
+
     // $ukData->now = json_decode(portal_curl_return("https://api.covid19uk.live/"))->data;
     // $ukData->history = json_decode(portal_curl_return("https://api.covid19uk.live/history"))->data;
-    $ukData->regional = json_decode(portal_curl_return("https://api.apify.com/v2/key-value-stores/KWLojgM5r1JmMW4b4/records/LATEST?disableRedirect=true"));
+    $ukData->nation = json_decode(portal_curl_return($ukGovApi));
 
     $globalDataRaw = portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all");
+    $globalDataRaw = strlen($globalDataRaw) > 1000 ? $globalDataRaw : portal_curl_return("https://covid-tracker-us.herokuapp.com/all");
     $globalData = json_decode($globalDataRaw);
 
     $usData = portal_curl_return("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv");
@@ -77,11 +89,13 @@ if ($ttl && $cache) {
         $json = is_string($cache) ? json_decode($cache) : $cache;
         $json->needUpdate = true;
         $json->isUpToDate = false;
-        apc_store('json', json_encode($json));
+        // $json->uk = $ukData; //TODO REMOVE
+        $json = json_encode($json);
+        apc_store('json', $json);
         apc_store('ttl', date("Y-m-d"), 100);
     }
 
-    echo $json;
+    output($json);
 
     //save local copy
     if (strlen($json) > 3000 && $res->isUpToDate) {

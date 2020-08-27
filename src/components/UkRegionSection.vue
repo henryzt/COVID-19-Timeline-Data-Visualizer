@@ -2,7 +2,7 @@
   <div>
     <div class="title">{{ $t('subtitles.country') }}</div>
     <data-switch-uk style="margin:auto;margin-bottom:10px;" v-model="tag"></data-switch-uk>
-    <div class="mBlock" v-if="dataUk">
+    <div class="mBlock" v-if="dataUk && dataUk.nation">
       <div class="overview">
         <div class="overview_item">
           <div class="overview_title">{{ $t('england') }}</div>
@@ -48,11 +48,11 @@ export default {
   },
   methods: {
     getCumData(nation) {
-      let data = this.dataUk.filter((e) => e.areaName === nation);
+      let data = this.dataUk.nation.filter((e) => e.areaName === nation);
       return data[0][this.tag] ?? data[1][this.tag] ?? data[2][this.tag] ?? "-";
     },
     getNewData(nation) {
-      let data = this.dataUk.filter((e) => e.areaName === nation);
+      let data = this.dataUk.nation.filter((e) => e.areaName === nation);
       const today = data[0][this.tag];
       const yesterday = data[1][this.tag];
       if (!today) return "+0";
