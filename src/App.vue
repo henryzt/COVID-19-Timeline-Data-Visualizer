@@ -480,25 +480,27 @@ export default {
       this.loadCountryData("United Kingdom");
       this.countryName = "UK";
       this.dataCurrent.uk = {};
-      this.dataCurrent.uk.nation = this.dataUk.nation.data;
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
       const apiUrl =
-        "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType%3Dutla&latestBy=date"+
-        "&structure=%7B%22date%22:%22date%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22"+
-        "areaCode%22,%22hospitalCases%22:%22hospitalCases%22,%22covidOccupiedMVBeds%22:"+
-        "%22covidOccupiedMVBeds%22,%22cumCasesBySpecimenDateRate%22:%22cumCasesBySpecimenDateRate%22,"+
-        "%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,%22cumCasesByPublishDate%22:"+
-        "%22cumCasesByPublishDate%22,%22newDeathsByDeathDate%22:%22newDeaths28DaysByPublishDate%22,"+
+        "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType%3Dutla&latestBy=date" +
+        "&structure=%7B%22date%22:%22date%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22" +
+        "areaCode%22,%22hospitalCases%22:%22hospitalCases%22,%22covidOccupiedMVBeds%22:" +
+        "%22covidOccupiedMVBeds%22,%22cumCasesBySpecimenDateRate%22:%22cumCasesBySpecimenDateRate%22," +
+        "%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,%22cumCasesByPublishDate%22:" +
+        "%22cumCasesByPublishDate%22,%22newDeathsByDeathDate%22:%22newDeaths28DaysByPublishDate%22," +
         "%22cumDeathsByDeathDate%22:%22cumDeaths28DaysByPublishDate%22%7D";
-      fetch(apiUrl).then(
-        async (res) => {
-          let data = await res.json();
-          const utla = data.data;
-          console.log(utla);
-          this.dataCurrent.uk.utla = utla;
-          this.tableData.uk = utla;
-          this.sortedRegionData = [...utla].sort((a, b) => b.confirmed - a.confirmed);
-        }
-      );
+      console.warn(apiUrl);
+      fetch(proxyUrl + apiUrl).then(async (res) => {
+        let data = await res.json();
+        const utla = data.data;
+        console.log(utla);
+        this.dataCurrent.uk.utla = utla;
+        this.tableData.uk = utla;
+        this.sortedRegionData = [...utla].sort(
+          (a, b) => b.confirmed - a.confirmed
+        );
+      });
+      this.dataCurrent.uk.nation = this.dataUk.nation.data;
     },
     changeDateIdx: function (idx) {
       this.calculateDisplay(idx);

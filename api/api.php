@@ -12,12 +12,14 @@ function portal_curl_return($path)
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_ENCODING, 'identity');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Origin: uclcssa.cn'));
 
     $res = curl_exec($ch);
     return $res;
 }
 
-function output($data){
+function output($data)
+{
     echo $data;
 }
 
@@ -58,7 +60,9 @@ if ($ttl && $cache) {
     $globalData;
     $ukData;
 
-    $ukGovApi = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation&structure={"date":"date","areaName":"areaName","areaCode":"areaCode","cumAdmissions":"cumAdmissions","hospitalCases":"hospitalCases","covidOccupiedMVBeds":"covidOccupiedMVBeds","cumCasesBySpecimenDateRate":"cumCasesBySpecimenDateRate","newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate","newDeathsByDeathDate":"newDeaths28DaysByPublishDate","cumDeathsByDeathDate":"cumDeaths28DaysByPublishDate"}';
+    $proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+
+    $ukGovApi = $proxyUrl . 'https://api.coronavirus-staging.data.gov.uk/v1/data?filters=areaType=nation&structure=%7B%22date%22:%22date%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22cumAdmissions%22:%22cumAdmissions%22,%22hospitalCases%22:%22hospitalCases%22,%22covidOccupiedMVBeds%22:%22covidOccupiedMVBeds%22,%22cumCasesBySpecimenDateRate%22:%22cumCasesBySpecimenDateRate%22,%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,%22cumCasesByPublishDate%22:%22cumCasesByPublishDate%22,%22newDeathsByDeathDate%22:%22newDeaths28DaysByPublishDate%22,%22cumDeathsByDeathDate%22:%22cumDeaths28DaysByPublishDate%22%7D';
 
     $ukData->nation = json_decode(portal_curl_return($ukGovApi));
 
