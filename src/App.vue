@@ -497,7 +497,7 @@ export default {
         this.dataCurrent.uk.utla = utla;
         this.tableData.uk = utla;
         this.sortedRegionData = [...utla].sort(
-          (a, b) => b.confirmed - a.confirmed
+          (a, b) => b.cumCasesByPublishDate - a.cumCasesByPublishDate
         );
       });
       this.dataCurrent.uk.nation = this.dataUk.nation.data;

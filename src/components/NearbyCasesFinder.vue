@@ -143,7 +143,7 @@ export default {
           location.areaName,
           location.cumCasesByPublishDate,
           location.newCasesByPublishDate,
-          getGetOrdinal(index),
+          getGetOrdinal(index + 1),
           location.cumCasesBySpecimenDateRate ?? "-",
           location.cumDeathsByDeathDate ?? "-",
           location.newDeathsByDeathDate ?? "-",
