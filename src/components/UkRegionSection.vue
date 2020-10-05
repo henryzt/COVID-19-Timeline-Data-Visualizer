@@ -39,7 +39,7 @@ export default {
   props: ["dataUk"],
   data() {
     return {
-      tag: "hospitalCases",
+      tag: "cumCasesByPublishDate",
     };
   },
   components: {
