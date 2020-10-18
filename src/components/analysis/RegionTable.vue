@@ -9,10 +9,9 @@
       <CountrySwitch v-if="regionData.country" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
     </div>
 
-    <div v-if="tableData">
+    <div class="tableWrapper" v-if="tableData">
       <table
         class="table table-striped table-hover"
-        style="position: relative;border-collapse: collapse; "
         :class="{topZero: desktopLayout}"
       >
         <thead>
@@ -27,6 +26,10 @@
             </th>
             <th scope="col" :class="{active: sort===3}" @click="sortByIncreaseNumber()" nowrap>
               {{$t('table.changes')}}
+              <SortIcon />
+            </th>
+            <th scope="col" :class="{active: sort===4}" v-if="isUk" @click="sortByRate()" nowrap>
+              {{$t('table.rate')}}
               <SortIcon />
             </th>
           </tr>
@@ -46,6 +49,7 @@
             </td>
             <td>{{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}</td>
             <td>{{ singleRegion.change }}</td>
+            <td v-if="isUk">{{ singleRegion.confirmRate }}</td>
           </tr>
           <tr></tr>
         </tbody>
@@ -254,13 +258,23 @@ export default {
       this.sort = 3;
       this.tableData = [...this.tableData].sort((a, b) => b.change - a.change);
     },
+    sortByRate: function () {
+      this.sort = 4;
+      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate - a.confirmRate);
+    },
   },
 };
 </script>
 
 <style scoped>
+.mBlock{
+  max-width: 100%;
+}
+.tableWrapper{
+}
 .table {
   font-size: 14px;
+  position: relative;
   border-collapse: collapse;
 }
 th {
@@ -268,6 +282,7 @@ th {
   top: 55px;
   background: white;
   z-index: 50;
+
 }
 .topZero th {
   top: -1px;
