@@ -1,70 +1,29 @@
 <?php
-header("Access-Control-Allow-Origin: *");
 
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 
-function portal_curl_return($path)
-{
-    $ch = curl_init();
+global $prefix;
+$prefix = "Global";
 
-    curl_setopt($ch, CURLOPT_URL, $path);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_ENCODING, 'identity');
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Origin: uclcssa.cn'));
-
-    $res = curl_exec($ch);
-    return $res;
-}
+require "curl.php";
+require "cache.php";
 
 function output($data)
 {
     echo $data;
 }
 
-if ($_GET["purge"]) {
-    // clear cache
-    apc_delete('ttl');
-
-    if ($_GET["purge"] == "hard") {
-        // clear cache
-        apc_delete('json');
-        echo "OK";
-    }
-}
-
-$ttl = apc_fetch('ttl');
-$cache = apc_fetch('json');
-
-if ($_GET["restore"]) {
-    apc_delete('json');
-    apc_delete('ttl');
-    $cache = file_get_contents("cache/" . date("Y-m-d") . ".json", true);
-}
 
 if ($ttl && $cache) {
-    output($cache);
+    echo $cache;
 
 } else {
 
-    if ($cache) {
-        output($cache);
-        fastcgi_finish_request();
-        sleep(2);
-        ignore_user_abort(true);
-        //ref https://blog.csdn.net/zqy0zqy/java/article/details/79314692
-    }
+    echo_and_continue($cache);
 
     $res;
     $globalData;
-    $ukData;
-
-    $proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
-    $ukGovApi = $proxyUrl . 'https://api.coronavirus-staging.data.gov.uk/v1/data?filters=areaType=nation&structure=%7B%22date%22:%22date%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22cumAdmissions%22:%22cumAdmissions%22,%22hospitalCases%22:%22hospitalCases%22,%22covidOccupiedMVBeds%22:%22covidOccupiedMVBeds%22,%22cumCasesBySpecimenDateRate%22:%22cumCasesBySpecimenDateRate%22,%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,%22cumCasesByPublishDate%22:%22cumCasesByPublishDate%22,%22newDeathsByDeathDate%22:%22newDeaths28DaysByPublishDate%22,%22cumDeathsByDeathDate%22:%22cumDeaths28DaysByPublishDate%22%7D';
-
-    $ukData->nation = json_decode(portal_curl_return($ukGovApi));
 
     $globalDataRaw = portal_curl_return("https://coronavirus-tracker-api.herokuapp.com/all");
     $globalDataRaw = strlen($globalDataRaw) > 1000 ? $globalDataRaw : portal_curl_return("https://covid-tracker-us.herokuapp.com/all");
@@ -73,26 +32,10 @@ if ($ttl && $cache) {
     $usData = portal_curl_return("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv");
 
     $res->isUpToDate = $globalData && strlen($globalDataRaw) > 1000 && $usData;
-    $res->uk = $ukData;
     $res->global = $globalData;
     $res->us = $usData;
 
-    $json = json_encode($res);
-
-    if ($res->isUpToDate) {
-        apc_store('json', $json);
-        apc_store('ttl', date("Y-m-d"), 300);
-    } else {
-        // not up to date
-        $json = is_string($cache) ? json_decode($cache) : $cache;
-        $json->needUpdate = true;
-        $json->isUpToDate = false;
-        $json = json_encode($json);
-        apc_store('json', $json);
-        apc_store('ttl', date("Y-m-d"), 100);
-    }
-
-    output($json);
+    validate_and_output($res);
 
     //save local copy
     if (strlen($json) > 3000 && $res->isUpToDate) {

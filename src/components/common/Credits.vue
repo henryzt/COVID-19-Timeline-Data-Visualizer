@@ -47,9 +47,8 @@
         <div class="title">{{ $t('subtitles.source') }}</div>
         <ul>
           <li>
-            <a href="https://github.com/isjeffcom/coronvirusFigureUK">
-              Coronavirus UK Data API -
-              isjeffcom
+            <a href="https://coronavirus.data.gov.uk/developers-guide">
+              GOV.UK
             </a>
           </li>
           <li>
