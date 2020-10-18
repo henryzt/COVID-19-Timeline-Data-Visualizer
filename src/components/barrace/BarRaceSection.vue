@@ -57,6 +57,7 @@ export default {
   },
   props: {
     tableData: Object,
+    countryName: String,
     isUk: Boolean,
   },
   data: function () {
@@ -77,9 +78,10 @@ export default {
     changeDataType(type) {
       console.time("D3");
       this.dataType = type;
-      this.global = getD3Data(this.tableData.global, type);
+      this.global = getD3Data("global", this.tableData.global, type);
       if (this.tableData.country)
         this.country = getD3Data(
+          this.countryName,
           this.tableData.country,
           this.isUk ? "number" : type
         );

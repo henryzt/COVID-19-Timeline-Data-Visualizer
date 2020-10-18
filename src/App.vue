@@ -117,7 +117,7 @@
           <!-- animations -->
           <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
             <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
-            <BarRaceSection v-if="hasTableData" :table-data="tableData"></BarRaceSection>
+            <BarRaceSection v-if="hasTableData" :countryName="countryName" :table-data="tableData"></BarRaceSection>
             <div class="title">{{ $t('subtitles.ratio') }}</div>
             <PieSection
               v-if="dataCurrent.history"
@@ -273,11 +273,11 @@ export default {
       currentCountry: null,
       countryList: [],
       display: {
-        confirmed: 298325,
+        confirmed: 0,
         confirmedChange: 0,
-        deaths: 235,
+        deaths: 0,
         deathsChange: 0,
-        tested: 453,
+        tested: 0,
         testedChange: 0,
         cured: 0,
         curedChange: 0,
@@ -301,6 +301,7 @@ export default {
       hideFab: false,
       startDate: null,
       endDate: null,
+      countryName: null
     };
   },
   async mounted() {

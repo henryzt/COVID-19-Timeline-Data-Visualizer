@@ -6,6 +6,7 @@ import { ukmapData } from "./ukmap";
 import { usmapData } from "./usmap";
 
 const moment = require('moment');
+const d3Cache = {}
 
 export function parseLocationData(areaData) {
     if (!areaData) return null;
@@ -23,9 +24,11 @@ export function parseLocationData(areaData) {
     return locationJSON;
 }
 
-export function getD3Data(dailyLocationJson, dataTypeKey) {
+export function getD3Data(cacheKey, dailyLocationJson, dataTypeKey) {
     // dailyLocationJson: { arr: [{location: String, number：Int},...], date: String(window.dateFormat)}
-
+    if(d3Cache[cacheKey]){
+        return d3Cache[cacheKey];
+    }
     let locationData = [];
     let lastDailyData = null;
     for (let dailyData of dailyLocationJson) {
@@ -49,6 +52,7 @@ export function getD3Data(dailyLocationJson, dataTypeKey) {
             locationData = locationData.concat(dailyLocationData);
     }
     // console.log(locationData)
+    d3Cache[cacheKey] = locationData;
     return locationData;
 }
 

@@ -16,16 +16,16 @@
       >
         <thead>
           <tr>
-            <th scope="col" :class="{active: sort===1}" @click="sortByAlphabet()">
+            <th scope="col" :class="{hd: true, active: sort===1}" @click="sortByAlphabet()">
               {{$t('table.region')}}
             </th>
-            <th scope="col" :class="{active: sort===2}" @click="sortByNumber()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===2}" @click="sortByNumber()" nowrap>
               {{$t('table.byCases')}}
             </th>
-            <th scope="col" :class="{active: sort===3}" @click="sortByIncreaseNumber()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===3}" @click="sortByIncreaseNumber()" nowrap>
               {{$t('table.changes')}}
             </th>
-            <th scope="col" :class="{active: sort===4}" v-if="isUk" @click="sortByRate()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===4}" v-if="isUk" @click="sortByRate()" nowrap>
               {{$t('table.rate')}}
             </th>
           </tr>
@@ -298,8 +298,12 @@ th {
   z-index: 50;
 }
 .active {
-  color: #0d61fe;
+  color: #074cce;
   opacity: 1;
+}
+.hd{
+  cursor: pointer;
+  user-select: none;
 }
 
 .goToCountry {
