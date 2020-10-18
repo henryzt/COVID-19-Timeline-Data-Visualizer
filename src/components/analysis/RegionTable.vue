@@ -18,19 +18,15 @@
           <tr>
             <th scope="col" :class="{active: sort===1}" @click="sortByAlphabet()">
               {{$t('table.region')}}
-              <SortIcon />
             </th>
             <th scope="col" :class="{active: sort===2}" @click="sortByNumber()" nowrap>
               {{$t('table.byCases')}}
-              <SortIcon />
             </th>
             <th scope="col" :class="{active: sort===3}" @click="sortByIncreaseNumber()" nowrap>
               {{$t('table.changes')}}
-              <SortIcon />
             </th>
             <th scope="col" :class="{active: sort===4}" v-if="isUk" @click="sortByRate()" nowrap>
               {{$t('table.rate')}}
-              <SortIcon />
             </th>
           </tr>
         </thead>
@@ -49,7 +45,7 @@
             </td>
             <td>{{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}</td>
             <td>{{ singleRegion.change }}</td>
-            <td v-if="isUk">{{ singleRegion.confirmRate }}</td>
+            <td v-if="isUk">{{ singleRegion.confirmRate ? singleRegion.confirmRate : "-" }}</td>
           </tr>
           <tr></tr>
         </tbody>
@@ -79,7 +75,6 @@
 
 <script>
 import SlideController from "../common/SlideController";
-import SortIcon from "mdi-vue/SortAscending";
 import MoreIcon from "mdi-vue/ChevronRight";
 import DataSwitch from "../common/DataSwitch";
 import CountrySwitch from "../common/CountrySwitch";
@@ -89,7 +84,6 @@ export default {
   props: ["regionData", "mainDate", "isUk", "currentCountry", "desktopLayout"],
   components: {
     SlideController,
-    SortIcon,
     DataSwitch,
     CountrySwitch,
     MoreIcon,
@@ -303,13 +297,8 @@ th {
   padding-bottom: 50px;
   z-index: 50;
 }
-.mdi-sort-ascending {
-  opacity: 0.4;
-  padding-left: 5px;
-  cursor: pointer;
-}
-.active .mdi-sort-ascending {
-  color: #5098d6;
+.active {
+  color: #0d61fe;
   opacity: 1;
 }
 
