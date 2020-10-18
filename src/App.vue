@@ -200,38 +200,38 @@
 </template>
 
 <script>
-import TodayNumberSection from "./components/TodayNumberSection.vue";
-import UkRegionSection from "./components/UkRegionSection.vue";
-import SlideController from "./components/SlideController.vue";
-import NearbyCasesFinder from "./components/NearbyCasesFinder.vue";
-import FAB from "./components/FAB.vue";
-import Credits from "./components/Credits.vue";
-import Loading from "./components/Loading.vue";
+import TodayNumberSection from "./components/analysis/TodayNumberSection.vue";
+import UkRegionSection from "./components/uk/UkRegionSection.vue";
+import SlideController from "./components/common/SlideController.vue";
+import NearbyCasesFinder from "./components/analysis/NearbyCasesFinder.vue";
+import FAB from "./components/common/FAB.vue";
+import Credits from "./components/common/Credits.vue";
+import Loading from "./components/common/Loading.vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 const RegionTable = () => ({
-  component: import("./components/RegionTable.vue"),
+  component: import("./components/analysis/RegionTable.vue"),
   loading: Loading,
 });
 const BarRaceSection = () => ({
-  component: import("./components/BarRaceSection.vue"),
+  component: import("./components/barrace/BarRaceSection.vue"),
   loading: Loading,
 });
 const MapSection = () => ({
-  component: import("./components/MapSection.vue"),
+  component: import("./components/map/MapSection.vue"),
   loading: Loading,
 });
 const ChartSection = () => ({
-  component: import("./components/ChartSection.vue"),
+  component: import("./components/charts/ChartSection.vue"),
   loading: Loading,
 });
 const CountryCompareSection = () => ({
-  component: import("./components/CountryCompareSection.vue"),
+  component: import("./components/analysis/CountryCompareSection.vue"),
   loading: Loading,
 });
 const PieSection = () => ({
-  component: import("./components/PieSection.vue"),
+  component: import("./components/analysis/PieSection.vue"),
   loading: Loading,
 });
 

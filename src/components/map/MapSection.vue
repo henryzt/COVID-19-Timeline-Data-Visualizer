@@ -38,15 +38,15 @@
 
 <script>
 import Map from "./Map.vue";
-import DataSwitch from "./DataSwitch";
-import CountrySwitch from "./CountrySwitch";
+import DataSwitch from "../common/DataSwitch";
+import CountrySwitch from "../common/CountrySwitch";
 import {
   combineUKHighCharts,
   combineUSHighCharts,
   combineWorldHighCharts,
   getSmallerDate,
-} from "../js/locationUtils";
-import SlideController from "./SlideController";
+} from "../../js/locationUtils";
+import SlideController from "../common/SlideController";
 export default {
   name: "MapSection",
   components: {

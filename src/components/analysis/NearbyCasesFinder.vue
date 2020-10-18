@@ -64,7 +64,7 @@
 
 <script>
 import LocateIcon from "mdi-vue/NearMe";
-import ShareIcons from "./ShareIcons.vue";
+import ShareIcons from "../common/ShareIcons.vue";
 import vSelect from "vue-select";
 const getGetOrdinal = function (n) {
   //ref https://community.shopify.com/c/Shopify-Design/Ordinal-Number-in-javascript-1st-2nd-3rd-4th/td-p/72156

@@ -42,10 +42,10 @@
 
 <script>
 import BarRace from "./BarRace.vue";
-import DataSwitch from "./DataSwitch";
-import CountrySwitch from "./CountrySwitch";
-import Loading from "./Loading.vue";
-import { getD3Data } from "../js/locationUtils";
+import DataSwitch from "../common/DataSwitch";
+import CountrySwitch from "../common/CountrySwitch";
+import Loading from "../common/Loading.vue";
+import { getD3Data } from "../../js/locationUtils";
 
 export default {
   name: "BarRaceSection",

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import Loading from "./Loading.vue";
+import Loading from "../common/Loading.vue";
 import DataSwitchUk from "./DataSwitchUk.vue";
 
 export default {

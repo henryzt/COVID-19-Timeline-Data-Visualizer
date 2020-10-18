@@ -27,8 +27,8 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import vSelect from "vue-select";
-import DataSwitch from "./DataSwitch";
-import { getCountryCompareData } from "../js/locationUtils";
+import DataSwitch from "../common/DataSwitch";
+import { getCountryCompareData } from "../../js/locationUtils";
 export default {
   name: "CountryCompareSection",
   props: ["globalData", "countryList"],

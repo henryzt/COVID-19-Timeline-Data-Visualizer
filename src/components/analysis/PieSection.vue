@@ -7,7 +7,7 @@
 
 <script>
     import VueApexCharts from "vue-apexcharts";
-    import SlideController from "./SlideController";
+    import SlideController from "../common/SlideController";
     const moment = require('moment');
     export default {
         name: "PieSection",

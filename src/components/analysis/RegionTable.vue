@@ -74,12 +74,12 @@
 </template>
 
 <script>
-import SlideController from "./SlideController";
+import SlideController from "../common/SlideController";
 import SortIcon from "mdi-vue/SortAscending";
 import MoreIcon from "mdi-vue/ChevronRight";
-import DataSwitch from "./DataSwitch";
-import CountrySwitch from "./CountrySwitch";
-import { getSmallerDate } from "../js/locationUtils";
+import DataSwitch from "../common/DataSwitch";
+import CountrySwitch from "../common/CountrySwitch";
+import { getSmallerDate } from "../../js/locationUtils";
 export default {
   name: "RegionTable",
   props: ["regionData", "mainDate", "isUk", "currentCountry", "desktopLayout"],

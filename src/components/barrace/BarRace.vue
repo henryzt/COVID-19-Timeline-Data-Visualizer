@@ -8,8 +8,8 @@
 
 <script>
     /* eslint-disable */
-    import SlideController from './SlideController'
-    import {isDateValid} from '../js/locationUtils'
+    import SlideController from '../common/SlideController'
+    import {isDateValid} from '../../js/locationUtils'
     export default {
         name: "BarRace",
         components: {

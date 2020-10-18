@@ -15,7 +15,7 @@
             微信扫描或长按下方二维码，或搜索"
             <span style="text-wrap: none">UCLCSSA学联社区</span>"
           </div>
-          <img src="../assets/qr.png" style="max-width: 260px;" />
+          <img src="../../assets/qr.png" style="max-width: 260px;" />
           <div>订阅每日实时数据更新及重要预警通知</div>
           <div
             v-if="isLocaleCN && isWeChat()"
@@ -111,7 +111,7 @@
 
       <!-- logo and language switch -->
       <div style="text-align: center;margin: 50px 0;opacity: 0.5;color: silver;">
-        <img src="../assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN" />
+        <img src="../../assets/logo_grey.png" style="max-width: 200px;" v-if="isLocaleCN" />
         <br />
         <br />
         <a href="#" @click="changeLang('en')">English</a> |
