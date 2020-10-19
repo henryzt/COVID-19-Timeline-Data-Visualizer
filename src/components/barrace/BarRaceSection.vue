@@ -97,9 +97,10 @@ export default {
   },
   mounted() {
     setImmediate(() => {
+      console.log("changed",this.countryName)
       this.changeDataType(this.dataType);
     });
-  },
+  }
 };
 </script>
 

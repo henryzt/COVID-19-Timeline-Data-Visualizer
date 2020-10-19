@@ -458,7 +458,8 @@ export default {
       this.calculateDisplay(this.dataCurrent.history.length - 1);
     },
     loadUsData: async function () {
-      this.loadCountryData("US");
+      await this.loadCountryData("US");
+      this.forceReload();
     },
     calculateDisplay: async function (idx) {
       let current = this.dataCurrent.history[idx];

@@ -2,14 +2,14 @@
   <div class="mBlock">
     <div class="btn-group-wrap">
       <div class="btn-group btn-group-sm" role="group" aria-label="date range">
-        <button type="button" class="btn btn-secondary" :class="{active: range===-7}" @click="updateRange(-7,true)">
-          {{ $t('chartTimes.oneWeek') }}
-        </button>
         <button type="button" class="btn btn-secondary" :class="{active: range===-14}" @click="updateRange(-14,true)">
           {{ $t('chartTimes.twoWeek') }}
         </button>
         <button type="button" class="btn btn-secondary" :class="{active: range===-31}" @click="updateRange(-31,false)">
           {{ $t('chartTimes.oneMonth') }}
+        </button>
+        <button type="button" class="btn btn-secondary" :class="{active: range===-93}" @click="updateRange(-93,false)">
+          {{ $t('chartTimes.threeMonth') }}
         </button>
         <button type="button" class="btn btn-secondary" :class="{active: range===0}" @click="updateRange(0,false)">
           {{ $t('chartTimes.all') }}

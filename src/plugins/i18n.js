@@ -66,6 +66,7 @@ const messages = {
       oneWeek: "7 Days",
       twoWeek: "14 Days",
       oneMonth: "31 Days",
+      threeMonth: "3 mo",
       all: "All Data",
     },
     nearBy: {
@@ -194,6 +195,7 @@ const messages = {
       oneWeek: "一周内",
       twoWeek: "两周内",
       oneMonth: "一个月内",
+      threeMonth: "三个月内",
       all: "全部数据",
     },
     nearBy: {
