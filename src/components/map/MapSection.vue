@@ -6,7 +6,11 @@
         @typeChange="changeDataType($event)"
         :disabled="tab === 1 && isUk"
       ></DataSwitch>
-      <CountrySwitch v-if="isUk || isUs" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
+      <CountrySwitch 
+        v-if="(isUk || isUs) && tableData.global" 
+        :tab="tab" 
+        @changeTab="changeTab($event)">
+      </CountrySwitch>
     </div>
 
     <Map

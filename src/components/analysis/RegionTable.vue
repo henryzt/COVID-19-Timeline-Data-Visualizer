@@ -4,9 +4,13 @@
       <DataSwitch
         :data-type="dataType"
         @typeChange="changeDataType($event)"
-        :disabled="tab === 1 && isUk"
+        :disabled="(tab === 1 && isUk) || !regionData.global"
       ></DataSwitch>
-      <CountrySwitch v-if="regionData.country" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
+      <CountrySwitch 
+        v-if="(regionData.country || regionData.uk) && regionData.global" 
+        :tab="tab" 
+        @changeTab="changeTab($event)">
+      </CountrySwitch>
     </div>
 
     <div class="tableWrapper" v-if="tableData">
@@ -100,9 +104,9 @@ export default {
     };
   },
   mounted() {
-    if (
-      this.regionData.country &&
-      this.regionData.country[this.regionData.country.length - 1].arr.length > 1
+    if ( this.isUk ||
+        (this.regionData.country &&
+        this.regionData.country[this.regionData.country.length - 1].arr.length > 1)
     ) {
       this.changeTab(1);
     } else {
@@ -161,10 +165,11 @@ export default {
 
     changeTab(tab) {
       this.tab = tab;
-      if (tab === 0) {
+      if (tab === 0 && this.regionData.global) {
         if (this.isUk) this.dataType = "confirmed";
         this.getCurrentTableData(this.regionData.global);
       } else {
+        this.tab = 1;
         if (this.isUk) {
           this.getUkTableData();
           return;

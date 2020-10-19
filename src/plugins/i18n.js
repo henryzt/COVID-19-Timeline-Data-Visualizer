@@ -66,7 +66,7 @@ const messages = {
       oneWeek: "7 Days",
       twoWeek: "14 Days",
       oneMonth: "31 Days",
-      threeMonth: "3 mo",
+      threeMonth: "3 Mo",
       all: "All Data",
     },
     nearBy: {

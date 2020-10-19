@@ -50,7 +50,7 @@
 
         </div>
 
-        <div class="more" @click="showMore = !showMore">
+        <div v-if="!isUk" class="more" @click="showMore = !showMore">
             <MoreIcon v-if="!showMore"/><LessIcon v-else/>
             {{showMore? $t('showLess') : $t('showAllCharts')}}
         </div>

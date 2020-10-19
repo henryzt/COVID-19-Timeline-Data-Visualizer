@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="mContent" v-if="dataGlobal" :class="{mContentDesktop: desktopLayout}">
+    <div class="mContent" v-if="dataGlobal || dataUk" :class="{mContentDesktop: desktopLayout}">
       <div :class="{'d-flex': desktopLayout}">
         <div :class="{'mSectionDesktop': desktopLayout}">
           <!-- header section -->
@@ -39,7 +39,7 @@
           </div>
 
           <!-- time machine -->
-          <div v-if="renderAll && endDate">
+          <div v-if="renderAll && endDate && dataGlobal">
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
               <SlideController
@@ -72,11 +72,16 @@
             </div>
           </div>
 
+          <!-- loading -->
+          <div v-if="!renderAll" class="mSection">
+            <Loading></Loading>
+          </div>
+
           <!-- charts (show on desktop layout) -->
           <div class="mSection" v-if="renderAll && desktopLayout" style="padding-top: 0">
             <ChartSection
               :chart-data="chartData ? chartData : dataCurrent.history"
-              :is-uk="isCurrentUk"
+              :is-uk="isUkRealtime"
             ></ChartSection>
           </div>
         </div>
@@ -110,22 +115,25 @@
             <ChartSection
               v-if="dataCurrent.history || chartData"
               :chart-data="chartData ? chartData : dataCurrent.history"
-              :is-uk="isCurrentUk"
+              :is-uk="isUkRealtime"
             ></ChartSection>
           </div>
 
           <!-- animations -->
           <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
-            <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
-            <BarRaceSection v-if="hasTableData" :countryName="countryName" :table-data="tableData"></BarRaceSection>
-            <div class="title">{{ $t('subtitles.ratio') }}</div>
-            <PieSection
-              v-if="dataCurrent.history"
-              :allHistoryData="dataCurrent.history"
-              :mainDate="mainDate"
-            ></PieSection>
-            <div class="title">{{ $t('subtitles.countryCompare') }}</div>
-            <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
+            <div v-if="dataGlobal">
+              <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
+              <BarRaceSection v-if="hasTableData" :countryName="countryName" :table-data="tableData"></BarRaceSection>
+              <div class="title">{{ $t('subtitles.ratio') }}</div>
+              <PieSection
+                v-if="dataCurrent.history"
+                :allHistoryData="dataCurrent.history"
+                :mainDate="mainDate"
+              ></PieSection>
+              <div class="title">{{ $t('subtitles.countryCompare') }}</div>
+              <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
+            </div>
+            <div v-else-if="dataUk"></div>
           </div>
 
           <!-- map and table -->
@@ -262,11 +270,12 @@ export default {
     FAB,
     NearbyCasesFinder,
     Credits,
+    Loading
   },
   data: () => {
     return {
       shouldRender: true,
-      dataCurrent: null,
+      dataCurrent: {},
       dataUk: null,
       dataGlobal: null,
       sortedRegionData: null,
@@ -386,7 +395,6 @@ export default {
             let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
             this.updateCountryList(countryArr)
 
-            this.getNavScrollAnchor();
             let performanceTime = Math.round(
               performance.now() - performanceTimeStart
             );
@@ -422,7 +430,7 @@ export default {
       localStorage.setItem("lastCountry", e);
       window.ga("send", "event", "country", "country-changed", e);
 
-      if(!this.dataGlobal){ //  && e !== this.countryList[1]
+      if(!this.dataGlobal && e !== this.countryList[1]){
         await this.loadGlobalData();
       }
 
@@ -436,6 +444,7 @@ export default {
         this.loadCountryData(e);
       }
       this.forceReload();
+      this.getNavScrollAnchor();
       console.timeEnd("switchCountry");
     },
     async loadCountryData(countryName) {
@@ -486,7 +495,7 @@ export default {
       };
     },
     async loadUkData() {
-      this.loadCountryData("United Kingdom");
+      if(!this.isUkRealtime) this.loadCountryData("United Kingdom");
       this.countryName = "UK";
       this.dataCurrent.uk = {};
       fetch("https://uk.henryz.cc/covid/uk.php").then(async (res) => {
@@ -500,7 +509,10 @@ export default {
         this.sortedRegionData = [...utla].sort(
           (a, b) => b.cumCasesByPublishDate - a.cumCasesByPublishDate
         );
+        this.loadUkRealtimeDisplay()
       });
+    },
+    loadUkRealtimeDisplay() {
     },
     changeDateIdx(idx) {
       this.calculateDisplay(idx);
@@ -526,7 +538,6 @@ export default {
       this.countryList[0] = this.$t("selector.world");
       this.countryList[1] = this.$t("selector.uk");
       this.countryList[2] = this.$t("selector.us");
-      // this.currentCountry = this.countryList[0];
       this.forceReload();
     },
     forceReload() {
@@ -584,10 +595,16 @@ export default {
         this.currentCountry === this.$t("selector.uk")
       );
     },
+    isUkRealtime() {
+      return this.currentCountry === this.$t("selector.uk");
+    },
     renderAll() {
       return this.dataCurrent && this.shouldRender && this.hasTableData;
     },
     hasTableData() {
+      if(this.isUkRealtime){
+        return this.tableData.uk;
+      }
       return (
         this.tableData.global &&
         !(this.currentCountry === "US" && !this.tableData.country)
