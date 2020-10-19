@@ -242,6 +242,7 @@ import {
   getCountryHistoryData,
   getUSRegionData,
 } from "./js/locationUtils";
+import {countryList} from "./js/countryList"
 
 const moment = require("moment");
 
@@ -319,80 +320,26 @@ export default {
     this.isLocaleCN = this.$i18n.locale === "zh";
     document.title = this.$t("pageTitle");
     window.dateFormat = this.$t("dateFormat");
+    // random welcome message
     this.launchIndicator = this.$t("launchIndicator")[
       Math.floor(Math.random() * this.$t("launchIndicator").length)
     ];
+    
+    this.updateCountryList(countryList)
 
-    console.time("fetch");
-    let performanceTimeStart = performance.now();
-    fetch("https://uk.henryz.cc/covid/api.php")
-      .then(async (res) => {
-        console.timeEnd("fetch");
-        let data = await res.json();
-        let resTime = Math.round(performance.now() - performanceTimeStart);
-        console.log(data);
-        this.dataUs = data.us;
-        this.dataGlobal = data.global;
-        // console.log(data);
-        this.lastUpdated = `Data updated ${moment(
-          data.global.confirmed.last_updated
-        ).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
-                          Data might not reflect the real number, and might be delayed.`;
-        //global data
-        console.time("getGlobalHistoryTableData");
-        setImmediate(() => {
-          this.tableData.global = getGlobalHistoryTableData(
-            this.dataGlobal,
-            false,
-            true
-          );
-        });
-        console.timeEnd("getGlobalHistoryTableData");
-        let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
-        this.countryList = [
-          this.$t("selector.world"),
-          this.$t("selector.uk"),
-          this.$t("selector.us"),
-          ...countryArr,
-        ];
-        const lastCountry = localStorage.getItem("lastCountry");
-        if (lastCountry) {
-          this.switchCountry(lastCountry);
-        } else {
-          this.initLocation(timeZone);
-        }
-
-        this.getNavScrollAnchor();
-        let performanceTime = Math.round(
-          performance.now() - performanceTimeStart
-        );
-        console.log("Data loaded", resTime, performanceTime);
-        window.ga(
-          "send",
-          "event",
-          "net-request",
-          "initial-fetch-loaded",
-          `country-${this.currentCountry};loaded-${resTime}ms;calculated-${performanceTime}ms;`
-        );
-      })
-      .catch((err) => {
-        this.networkError = true;
-        console.error(err);
-        window.ga(
-          "send",
-          "event",
-          "net-request",
-          "errored",
-          `initial-load-failed`
-        );
-      });
+    const lastCountry = localStorage.getItem("lastCountry");
+    if (lastCountry) {
+      this.switchCountry(lastCountry);
+    } else {
+      this.initLocation(timeZone);
+    }
 
     setTimeout(() => {
       this.showWechatPopup = false;
     }, 2000);
   },
   methods: {
-    initLocation: async function (timezone) {
+    async initLocation(timezone) {
       if (timezone.includes("Europe/London") || this.isMiniApp) {
         this.currentCountry = this.countryList[1];
       } else if (timezone.includes("America")) {
@@ -409,14 +356,75 @@ export default {
         timezone
       );
     },
-    switchCountry: async function (e) {
+    loadGlobalData(){
+      return new Promise((resolve, reject) =>{
+        console.time("fetch");
+        let performanceTimeStart = performance.now();
+        fetch("https://uk.henryz.cc/covid/api.php")
+          .then(async (res) => {
+            console.timeEnd("fetch");
+            let data = await res.json();
+            let resTime = Math.round(performance.now() - performanceTimeStart);
+            console.log(data);
+            this.dataUs = data.us;
+            this.dataGlobal = data.global;
+            // console.log(data);
+            this.lastUpdated = `Data updated ${moment(
+              data.global.confirmed.last_updated
+            ).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
+                              Data might not reflect the real number, and might be delayed.`;
+            //global data
+            console.time("getGlobalHistoryTableData");
+            setImmediate(() => {
+              this.tableData.global = getGlobalHistoryTableData(
+                this.dataGlobal,
+                false,
+                true
+              );
+            });
+            console.timeEnd("getGlobalHistoryTableData");
+            let countryArr = getAllCountries(this.dataGlobal.confirmed.locations);
+            this.updateCountryList(countryArr)
+
+            this.getNavScrollAnchor();
+            let performanceTime = Math.round(
+              performance.now() - performanceTimeStart
+            );
+            console.log("Data loaded", resTime, performanceTime);
+            window.ga(
+              "send",
+              "event",
+              "net-request",
+              "initial-fetch-loaded",
+              `country-${this.currentCountry};loaded-${resTime}ms;calculated-${performanceTime}ms;`
+            );
+            resolve()
+          })
+          .catch((err) => {
+            this.networkError = true;
+            console.error(err);
+            window.ga(
+              "send",
+              "event",
+              "net-request",
+              "errored",
+              `initial-load-failed`
+            );
+            reject()
+          });
+      })
+    },
+    async switchCountry (e) {
       console.time("switchCountry");
       this.shouldRender = false;
-      // console.log(e);
       this.chartData = null;
       this.currentCountry = e;
       localStorage.setItem("lastCountry", e);
       window.ga("send", "event", "country", "country-changed", e);
+
+      if(!this.dataGlobal){ //  && e !== this.countryList[1]
+        await this.loadGlobalData();
+      }
 
       if (e === this.countryList[0]) {
         this.loadCountryData("world");
@@ -430,7 +438,7 @@ export default {
       this.forceReload();
       console.timeEnd("switchCountry");
     },
-    loadCountryData: async function (countryName) {
+    async loadCountryData(countryName) {
       this.shouldRender = false;
       this.countryName = countryName;
       let countryData = getCountryData(this.dataGlobal, countryName);
@@ -457,11 +465,11 @@ export default {
       this.currentDate = this.endDate;
       this.calculateDisplay(this.dataCurrent.history.length - 1);
     },
-    loadUsData: async function () {
+    async loadUsData() {
       await this.loadCountryData("US");
       this.forceReload();
     },
-    calculateDisplay: async function (idx) {
+    async calculateDisplay(idx) {
       let current = this.dataCurrent.history[idx];
       let last = this.dataCurrent.history[idx - 1]
         ? this.dataCurrent.history[idx - 1]
@@ -477,7 +485,7 @@ export default {
         curedChange: current.cured - last.cured,
       };
     },
-    loadUkData: async function () {
+    async loadUkData() {
       this.loadCountryData("United Kingdom");
       this.countryName = "UK";
       this.dataCurrent.uk = {};
@@ -494,24 +502,24 @@ export default {
         );
       });
     },
-    changeDateIdx: function (idx) {
+    changeDateIdx(idx) {
       this.calculateDisplay(idx);
     },
-    changeDate: function (date) {
+    changeDate(date) {
       this.currentDate = date;
     },
-    onTMDragEnd: function (idx) {
+    onTMDragEnd(idx) {
       this.chartData = this.dataCurrent.history.slice(0, idx);
       this.mainDate = this.currentDate;
       window.ga("send", "event", "time-machine", "drag-end", idx);
     },
-    revertTM: function () {
+    revertTM() {
       this.currentDate = this.endDate;
       this.chartData = this.dataCurrent.history;
       this.calculateDisplay(this.dataCurrent.history.length - 1);
       window.ga("send", "event", "time-machine", "reverted", this.endDate);
     },
-    changeLang: function (lang) {
+    changeLang(lang) {
       this.$i18n.locale = lang;
       this.isLocaleCN = this.$i18n.locale === "zh";
       document.title = this.$t("pageTitle");
@@ -521,18 +529,26 @@ export default {
       // this.currentCountry = this.countryList[0];
       this.forceReload();
     },
-    forceReload: function () {
+    forceReload() {
       //force reload
       this.shouldRender = false;
       this.$nextTick(() => {
         this.shouldRender = true;
       });
     },
-    isWeChat: function () {
+    updateCountryList(countryArr){
+      this.countryList = [
+            this.$t("selector.world"),
+            this.$t("selector.uk"),
+            this.$t("selector.us"),
+            ...countryArr,
+          ];
+    },
+    isWeChat() {
       let ua = window.navigator.userAgent.toLowerCase();
       return ua.match(/MicroMessenger/i) == "micromessenger";
     },
-    getNavScrollAnchor: function () {
+    getNavScrollAnchor() {
       document.addEventListener("scroll", () => {
         if (this.$refs["navPlaceholder"]) {
           if (window.scrollY > this.$refs["navPlaceholder"].offsetTop) {
