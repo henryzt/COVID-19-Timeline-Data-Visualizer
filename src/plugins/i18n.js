@@ -143,6 +143,7 @@ const messages = {
       scroll: "Scroll View",
       github: "Source Code",
     },
+    loadWorldAnalysis: "Tap to load global data analysis"
   },
   zh: {
     pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -271,6 +272,7 @@ const messages = {
       scroll: "滚动布局",
       github: "Github源码",
     },
+    loadWorldAnalysis: "点击此处载入世界数据分析"
   },
 };
 

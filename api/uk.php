@@ -53,9 +53,10 @@ if ($ttl && $cache) {
         "hospitalCases":"hospitalCases",
         "covidOccupiedMVBeds":"covidOccupiedMVBeds",
         "confirmedRate":"cumCasesBySpecimenDateRate",
-        "confirmedNew":"newCasesBySpecimenDate",
+        "confirmedNew":"newCasesByPublishDate",
         "confirmed":"cumCasesBySpecimenDate",
         "deathNew":"newDeaths28DaysByDeathDate",
+        "deathNewLatest":"newDeaths28DaysByPublishDate",
         "death":"cumDeaths28DaysByDeathDate"
     }';
 

@@ -48,7 +48,7 @@
       ></Chart>
     </div>
 
-    <div v-if="!isUk" class="more" @click="showMore = !showMore">
+    <div v-if="!isUk" class="showMore" @click="showMore = !showMore">
       <MoreIcon v-if="!showMore" /><LessIcon v-else />
       {{ showMore ? $t("showLess") : $t("showAllCharts") }}
     </div>
@@ -173,12 +173,7 @@ export default {
 </script>
 
 <style scoped>
-.more {
-  text-align: center;
+.showMore{
   padding-top: 30px;
-  font-size: 17px;
-  user-select: none;
-  cursor: pointer;
-  opacity: 0.7;
 }
 </style>

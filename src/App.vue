@@ -134,6 +134,13 @@
               <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
             </div>
             <div v-else-if="dataUk"></div>
+            <!-- global data load button if not shown -->
+            <div v-if="dataUk && !dataGlobal">
+              <div class="title">{{ $t('nav.analysis') }}</div>
+              <div class="mBlock" @click="loadAdditionalUkAndGlobalData">
+                <div class="showMore">{{ $t('loadWorldAnalysis') }}</div>
+              </div>
+            </div>
           </div>
 
           <!-- map and table -->
@@ -512,13 +519,19 @@ export default {
         this.loadUkRealtimeDisplay()
       });
     },
+    async loadAdditionalUkAndGlobalData(){
+      await this.loadGlobalData();
+      this.loadCountryData("United Kingdom");
+      await this.loadUkData();
+      this.forceReload();
+    },
     loadUkRealtimeDisplay() {
       let latest = this.dataUk.latest;
       this.display = {
         confirmed: latest.confirmed,
         confirmedChange: latest.confirmedNew,
         deaths: latest.death,
-        deathsChange: latest.deathNew,
+        deathsChange: latest.deathNewLatest,
         admission: latest.hospitalCases,
         admissionChange: latest.newAdmissions,
       };

@@ -98,6 +98,14 @@ body {
   padding-top:3px;
 }
 
+.showMore {
+  text-align: center;
+  font-size: 17px;
+  user-select: none;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
 /*.center {*/
 /*  text-align: center;*/
 /*  margin: auto inherit;*/
