@@ -47,6 +47,7 @@ const messages = {
     totalDeaths: "Deaths",
     totalTests: "Tested",
     totalCured: "Recovered",
+    hospitalCases: "Hospital Cases",
     negative: "Negative",
     active: "Active",
     england: "England",
@@ -55,7 +56,7 @@ const messages = {
     nIreland: "N. Ireland",
     nav: {
       current: "Current",
-      animation: "Animations",
+      analysis: "Analysis",
       map: "Regional",
     },
     newCases: "New Cases",
@@ -176,6 +177,7 @@ const messages = {
     totalDeaths: "累计死亡",
     totalTests: "累计测试",
     totalCured: "累计治愈",
+    hospitalCases: "目前在院",
     negative: "测试阴性",
     active: "现存确诊",
     england: "英格兰",
@@ -184,7 +186,7 @@ const messages = {
     nIreland: "北爱尔兰",
     nav: {
       current: "当前数据",
-      animation: "历史动画",
+      analysis: "详情分析",
       map: "地区概况",
     },
     newCases: "新增确诊",

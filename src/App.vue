@@ -97,7 +97,7 @@
               <a class="nav-link" href="#charts">{{ $t('nav.current') }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#animation">{{ $t('nav.animation') }}</a>
+              <a class="nav-link" href="#analysis">{{ $t('nav.analysis') }}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#regionData">{{ $t('nav.map') }}</a>
@@ -119,8 +119,8 @@
             ></ChartSection>
           </div>
 
-          <!-- animations -->
-          <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="animation">
+          <!-- analysis -->
+          <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="analysis">
             <div v-if="dataGlobal">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
               <BarRaceSection v-if="hasTableData" :countryName="countryName" :table-data="tableData"></BarRaceSection>
@@ -513,6 +513,16 @@ export default {
       });
     },
     loadUkRealtimeDisplay() {
+      let latest = this.dataUk.latest;
+      this.display = {
+        confirmed: latest.confirmed,
+        confirmedChange: latest.confirmedNew,
+        deaths: latest.death,
+        deathsChange: latest.deathNew,
+        admission: latest.hospitalCases,
+        admissionChange: latest.newAdmissions,
+      };
+      this.chartData = this.dataUk.overview.data.reverse();
     },
     changeDateIdx(idx) {
       this.calculateDisplay(idx);

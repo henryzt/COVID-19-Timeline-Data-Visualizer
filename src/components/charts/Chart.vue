@@ -66,6 +66,10 @@ export default {
           stacked: this.stacked,
           zoom: {
             enabled: window.innerWidth > 800
+          },
+          animations: {
+            enabled: false
+            // TODO Performace or animation
           }
         },
         colors: this.colors?this.colors: ["#ff0000","#3d0707"],

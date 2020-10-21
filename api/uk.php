@@ -53,10 +53,10 @@ if ($ttl && $cache) {
         "hospitalCases":"hospitalCases",
         "covidOccupiedMVBeds":"covidOccupiedMVBeds",
         "confirmedRate":"cumCasesBySpecimenDateRate",
-        "confirmedNew":"newCasesByPublishDate",
-        "confirmed":"cumCasesByPublishDate",
-        "deathNew":"newDeaths28DaysByPublishDate",
-        "death":"cumDeaths28DaysByPublishDate"
+        "confirmedNew":"newCasesBySpecimenDate",
+        "confirmed":"cumCasesBySpecimenDate",
+        "deathNew":"newDeaths28DaysByDeathDate",
+        "death":"cumDeaths28DaysByDeathDate"
     }';
 
     $queries = preg_replace("/\r|\n/", "", $queries);

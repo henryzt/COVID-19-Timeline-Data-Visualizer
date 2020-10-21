@@ -17,7 +17,12 @@
                 <div class="overview_number">{{ num(displayData.tested) }}</div>
                 <div class="daily-increase"> {{ '+' + display.testedChange }} </div>
             </div>
-            <div class="overview_item" style="color: #28ca00;">
+            <div class="overview_item" style="color: #28ca00;" v-if="display.admission">
+                <div class="overview_title">{{ $t('hospitalCases') }}</div>
+                <div class="overview_number">{{ num(displayData.admission) }}</div>
+                <div class="daily-increase"> {{ '+' + display.admissionChange }} </div>
+            </div>
+            <div class="overview_item" style="color: #28ca00;" v-if="display.cured != undefined">
                 <div class="overview_title">{{ $t('totalCured') }}</div>
                 <div class="overview_number">{{ num(displayData.cured) }}</div>
                 <div class="daily-increase">{{ '+' + display.curedChange }}</div>
@@ -36,12 +41,13 @@
                     confirmed: 0,
                     deaths: 0,
                     tested: 0,
+                    admission: 0,
                     cured: 0
                 }
             }
         },
         watch: {
-          display: function () {
+          display() {
               this.displayData = this.display;
           }
         },
@@ -50,7 +56,7 @@
         },
         methods:{
           num(x) {
-                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
         }
     }
