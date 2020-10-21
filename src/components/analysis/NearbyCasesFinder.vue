@@ -141,12 +141,12 @@ export default {
         );
         this.displayInfo = this.$t("nearBy.ukResult", [
           location.areaName,
-          location.cumCasesByPublishDate,
-          location.newCasesByPublishDate,
+          location.confirmed,
+          location.confirmedNew,
           getGetOrdinal(index + 1),
-          location.cumCasesBySpecimenDateRate ?? "-",
-          location.cumDeathsByDeathDate ?? "-",
-          location.newDeathsByDeathDate ?? "-",
+          location.confirmedRate ?? "-",
+          location.death ?? "-",
+          location.deathNew ?? "-",
         ]);
         window.ga(
           "send",

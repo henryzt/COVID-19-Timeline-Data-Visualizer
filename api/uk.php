@@ -12,6 +12,29 @@ function checkLength($res){
     return $res && strlen($res) > 500;
 }
 
+function findNextAvaliableField($arr, $field){
+    foreach ($arr as $entry) {
+        if($entry->$field){
+            return $entry->$field;
+        }
+    }
+    return null;
+}
+
+function getLatest($arr){
+    // some data returned null from the api, fill these null with last avaliable data
+    if(!$arr || !$arr[0]){
+        return null;
+    }
+    $latest = clone $arr[0];
+    foreach ($latest as $key => $value) {
+        if(!$value){
+            $latest->$key = findNextAvaliableField($arr, $key);
+        }
+    }
+    return $latest;
+}
+
 
 if ($ttl && $cache) {
     echo $cache;
@@ -26,13 +49,14 @@ if ($ttl && $cache) {
         "areaName":"areaName",
         "areaCode":"areaCode",
         "cumAdmissions":"cumAdmissions",
+        "newAdmissions":"newAdmissions",
         "hospitalCases":"hospitalCases",
         "covidOccupiedMVBeds":"covidOccupiedMVBeds",
-        "cumCasesBySpecimenDateRate":"cumCasesBySpecimenDateRate",
-        "newCasesByPublishDate":"newCasesByPublishDate",
-        "cumCasesByPublishDate":"cumCasesByPublishDate",
-        "newDeathsByDeathDate":"newDeaths28DaysByPublishDate",
-        "cumDeathsByDeathDate":"cumDeaths28DaysByPublishDate"
+        "confirmedRate":"cumCasesBySpecimenDateRate",
+        "confirmedNew":"newCasesByPublishDate",
+        "confirmed":"cumCasesByPublishDate",
+        "deathNew":"newDeaths28DaysByPublishDate",
+        "death":"cumDeaths28DaysByPublishDate"
     }';
 
     $queries = preg_replace("/\r|\n/", "", $queries);
@@ -43,9 +67,9 @@ if ($ttl && $cache) {
     $utla = "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType%3Dutla&latestBy=date" . $structure;
 
     $res->overview = json_decode(portal_curl_return($overview));
+    $res->latest = getLatest($res->overview->data);
     $res->nation = json_decode(portal_curl_return($nation));
     $res->utla = json_decode(portal_curl_return($utla));
-
     $res->isUpToDate = checkLength($nation) && checkLength($utla) && checkLength($overview);
 
     validate_and_output($res);

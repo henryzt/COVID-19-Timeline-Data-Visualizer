@@ -20,11 +20,11 @@ export default {
   data() {
     return {
       options: [
-        "cumCasesByPublishDate",
-        "cumDeathsByDeathDate",
+        "confirmed",
+        "death",
         "hospitalCases",
         "covidOccupiedMVBeds",
-        "cumCasesBySpecimenDateRate"
+        "confirmedRate"
       ],
     };
   },

@@ -4,7 +4,6 @@
       <DataSwitch
         :data-type="dataType"
         @typeChange="changeDataType($event)"
-        :disabled="tab === 1 && isUk"
       ></DataSwitch>
       <CountrySwitch 
         v-if="(isUk || isUs) && tableData.global" 
@@ -133,7 +132,8 @@ export default {
         this.isDataAvailable = true;
         if (this.tab === 1) {
           if (this.isUk) {
-            this.locationsData = combineUKHighCharts(this.currentData);
+            this.isDataAvailable = !(["cured", "cRate", "active"].includes(this.dataType));
+            this.locationsData = combineUKHighCharts(this.currentData, this.dataType);
           } else {
             this.isDataAvailable = !(
               this.isUs &&

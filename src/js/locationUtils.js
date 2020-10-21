@@ -211,7 +211,7 @@ export function getCountryCompareData(globalData, countryName, minCases) {
 /* --------------------------------------------------------------------------------------- */
 // by davies xue
 
-export function combineUKHighCharts(currentUkAreaData) {
+export function combineUKHighCharts(currentUkAreaData, type) {
     let commonLocationsData = [];
     let names = [];
     let keys = [];
@@ -226,7 +226,7 @@ export function combineUKHighCharts(currentUkAreaData) {
             const index = names.indexOf(area.areaName);
             if (index > -1)
                 //names.splice(i1, 1);
-                commonLocationsData.push([keys[index], area.cumCasesByPublishDate]);
+                commonLocationsData.push([keys[index], area[type ?? "confirmed"]]);
         }
     }
     // console.log(this.commonLocationsData);

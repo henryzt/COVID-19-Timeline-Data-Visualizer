@@ -211,10 +211,9 @@ export default {
       if (!this.regionData?.uk) return;
       this.regionData.uk.forEach((element) => {
         element.location = element.areaName;
-        element.death = element.cumDeathsByDeathDate;
-        element.confirmed = element.cumCasesByPublishDate;
-        element.change = "+" + element.newCasesByPublishDate;
-        element.confirmRate = element.cumCasesBySpecimenDateRate;
+        element.change = "+" + element.confirmedNew;
+        element.confirmRate = element.confirmedRate;
+        element.dRate = element.confirmed > 0 ? ((element.death / element.confirmed) * 100) : 0;
       });
       this.tableData = this.regionData.uk;
       this.sortTable();

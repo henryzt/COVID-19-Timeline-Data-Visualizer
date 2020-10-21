@@ -125,11 +125,11 @@ const messages = {
       cRate: "Recover Rate (%)",
     },
     dataSwitchUk: {
-      cumCasesByPublishDate: "Total Confirmed",
-      cumDeathsByDeathDate: "Total Death",
+      confirmed: "Total Confirmed",
+      death: "Total Death",
       hospitalCases: "Current Admitted",
       covidOccupiedMVBeds: "Current Severe",
-      cumCasesBySpecimenDateRate: "Infect Rate %"
+      confirmedRate: "Infect Rate %"
     },
     total: "Total",
     showAllCharts: "Show All Charts",
@@ -252,11 +252,11 @@ const messages = {
       cRate: "治愈率 (%)",
     },
     dataSwitchUk: {
-      cumCasesByPublishDate: "累计确诊",
-      cumDeathsByDeathDate: "累计死亡",
+      confirmed: "累计确诊",
+      death: "累计死亡",
       hospitalCases: "现存在院",
       covidOccupiedMVBeds: "现存重症",
-      cumCasesBySpecimenDateRate: "感染率%"
+      confirmedRate: "感染率%"
     },
     total: "累计",
     showAllCharts: "显示全部图表",
