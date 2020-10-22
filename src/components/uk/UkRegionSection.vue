@@ -39,7 +39,7 @@ export default {
   props: ["dataUk"],
   data() {
     return {
-      tag: "cumCasesByPublishDate",
+      tag: "confirmed",
     };
   },
   components: {
@@ -53,12 +53,14 @@ export default {
     },
     getNewData(nation) {
       let data = this.dataUk.filter((e) => e.areaName === nation);
+      let newData = data[0][this.tag + "New"];
+      if (newData) return "+" + newData;
       const today = data[0][this.tag];
       const yesterday = data[1][this.tag];
       if (!today) return "+0";
       if (!yesterday) return "-";
       const diff = today - yesterday;
-      return (diff > 0 ? "+" : "") + diff;
+      return (diff > 0 ? "+" : "") + diff.toFixed(0);
     },
   },
 };

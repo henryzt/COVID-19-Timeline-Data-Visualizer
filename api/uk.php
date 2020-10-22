@@ -8,6 +8,33 @@ $prefix = "UK";
 require "curl.php";
 require "cache.php";
 
+function checkLength($res){
+    return $res && strlen($res) > 500;
+}
+
+function findNextAvaliableField($arr, $field){
+    foreach ($arr as $entry) {
+        if($entry->$field){
+            return $entry->$field;
+        }
+    }
+    return null;
+}
+
+function getLatest($arr){
+    // some data returned null from the api, fill these null with last avaliable data
+    if(!$arr || !$arr[0]){
+        return null;
+    }
+    $latest = clone $arr[0];
+    foreach ($latest as $key => $value) {
+        if(!$value){
+            $latest->$key = findNextAvaliableField($arr, $key);
+        }
+    }
+    return $latest;
+}
+
 
 if ($ttl && $cache) {
     echo $cache;
@@ -17,14 +44,38 @@ if ($ttl && $cache) {
 
     $res;
 
-    $ukNation = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation&structure=%7B%22date%22:%22date%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22cumAdmissions%22:%22cumAdmissions%22,%22hospitalCases%22:%22hospitalCases%22,%22covidOccupiedMVBeds%22:%22covidOccupiedMVBeds%22,%22cumCasesBySpecimenDateRate%22:%22cumCasesBySpecimenDateRate%22,%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,%22cumCasesByPublishDate%22:%22cumCasesByPublishDate%22,%22newDeathsByDeathDate%22:%22newDeaths28DaysByPublishDate%22,%22cumDeathsByDeathDate%22:%22cumDeaths28DaysByPublishDate%22%7D';
-    $utla = "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType%3Dutla&latestBy=date&structure=%7B%22date%22:%22date%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22hospitalCases%22:%22hospitalCases%22,%22covidOccupiedMVBeds%22:%22covidOccupiedMVBeds%22,%22cumCasesBySpecimenDateRate%22:%22cumCasesBySpecimenDateRate%22,%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,%22cumCasesByPublishDate%22:%22cumCasesByPublishDate%22,%22newDeathsByDeathDate%22:%22newDeaths28DaysByPublishDate%22,%22cumDeathsByDeathDate%22:%22cumDeaths28DaysByPublishDate%22%7D";
+    $queries = '{
+        "date":"date",
+        "areaName":"areaName",
+        "areaCode":"areaCode",
+        "cumAdmissions":"cumAdmissions",
+        "newAdmissions":"newAdmissions",
+        "hospitalCases":"hospitalCases",
+        "covidOccupiedMVBeds":"covidOccupiedMVBeds",
+        "confirmedRate":"cumCasesByPublishDateRate",
+        "confirmedNew":"newCasesByPublishDate",
+        "confirmed":"cumCasesByPublishDate",
+        "confirmedBySpecimen":"cumCasesBySpecimenDate",
+        "deathNewBySpecimen":"newDeaths28DaysByDeathDate",
+        "deathNew":"newDeaths28DaysByPublishDate",
+        "death":"cumDeaths28DaysByPublishDate",
+        "deathRate":"cumDeaths28DaysByPublishDateRate",
+        "testedNew":"newTestsByPublishDate",
+        "tested":"cumTestsByPublishDate"
+    }';
 
-    $res->nation = json_decode(portal_curl_return($ukNation));
+    $queries = preg_replace("/\r|\n| /", "", $queries);
+    $structure = '&structure=' . urlencode($queries);
+
+    $nation = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation' . $structure;
+    $overview = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview' . $structure;
+    $utla = "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType%3Dutla&latestBy=date" . $structure;
+
+    $res->overview = json_decode(portal_curl_return($overview));
+    $res->latest = getLatest($res->overview->data);
+    $res->nation = json_decode(portal_curl_return($nation));
     $res->utla = json_decode(portal_curl_return($utla));
-
-    $res->isUpToDate = $ukNation && strlen($ukNation) > 500 && $utla && strlen($utla) > 500;
+    $res->isUpToDate = checkLength($nation) && checkLength($utla) && checkLength($overview);
 
     validate_and_output($res);
-
 }

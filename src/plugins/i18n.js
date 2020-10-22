@@ -47,6 +47,7 @@ const messages = {
     totalDeaths: "Deaths",
     totalTests: "Tested",
     totalCured: "Recovered",
+    hospitalCases: "Hospital Cases",
     negative: "Negative",
     active: "Active",
     england: "England",
@@ -55,7 +56,7 @@ const messages = {
     nIreland: "N. Ireland",
     nav: {
       current: "Current",
-      animation: "Animations",
+      analysis: "Analysis",
       map: "Regional",
     },
     newCases: "New Cases",
@@ -66,7 +67,7 @@ const messages = {
       oneWeek: "7 Days",
       twoWeek: "14 Days",
       oneMonth: "31 Days",
-      threeMonth: "3 mo",
+      threeMonth: "3 Mo",
       all: "All Data",
     },
     nearBy: {
@@ -123,13 +124,17 @@ const messages = {
       dRate: "Death Rate (%)",
       cured: "Recovered Cases",
       cRate: "Recover Rate (%)",
+      confirmedNew: "New Confirmed Today",
+      deathNew: "New Deaths Today",
+      confirmedRate: "Confirm Rate per 100k",
+      deathRate: "Death Rate per 100k",
     },
     dataSwitchUk: {
-      cumCasesByPublishDate: "Total Confirmed",
-      cumDeathsByDeathDate: "Total Death",
+      confirmed: "Total Confirmed",
+      death: "Total Death",
       hospitalCases: "Current Admitted",
       covidOccupiedMVBeds: "Current Severe",
-      cumCasesBySpecimenDateRate: "Infect Rate %"
+      confirmedRate: "Infect Rate %"
     },
     total: "Total",
     showAllCharts: "Show All Charts",
@@ -142,6 +147,7 @@ const messages = {
       scroll: "Scroll View",
       github: "Source Code",
     },
+    loadWorldAnalysis: "Tap to load global data analysis"
   },
   zh: {
     pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -176,6 +182,7 @@ const messages = {
     totalDeaths: "累计死亡",
     totalTests: "累计测试",
     totalCured: "累计治愈",
+    hospitalCases: "目前在院",
     negative: "测试阴性",
     active: "现存确诊",
     england: "英格兰",
@@ -184,7 +191,7 @@ const messages = {
     nIreland: "北爱尔兰",
     nav: {
       current: "当前数据",
-      animation: "历史动画",
+      analysis: "详情分析",
       map: "地区概况",
     },
     newCases: "新增确诊",
@@ -250,13 +257,17 @@ const messages = {
       dRate: "死亡率 (%)",
       cured: "累计治愈",
       cRate: "治愈率 (%)",
+      confirmedNew: "今日新增确诊",
+      deathNew: "今日新增死亡",
+      confirmedRate: "10万人确诊率",
+      deathRate: "10万人死亡率",
     },
     dataSwitchUk: {
-      cumCasesByPublishDate: "累计确诊",
-      cumDeathsByDeathDate: "累计死亡",
+      confirmed: "累计确诊",
+      death: "累计死亡",
       hospitalCases: "现存在院",
       covidOccupiedMVBeds: "现存重症",
-      cumCasesBySpecimenDateRate: "感染率%"
+      confirmedRate: "感染率%"
     },
     total: "累计",
     showAllCharts: "显示全部图表",
@@ -269,6 +280,7 @@ const messages = {
       scroll: "滚动布局",
       github: "Github源码",
     },
+    loadWorldAnalysis: "点击此处载入世界数据分析"
   },
 };
 

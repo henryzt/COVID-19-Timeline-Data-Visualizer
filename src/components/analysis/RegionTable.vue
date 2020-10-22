@@ -3,10 +3,14 @@
     <div class="switch-header">
       <DataSwitch
         :data-type="dataType"
+        :is-uk="isUk"
         @typeChange="changeDataType($event)"
-        :disabled="tab === 1 && isUk"
       ></DataSwitch>
-      <CountrySwitch v-if="regionData.country" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
+      <CountrySwitch 
+        v-if="(regionData.country || regionData.uk) && regionData.global" 
+        :tab="tab" 
+        @changeTab="changeTab($event)">
+      </CountrySwitch>
     </div>
 
     <div class="tableWrapper" v-if="tableData">
@@ -22,10 +26,10 @@
             <th scope="col" :class="{hd: true, active: sort===2}" @click="sortByNumber()" nowrap>
               {{$t('table.byCases')}}
             </th>
-            <th scope="col" :class="{hd: true, active: sort===3}" @click="sortByIncreaseNumber()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===3}" v-if="showAddition" @click="sortByIncreaseNumber()" nowrap>
               {{$t('table.changes')}}
             </th>
-            <th scope="col" :class="{hd: true, active: sort===4}" v-if="isUk" @click="sortByRate()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===4}" v-if="isUk && showAddition" @click="sortByRate()" nowrap>
               {{$t('table.rate')}}
             </th>
           </tr>
@@ -43,9 +47,14 @@
               </div>
               <div v-else>{{ singleRegion.location }}</div>
             </td>
-            <td>{{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}</td>
-            <td>{{ singleRegion.change }}</td>
-            <td v-if="isUk">{{ singleRegion.confirmRate ? singleRegion.confirmRate : "-" }}</td>
+            <td>
+              <span v-if="singleRegion[dataType]">
+                {{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}
+              </span>
+              <span v-else>-</span>
+            </td>
+            <td v-if="showAddition">{{ singleRegion.change }}</td>
+            <td v-if="isUk && showAddition">{{ singleRegion.confirmRate ? singleRegion.confirmRate : "-" }}</td>
           </tr>
           <tr></tr>
         </tbody>
@@ -100,9 +109,9 @@ export default {
     };
   },
   mounted() {
-    if (
-      this.regionData.country &&
-      this.regionData.country[this.regionData.country.length - 1].arr.length > 1
+    if ( this.isUk ||
+        (this.regionData.country &&
+        this.regionData.country[this.regionData.country.length - 1].arr.length > 1)
     ) {
       this.changeTab(1);
     } else {
@@ -130,9 +139,13 @@ export default {
     },
   },
   computed: {
-    isRate: function () {
+    isRate() {
       return this.dataType.includes("Rate");
     },
+    showAddition() {
+      if(!this.isUk) return true;
+      return this.dataType === "confirmed";
+    }
   },
   methods: {
     switchCountry(e) {
@@ -161,10 +174,11 @@ export default {
 
     changeTab(tab) {
       this.tab = tab;
-      if (tab === 0) {
+      if (tab === 0 && this.regionData.global) {
         if (this.isUk) this.dataType = "confirmed";
         this.getCurrentTableData(this.regionData.global);
       } else {
+        this.tab = 1;
         if (this.isUk) {
           this.getUkTableData();
           return;
@@ -206,10 +220,10 @@ export default {
       if (!this.regionData?.uk) return;
       this.regionData.uk.forEach((element) => {
         element.location = element.areaName;
-        element.death = element.cumDeathsByDeathDate;
-        element.confirmed = element.cumCasesByPublishDate;
-        element.change = "+" + element.newCasesByPublishDate;
-        element.confirmRate = element.cumCasesBySpecimenDateRate;
+        element.change = "+" + element.confirmedNew;
+        element.confirmRate = element.confirmedRate
+        // element.confirmRate = (element.confirmedRate / 1000).toFixed(2) + "%";
+        element.dRate = element.confirmed > 0 ? ((element.death / element.confirmed) * 100) : 0;
       });
       this.tableData = this.regionData.uk;
       this.sortTable();
@@ -254,7 +268,7 @@ export default {
     },
     sortByRate: function () {
       this.sort = 4;
-      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate - a.confirmRate);
+      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate.localeCompare(a.confirmRate));
     },
   },
 };

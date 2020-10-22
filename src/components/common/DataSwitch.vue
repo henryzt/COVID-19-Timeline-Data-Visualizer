@@ -27,11 +27,18 @@
 <script>
 export default {
   name: "DataSwitch",
-  props: ["dataType", "disabled"],
+  props: ["dataType", "disabled", "isUk"],
   data: function () {
     return {
-      options: ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"],
+      options: [],
     };
+  },
+  mounted() {
+    if(this.isUk){
+      this.options = ["confirmed", "death", "confirmedNew", "deathNew", "#", "confirmedRate", "deathRate", "dRate"]
+    }else{
+      this.options = ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"]
+    }
   },
   watch: {
     dataType: function () {
