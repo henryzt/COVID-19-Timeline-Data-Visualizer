@@ -558,10 +558,7 @@ export default {
       this.$i18n.locale = lang;
       this.isLocaleCN = this.$i18n.locale === "zh";
       document.title = this.$t("pageTitle");
-      this.countryList[0] = this.$t("selector.world");
-      this.countryList[1] = this.$t("selector.uk");
-      this.countryList[2] = this.$t("selector.us");
-      this.forceReload();
+      this.switchCountry(this.currentCountry);
     },
     forceReload() {
       //force reload
@@ -619,7 +616,7 @@ export default {
       );
     },
     isUkRealtime() {
-      return this.currentCountry === this.$t("selector.uk");
+      return this.currentCountry === this.countryList[1];
     },
     renderAll() {
       return this.dataCurrent && this.shouldRender && this.hasTableData;

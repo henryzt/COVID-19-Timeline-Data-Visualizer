@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div class="date">{{date}}</div>
         <div class="title">{{ $t('subtitles.today') }}</div>
         <div class="overview mBlock">
             <div class="overview_item" style="color: #ff5151;">
@@ -32,6 +33,8 @@
 </template>
 
 <script>
+    const moment = require('moment');
+
     export default {
         name: "TodayNumberSection",
         props: ["display"],
@@ -43,7 +46,8 @@
                     tested: 0,
                     admission: 0,
                     cured: 0
-                }
+                },
+                date: moment().format("YYYY-MM-DD")
             }
         },
         watch: {
@@ -63,5 +67,9 @@
 </script>
 
 <style scoped>
-
+.date{
+    float:right;
+    margin-top: -3px;
+    opacity: 0.5;
+}
 </style>

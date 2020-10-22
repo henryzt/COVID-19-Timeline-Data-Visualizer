@@ -3,8 +3,8 @@
     <div class="switch-header">
       <DataSwitch
         :data-type="dataType"
+        :is-uk="isUk"
         @typeChange="changeDataType($event)"
-        :disabled="(tab === 1 && isUk) || !regionData.global"
       ></DataSwitch>
       <CountrySwitch 
         v-if="(regionData.country || regionData.uk) && regionData.global" 
@@ -26,10 +26,10 @@
             <th scope="col" :class="{hd: true, active: sort===2}" @click="sortByNumber()" nowrap>
               {{$t('table.byCases')}}
             </th>
-            <th scope="col" :class="{hd: true, active: sort===3}" @click="sortByIncreaseNumber()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===3}" v-if="showAddition" @click="sortByIncreaseNumber()" nowrap>
               {{$t('table.changes')}}
             </th>
-            <th scope="col" :class="{hd: true, active: sort===4}" v-if="isUk" @click="sortByRate()" nowrap>
+            <th scope="col" :class="{hd: true, active: sort===4}" v-if="isUk && showAddition" @click="sortByRate()" nowrap>
               {{$t('table.rate')}}
             </th>
           </tr>
@@ -47,9 +47,14 @@
               </div>
               <div v-else>{{ singleRegion.location }}</div>
             </td>
-            <td>{{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}</td>
-            <td>{{ singleRegion.change }}</td>
-            <td v-if="isUk">{{ singleRegion.confirmRate ? singleRegion.confirmRate : "-" }}</td>
+            <td>
+              <span v-if="singleRegion[dataType]">
+                {{ isRate ? singleRegion[dataType].toFixed(2) : singleRegion[dataType]}}
+              </span>
+              <span v-else>-</span>
+            </td>
+            <td v-if="showAddition">{{ singleRegion.change }}</td>
+            <td v-if="isUk && showAddition">{{ singleRegion.confirmRate ? singleRegion.confirmRate : "-" }}</td>
           </tr>
           <tr></tr>
         </tbody>
@@ -134,9 +139,13 @@ export default {
     },
   },
   computed: {
-    isRate: function () {
+    isRate() {
       return this.dataType.includes("Rate");
     },
+    showAddition() {
+      if(!this.isUk) return true;
+      return this.dataType === "confirmed";
+    }
   },
   methods: {
     switchCountry(e) {
@@ -212,7 +221,8 @@ export default {
       this.regionData.uk.forEach((element) => {
         element.location = element.areaName;
         element.change = "+" + element.confirmedNew;
-        element.confirmRate = element.confirmedRate;
+        element.confirmRate = element.confirmedRate
+        // element.confirmRate = (element.confirmedRate / 1000).toFixed(2) + "%";
         element.dRate = element.confirmed > 0 ? ((element.death / element.confirmed) * 100) : 0;
       });
       this.tableData = this.regionData.uk;
@@ -258,7 +268,7 @@ export default {
     },
     sortByRate: function () {
       this.sort = 4;
-      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate - a.confirmRate);
+      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate.localeCompare(a.confirmRate));
     },
   },
 };

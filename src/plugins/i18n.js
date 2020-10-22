@@ -124,6 +124,10 @@ const messages = {
       dRate: "Death Rate (%)",
       cured: "Recovered Cases",
       cRate: "Recover Rate (%)",
+      confirmedNew: "New Confirmed Today",
+      deathNew: "New Deaths Today",
+      confirmedRate: "Confirm Rate per 100k",
+      deathRate: "Death Rate per 100k",
     },
     dataSwitchUk: {
       confirmed: "Total Confirmed",
@@ -253,6 +257,10 @@ const messages = {
       dRate: "死亡率 (%)",
       cured: "累计治愈",
       cRate: "治愈率 (%)",
+      confirmedNew: "今日新增确诊",
+      deathNew: "今日新增死亡",
+      confirmedRate: "10万人确诊率",
+      deathRate: "10万人死亡率",
     },
     dataSwitchUk: {
       confirmed: "累计确诊",
