@@ -35,7 +35,7 @@ intact. Please follow our Licence if you would like to modify the source code, i
 
 ## Data Source
 <ul>
-    <li><a href="https://github.com/isjeffcom/coronvirusFigureUK">Coronavirus UK Data API - isjeffcom</a></li>
+    <li><a href="https://coronavirus.data.gov.uk/developers-guide">GOV.UK</a></li>
     <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
     <li><a href="https://apify.com/covid-19">COVID-19 Data APIs for statistics - APIFY</a></li>
     <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API - ExpDev07</a></li>
@@ -44,6 +44,5 @@ intact. Please follow our Licence if you would like to modify the source code, i
     <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness Icons - iconfinder</a></li>
 </ul>
 
-With UK Data API kindly provided by https://github.com/isjeffcom/coronvirusFigureUK
 
 Written for UCLCSSA, beautified version of v1.0 from DaviesXue: https://github.com/DaviesXue/UCLCSSA_COVID19
