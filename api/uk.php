@@ -52,15 +52,19 @@ if ($ttl && $cache) {
         "newAdmissions":"newAdmissions",
         "hospitalCases":"hospitalCases",
         "covidOccupiedMVBeds":"covidOccupiedMVBeds",
-        "confirmedRate":"cumCasesBySpecimenDateRate",
+        "confirmedRate":"cumCasesByPublishDateRate",
         "confirmedNew":"newCasesByPublishDate",
-        "confirmed":"cumCasesBySpecimenDate",
-        "deathNew":"newDeaths28DaysByDeathDate",
-        "deathNewLatest":"newDeaths28DaysByPublishDate",
-        "death":"cumDeaths28DaysByDeathDate"
+        "confirmed":"cumCasesByPublishDate",
+        "confirmedBySpecimen":"cumCasesBySpecimenDate",
+        "deathNewBySpecimen":"newDeaths28DaysByDeathDate",
+        "deathNew":"newDeaths28DaysByPublishDate",
+        "death":"cumDeaths28DaysByPublishDate",
+        "deathRate":"cumDeaths28DaysByPublishDateRate",
+        "testedNew":"newTestsByPublishDate",
+        "tested":"cumTestsByPublishDate"
     }';
 
-    $queries = preg_replace("/\r|\n/", "", $queries);
+    $queries = preg_replace("/\r|\n| /", "", $queries);
     $structure = '&structure=' . urlencode($queries);
 
     $nation = 'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation' . $structure;

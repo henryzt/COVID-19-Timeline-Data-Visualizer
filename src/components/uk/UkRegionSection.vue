@@ -60,7 +60,7 @@ export default {
       if (!today) return "+0";
       if (!yesterday) return "-";
       const diff = today - yesterday;
-      return (diff > 0 ? "+" : "") + diff;
+      return (diff > 0 ? "+" : "") + diff.toFixed(0);
     },
   },
 };

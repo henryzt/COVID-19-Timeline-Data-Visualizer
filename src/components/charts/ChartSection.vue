@@ -78,7 +78,7 @@ export default {
         {
           name: this.$t("totalConfirmed"),
           data: this.ChartData.map((a) => {
-            return a.confirmed;
+            return a.confirmedBySpecimen ?? a.confirmed;
           }),
         },
         {
@@ -106,7 +106,7 @@ export default {
         {
           name: this.$t("newDeaths"),
           data: this.ChartData.map((a) => {
-            if (a.deathNew) return a.deathNew;
+            if (this.isUk) return a.deathNewBySpecimen;
             let newDeath = a.death - lastDeath;
             lastDeath = a.death;
             return newDeath > 0 ? newDeath : 0;

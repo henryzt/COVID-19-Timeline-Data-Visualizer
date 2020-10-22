@@ -531,7 +531,7 @@ export default {
         confirmed: latest.confirmed,
         confirmedChange: latest.confirmedNew,
         deaths: latest.death,
-        deathsChange: latest.deathNewLatest,
+        deathsChange: latest.deathNew,
         admission: latest.hospitalCases,
         admissionChange: latest.newAdmissions,
       };

@@ -22,6 +22,7 @@ if ($_GET["restore"]) {
     apc_delete($cache_key);
     apc_delete($ttl_key);
     $cache = file_get_contents("cache/" . $prefix . "-" . date("Y-m-d") . ".json", true);
+    store_cache($cache, false);
 }
 
 function store_cache($json, $isUpToDate){
