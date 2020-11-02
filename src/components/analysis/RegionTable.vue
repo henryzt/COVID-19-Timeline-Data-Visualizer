@@ -268,7 +268,7 @@ export default {
     },
     sortByRate: function () {
       this.sort = 4;
-      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate.localeCompare(a.confirmRate));
+      this.tableData = [...this.tableData].sort((a, b) => b.confirmRate - a.confirmRate);
     },
   },
 };
