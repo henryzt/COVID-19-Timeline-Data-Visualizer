@@ -34,16 +34,24 @@ export default {
     };
   },
   mounted() {
-    if(this.isUk){
-      this.options = ["confirmed", "death", "confirmedNew", "deathNew", "#", "confirmedRate", "deathRate", "dRate"]
-    }else{
-      this.options = ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"]
+    this.updateOptions();
+  },
+  methods: {
+    updateOptions() {
+      if(this.isUk){
+        this.options = ["confirmed", "death", "confirmedNew", "deathNew", "#", "confirmedRate", "deathRate", "dRate"]
+      }else{
+        this.options = ["confirmed", "active", "death", "cured", "#", "dRate", "cRate"]
+      }
     }
   },
   watch: {
-    dataType: function () {
+    dataType() {
       window.ga("send", "event", "data-switch", "type-changed", this.dataType);
     },
+    isUk() {
+      this.updateOptions();
+    }
   },
 };
 </script>

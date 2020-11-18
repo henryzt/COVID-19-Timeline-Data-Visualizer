@@ -6,22 +6,22 @@
       <div class="overview">
         <div class="overview_item">
           <div class="overview_title">{{ $t('england') }}</div>
-          <div class="overview_number">{{ getCumData("England") }}</div>
+          <div class="overview_number"><ICountUp :options="countOpt" :endVal='getCumData("England")'/></div>
           <div class="country-death">{{ getNewData("England") }}</div>
         </div>
         <div class="overview_item">
           <div class="overview_title">{{ $t('scotland') }}</div>
-          <div class="overview_number">{{ getCumData("Scotland") }}</div>
+          <div class="overview_number"><ICountUp :options="countOpt" :endVal='getCumData("Scotland")'/></div>
           <div class="country-death">{{ getNewData("Scotland") }}</div>
         </div>
         <div class="overview_item">
           <div class="overview_title">{{ $t('wales') }}</div>
-          <div class="overview_number">{{ getCumData("Wales") }}</div>
+          <div class="overview_number"><ICountUp :options="countOpt" :endVal='getCumData("Wales")'/></div>
           <div class="country-death">{{ getNewData("Wales") }}</div>
         </div>
         <div class="overview_item">
           <div class="overview_title">{{ $t('nIreland') }}</div>
-          <div class="overview_number">{{ getCumData("Northern Ireland") }}</div>
+          <div class="overview_number"><ICountUp :options="countOpt" :endVal='getCumData("Northern Ireland")'/></div>
           <div class="country-death">{{ getNewData("Northern Ireland") }}</div>
         </div>
       </div>
@@ -33,6 +33,7 @@
 <script>
 import Loading from "../common/Loading.vue";
 import DataSwitchUk from "./DataSwitchUk.vue";
+import ICountUp from 'vue-countup-v2';
 
 export default {
   name: "UkRegionSection",
@@ -40,11 +41,15 @@ export default {
   data() {
     return {
       tag: "confirmed",
+      countOpt: {
+        duration: 0.5
+      }
     };
   },
   components: {
     DataSwitchUk,
     Loading,
+    ICountUp
   },
   methods: {
     getCumData(nation) {

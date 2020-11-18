@@ -3,7 +3,7 @@
     <div class="switch-header">
       <DataSwitch
         :data-type="dataType"
-        :is-uk="isUk"
+        :is-uk="(tab===1 && isUk)"
         @typeChange="changeDataType($event)"
       ></DataSwitch>
       <CountrySwitch 
@@ -175,7 +175,6 @@ export default {
     changeTab(tab) {
       this.tab = tab;
       if (tab === 0 && this.regionData.global) {
-        if (this.isUk) this.dataType = "confirmed";
         this.getCurrentTableData(this.regionData.global);
       } else {
         this.tab = 1;

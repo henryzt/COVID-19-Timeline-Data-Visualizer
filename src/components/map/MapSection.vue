@@ -3,7 +3,7 @@
     <div class="switch-header">
       <DataSwitch
         :data-type="dataType"
-        :is-uk="isUk"
+        :is-uk="(tab===1 && isUk)"
         @typeChange="changeDataType($event)"
       ></DataSwitch>
       <CountrySwitch 
