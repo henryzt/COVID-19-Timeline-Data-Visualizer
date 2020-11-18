@@ -6,36 +6,42 @@
         @typeChange="changeDataType($event)"
         :disabled="tab === 1 && isUk"
       ></DataSwitch>
-      <CountrySwitch v-if="country" :tab="tab" @changeTab="changeTab($event)"></CountrySwitch>
+      <CountrySwitch
+        v-if="country"
+        :tab="tab"
+        @changeTab="changeTab($event)"
+      ></CountrySwitch>
     </div>
 
     <BarRace
-      v-if="global && tab===0"
+      v-if="global && tab === 0"
       :raceData="global"
       :title="$t('barRace.globalTitle')"
       :is-rate="dataType.includes('Rate')"
-      :color="$t('barRaceColor.'+dataType)"
+      :color="$t('barRaceColor.' + dataType)"
       :subtitle="$t('barRace.unit')"
       source="Source: Johns Hopkins University"
       :change-label-position="true"
       id="2"
       :main-date="currentDate"
-      @dateChange="currentDate=$event"
+      @dateChange="currentDate = $event"
     ></BarRace>
     <BarRace
-      v-if="country && country.length>0 && tab===1"
+      v-if="country && country.length > 0 && tab === 1"
       :raceData="country"
       :title="$t('barRace.localTitle')"
       :is-rate="dataType.includes('Rate')"
-      :color="$t('barRaceColor.'+dataType)"
+      :color="$t('barRaceColor.' + dataType)"
       :subtitle="$t('barRace.unit')"
-      :source="isUk?'Source: GOV.UK':'Source: Johns Hopkins University'"
+      :source="isUk ? 'Source: GOV.UK' : 'Source: Johns Hopkins University'"
       :change-label-position="!isUk"
       id="1"
       :main-date="currentDate"
-      @dateChange="currentDate=$event"
+      @dateChange="currentDate = $event"
     ></BarRace>
-    <div v-else v-show="tab===1" style="padding: 30px;text-align: center;">{{$t('noData')}}</div>
+    <div v-else v-show="tab === 1" style="padding: 30px; text-align: center">
+      {{ $t("noData") }}
+    </div>
   </div>
   <Loading v-else></Loading>
 </template>
@@ -45,6 +51,7 @@ import BarRace from "./BarRace.vue";
 import DataSwitch from "../common/DataSwitch";
 import CountrySwitch from "../common/CountrySwitch";
 import Loading from "../common/Loading.vue";
+import moment from "moment";
 import { getD3Data } from "../../js/locationUtils";
 
 export default {
@@ -53,7 +60,7 @@ export default {
     BarRace,
     DataSwitch,
     CountrySwitch,
-    Loading
+    Loading,
   },
   props: {
     tableData: Object,
@@ -97,10 +104,13 @@ export default {
   },
   mounted() {
     setImmediate(() => {
-      console.log("changed",this.countryName)
+      console.log("changed", this.countryName);
       this.changeDataType(this.dataType);
+      this.currentDate = moment()
+        .subtract(2, "months")
+        .format(window.dateFormat);
     });
-  }
+  },
 };
 </script>
 
