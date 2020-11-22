@@ -133,7 +133,9 @@
               <div class="title">{{ $t('subtitles.countryCompare') }}</div>
               <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
             </div>
-            <div v-else-if="dataUk"></div>
+            <div v-else-if="dataUk">
+              <UkDetailSection :dataUk="dataUk"></UkDetailSection>
+            </div>
             <!-- global data load button if not shown -->
             <div v-if="dataUk && !dataGlobal">
               <div class="title">{{ $t('nav.analysis') }}</div>
@@ -249,6 +251,10 @@ const PieSection = () => ({
   component: import("./components/analysis/PieSection.vue"),
   loading: Loading,
 });
+const UkDetailSection = () => ({
+  component: import("./components/uk/UkDetailSection.vue"),
+  loading: Loading,
+});
 
 import {
   getGlobalHistoryTableData,
@@ -277,6 +283,7 @@ export default {
     FAB,
     NearbyCasesFinder,
     Credits,
+    UkDetailSection,
     Loading
   },
   data: () => {
@@ -458,10 +465,8 @@ export default {
       this.shouldRender = false;
       this.countryName = countryName;
       let countryData = getCountryData(this.dataGlobal, countryName);
-      // console.log(countryData.confirmed.locations);
       this.dataCurrent = {};
       //history data
-      //console.log("data loaded", countryData);
       if (countryName === "US") {
         this.tableData.country = await getUSRegionData(this.dataUs);
       } else {
@@ -471,7 +476,6 @@ export default {
             : getGlobalHistoryTableData(countryData, true);
       }
       this.dataCurrent.history = getCountryHistoryData(countryData);
-      // console.log("country loaded", this.dataCurrent);
       this.startDate = moment(this.dataCurrent.history[0].date).format(
         window.dateFormat
       );
