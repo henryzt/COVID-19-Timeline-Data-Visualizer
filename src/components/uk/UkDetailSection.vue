@@ -2,6 +2,7 @@
   <div>
     <UkDetail :dataUk="dataUk" type="confirmed"></UkDetail>
     <UkDetail :dataUk="dataUk" type="death"></UkDetail>
+    <UkDetail :dataUk="dataUk" type="admissions"></UkDetail>
     <UkDetail :dataUk="dataUk" type="tested"></UkDetail>
   </div>
 </template>

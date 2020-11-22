@@ -128,6 +128,8 @@ const messages = {
       deathNew: "New Deaths Today",
       confirmedRate: "Confirm Rate per 100k",
       deathRate: "Death Rate per 100k",
+      admissions: "Admissions",
+      tested: "Tests Conducted"
     },
     dataSwitchUk: {
       confirmed: "Total Confirmed",
@@ -147,7 +149,10 @@ const messages = {
       scroll: "Scroll View",
       github: "Source Code",
     },
-    loadWorldAnalysis: "Tap to load global data analysis"
+    loadWorldAnalysis: "Tap to load global data analysis",
+    today: "Today",
+    last7days: "Last 7 days",
+    daily: "Daily ",
   },
   zh: {
     pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
@@ -261,6 +266,8 @@ const messages = {
       deathNew: "今日新增死亡",
       confirmedRate: "10万人确诊率",
       deathRate: "10万人死亡率",
+      admissions: "累计在院",
+      tested: "累计测试"
     },
     dataSwitchUk: {
       confirmed: "累计确诊",
@@ -280,7 +287,10 @@ const messages = {
       scroll: "滚动布局",
       github: "Github源码",
     },
-    loadWorldAnalysis: "点击此处载入世界数据分析"
+    loadWorldAnalysis: "点击此处载入世界数据分析",
+    today: "今日",
+    last7days: "总计",
+    daily: "日",
   },
 };
 

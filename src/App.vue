@@ -121,6 +121,9 @@
 
           <!-- analysis -->
           <div class="mSection" :class="{'mSectionDesktop': desktopLayout}" id="analysis">
+            <div v-if="dataUk && isCurrentUk">
+              <UkDetailSection :dataUk="dataUk"></UkDetailSection>
+            </div>
             <div v-if="dataGlobal">
               <div class="title">{{ $t('subtitles.historyAnimation') }}</div>
               <BarRaceSection v-if="hasTableData" :countryName="countryName" :table-data="tableData"></BarRaceSection>
@@ -133,9 +136,7 @@
               <div class="title">{{ $t('subtitles.countryCompare') }}</div>
               <CountryCompareSection :global-data="dataGlobal" :country-list="countryList"></CountryCompareSection>
             </div>
-            <div v-else-if="dataUk">
-              <UkDetailSection :dataUk="dataUk"></UkDetailSection>
-            </div>
+            
             <!-- global data load button if not shown -->
             <div v-if="dataUk && !dataGlobal">
               <div class="title">{{ $t('nav.analysis') }}</div>
@@ -537,7 +538,7 @@ export default {
         deaths: latest.death,
         deathsChange: latest.deathNew,
         admission: latest.hospitalCases,
-        admissionChange: latest.newAdmissions,
+        admissionChange: latest.admissionsNew,
       };
       this.chartData = this.dataUk.overview.data.reverse();
     },

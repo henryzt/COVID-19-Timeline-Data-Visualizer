@@ -1,17 +1,18 @@
 <template>
   <div>
-    <div class="title">{{ $t('Confirmed') }}</div>
+    <div class="title">{{ $t('dataSwitch.' + type) }}</div>
     <div class="mBlock">
       <div class="uk_numbers">
         <div :class="{[type]: true}">
-          <div class="number_title">Daily</div>
-          <div class="number"><ICountUp  :options="countOpt" :endVal="latestDaily"/></div>
-          <div class="number_title">Last 7 days</div>
+          <div class="number_title">{{ $t('today') }}</div>
+          <div class="number" ref="num"><ICountUp  :options="countOpt" :endVal="latestDaily"/></div>
+          <div class="number_title">{{ $t('last7days') }}</div>
           <div class="number"><ICountUp  :options="countOpt" :endVal="latest"/></div>
         </div>
         <Chart
           id="chart"
           type="area"
+          :colors="[colors[type]]"
           :dataHistory="dataUk.overview.data"
           :seriesData="chartData"
           :minimum="true"
@@ -38,7 +39,7 @@ export default {
     chartData() {
       return [
         {
-          name: this.$t("totalConfirmed"),
+          name: this.$t('daily') + this.$t('dataSwitch.' + this.type),
           data: this.dataUk.overview.data.map((a) => {
             return a[this.type + "NewBySpecimen"] ?? a[this.type + "New"];
           }),
@@ -46,10 +47,18 @@ export default {
       ];
     },
   },
+  mounted() {},
   data() {
     return {
       countOpt: {
         duration: 0.5
+      },
+      colors: {
+        confirmed: "#ff5151",
+        death: "#575757",
+        tested: "#0094b9",
+        cured: "#28ca00",
+        admissions: "#ff7300",
       }
     };
   },
@@ -77,5 +86,8 @@ export default {
   }
   .tested .number {
     color: var(--blue);
+  }
+  .admissions .number {
+    color: var(--orange);
   }
 </style>
