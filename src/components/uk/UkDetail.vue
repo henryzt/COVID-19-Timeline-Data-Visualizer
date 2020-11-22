@@ -9,7 +9,13 @@
           <div class="number_title">Last 7 days</div>
           <div class="number"><ICountUp  :options="countOpt" :endVal="latest"/></div>
         </div>
-
+        <Chart
+          id="chart"
+          type="area"
+          :dataHistory="dataUk.overview.data"
+          :seriesData="chartData"
+          :minimum="true"
+        ></Chart>
       </div>
     </div>
   </div>
@@ -17,6 +23,7 @@
 
 <script>
 import ICountUp from 'vue-countup-v2';
+import Chart from "../charts/Chart.vue";
 
 export default {
   name: "UkDetail",
@@ -28,6 +35,16 @@ export default {
     latestDaily(){
       return this.dataUk.latest[this.type + "New"];
     },
+    chartData() {
+      return [
+        {
+          name: this.$t("totalConfirmed"),
+          data: this.dataUk.overview.data.map((a) => {
+            return a["deathNewBySpecimen"];
+          }),
+        }
+      ];
+    },
   },
   data() {
     return {
@@ -37,14 +54,16 @@ export default {
     };
   },
   components:{
-    ICountUp
+    ICountUp,
+    Chart
   }
 }
 </script>
 
 <style scoped>
   .uk_numbers {
-    
+    display:flex;
+    justify-content: space-between;
   }
   .number {
     font-size: 1.7em;
