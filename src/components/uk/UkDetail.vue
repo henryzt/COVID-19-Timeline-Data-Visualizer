@@ -5,9 +5,9 @@
       <div class="uk_numbers">
         <div :class="{[type]: true}">
           <div class="number_title">Daily</div>
-          <div class="number">{{latestDaily}}</div>
+          <div class="number"><ICountUp  :options="countOpt" :endVal="latestDaily"/></div>
           <div class="number_title">Last 7 days</div>
-          <div class="number">{{latest}}</div>
+          <div class="number"><ICountUp  :options="countOpt" :endVal="latest"/></div>
         </div>
 
       </div>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import ICountUp from 'vue-countup-v2';
+
 export default {
   name: "UkDetail",
   props: ["dataUk", "type"],
@@ -26,6 +28,16 @@ export default {
     latestDaily(){
       return this.dataUk.latest[this.type + "New"];
     },
+  },
+  data() {
+    return {
+      countOpt: {
+        duration: 0.5
+      }
+    };
+  },
+  components:{
+    ICountUp
   }
 }
 </script>
@@ -39,6 +51,6 @@ export default {
     padding-bottom: 10px;
   }
   .confirmed .number {
-    color: red;
+    color: var(--red);
   }
 </style>
