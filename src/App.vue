@@ -258,6 +258,10 @@ const UkDetailSection = () => ({
 });
 
 import {
+    auto as followSystemColorScheme,
+} from 'darkreader';
+
+import {
   getGlobalHistoryTableData,
   getAllCountries,
   getCountryData,
@@ -330,6 +334,8 @@ export default {
     };
   },
   async mounted() {
+    followSystemColorScheme();
+
     window.dateFormat = "DD MMM";
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (this.isWeChat()) {
