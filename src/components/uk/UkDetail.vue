@@ -9,6 +9,7 @@
           <div class="number_title">{{ $t('last7days') }}</div>
           <div class="number"><ICountUp  :options="countOpt" :endVal="latest"/></div>
         </div>
+        <div style="max-width:60%">
         <Chart
           id="chart"
           type="area"
@@ -17,6 +18,7 @@
           :seriesData="chartData"
           :minimum="true"
         ></Chart>
+        </div>
       </div>
     </div>
   </div>
@@ -51,7 +53,7 @@ export default {
   data() {
     return {
       countOpt: {
-        duration: 0.5
+        duration: 0
       },
       colors: {
         confirmed: "#ff5151",
