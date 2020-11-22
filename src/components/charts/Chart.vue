@@ -80,6 +80,9 @@ export default {
     },
   },
   computed: {
+    stroke(){
+      return this.type=='line' || this.type=='area'
+    },
     series() {
       return this.seriesData.map((a) => {
         a.originalData = a.originalData ? a.originalData : a.data;
@@ -115,7 +118,10 @@ export default {
             fontSize: "12px",
           },
         },
-
+        stroke: {
+          show: this.stroke,
+          width: !this.stroke || this.minimum ? 2 : 4,
+        },
         grid: {
           show: !this.minimum,
           row: {

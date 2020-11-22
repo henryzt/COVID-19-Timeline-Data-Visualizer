@@ -40,7 +40,7 @@ export default {
         {
           name: this.$t("totalConfirmed"),
           data: this.dataUk.overview.data.map((a) => {
-            return a["deathNewBySpecimen"];
+            return a[this.type + "NewBySpecimen"] ?? a[this.type + "New"];
           }),
         }
       ];
@@ -71,5 +71,11 @@ export default {
   }
   .confirmed .number {
     color: var(--red);
+  }
+  .death .number {
+    color: var(--black);
+  }
+  .tested .number {
+    color: var(--blue);
   }
 </style>
