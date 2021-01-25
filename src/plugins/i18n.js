@@ -16,7 +16,7 @@ const messages = {
     pageTitle:
       "COVID-19 Realtime Data Visualization and Timeline - Coronavirus Nearby Cases Finder",
     title: "Realtime Tracking<br>& Timeline",
-    dateFormat: "DD MMM",
+    dateFormat: "DD MMM YY",
     launchIndicator: [
       "Stay home, stay safe.",
       "For easier access, add us to home page or bookmark.",
@@ -157,7 +157,7 @@ const messages = {
   zh: {
     pageTitle: "COVID-19 实时疫情数据跟踪 - UCLCSSA 中国学联",
     title: "实时数据动态",
-    dateFormat: "MM/DD",
+    dateFormat: "MM/DD/YY",
     launchIndicator: [
       "在微信中将此页面设为浮窗，方便第一时间获取更新",
       "请保护好自己：）",

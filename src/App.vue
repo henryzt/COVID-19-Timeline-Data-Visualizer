@@ -330,7 +330,7 @@ export default {
     };
   },
   async mounted() {
-    window.dateFormat = "DD MMM";
+    window.dateFormat = "DD MMM YY";
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (this.isWeChat()) {
       this.$i18n.locale = "zh";

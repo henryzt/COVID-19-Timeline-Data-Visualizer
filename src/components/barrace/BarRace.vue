@@ -377,12 +377,12 @@ export default {
         that.emitDateChange(that.day);
 
         let currentMoment = moment(
-          that.day + " 2020",
-          window.dateFormat + " YYYY"
+          that.day,
+          window.dateFormat
         );
         let endMoment = moment(
-          data[data.length - 1].day + " 2020",
-          window.dateFormat + " YYYY"
+          data[data.length - 1].day,
+          window.dateFormat
         );
         // day = d3.format('.1f')((+day) + 0.1);
         that.day = currentMoment.add(1, "days").format(window.dateFormat);
@@ -393,15 +393,6 @@ export default {
     }
     loadData(this.raceData);
 
-    // const halo = function(text, strokeWidth) {
-    //     text.select(function() { return this.parentNode.insertBefore(this.cloneNode(true), this); })
-    //         .style('fill', '#ffffff')
-    //         .style( 'stroke','#ffffff')
-    //         .style('stroke-width', strokeWidth)
-    //         .style('stroke-linejoin', 'round')
-    //         .style('opacity', 1);
-    //
-    // }
   },
 };
 </script>

@@ -1,9 +1,9 @@
 <template>
-    <div style="display: flex; align-items: center;padding-top: 20px">
+    <div class="wrapper">
         <button type="button" class="btn btn-secondary btn-lg circle" @click="onPlayPause" v-if="!hidePlayButton">
             <div style="margin-top: -2px;"><PauseIcon v-if="playPause"/><PlayIcon v-else/></div>
         </button>
-        <div style="font-size: 30px;font-weight: bold;opacity: 0.6; min-width:100px;text-align: center;" v-else>
+        <div class="date" v-else>
             {{currentDate}}
         </div>
         <div style="flex-grow: 1; margin-left: 20px">
@@ -51,7 +51,7 @@
         methods: {
             calculateDate: function(){
                 const moment = require('moment');
-                const dateFormat = window.dateFormat + ' YYYY';
+                const dateFormat = window.dateFormat;
 
                 // console.log(this.startDate, this.endDate, this.dateData, this.enableEvenIfPaused)
 
@@ -59,11 +59,11 @@
                 let doContinue = true;
                 let dateNow = this.startDate;
                 let count = 0;
-                while(doContinue && count<10000){
+                while(doContinue && count < 10000){
                     this.dateData.push(dateNow);
-                    let currentMoment = moment(dateNow+' 2020', dateFormat);
+                    let currentMoment = moment(dateNow, dateFormat);
                     dateNow = currentMoment.add(1, 'days').format(window.dateFormat);
-                    doContinue = currentMoment.isSameOrBefore(moment(this.endDate+' 2020', dateFormat));
+                    doContinue = currentMoment.isSameOrBefore(moment(this.endDate, dateFormat));
                     count++;
                 }
             },
@@ -86,5 +86,10 @@
 </script>
 
 <style scoped>
-
+.date{
+    font-size: 30px;font-weight: bold;opacity: 0.6; min-width:135px;text-align: center;
+}
+.wrapper{
+    display: flex; align-items: center;padding-top: 20px
+}
 </style>
