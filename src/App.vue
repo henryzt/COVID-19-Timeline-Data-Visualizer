@@ -43,11 +43,11 @@
             <div class="title">{{ $t('subtitles.timeMachine') }}</div>
             <div class="mBlock">
               <SlideController
-                :start-date="startDate"
-                :end-date="endDate"
+                :startDate="startDate"
+                :endDate="endDate"
                 :hidePlayButton="true"
                 :disableClick="true"
-                :current-date="currentDate"
+                :currentDate="currentDate"
                 @changeIndex="changeDateIdx"
                 @change="changeDate"
                 @dragEnded="onTMDragEnd"
@@ -80,8 +80,8 @@
           <!-- charts (show on desktop layout) -->
           <div class="mSection" v-if="renderAll && desktopLayout" style="padding-top: 0">
             <ChartSection
-              :chart-data="chartData ? chartData : dataCurrent.history"
-              :is-uk="isUkRealtime"
+              :chartData="chartData ? chartData : dataCurrent.history"
+              :isUk="isUkRealtime"
             ></ChartSection>
           </div>
         </div>
@@ -115,7 +115,7 @@
             <ChartSection
               v-if="dataCurrent.history || chartData"
               :chart-data="chartData ? chartData : dataCurrent.history"
-              :is-uk="isUkRealtime"
+              :isUk="isUkRealtime"
             ></ChartSection>
           </div>
 
@@ -161,11 +161,11 @@
               :regionData="tableData"
               v-if="hasTableData"
               :mainDate="mainDate"
-              :is-uk="isCurrentUk"
+              :isUk="isCurrentUk"
               @expanded="hideFab=$event"
               @switchCountry="switchCountry"
-              :current-country="currentCountry"
-              :desktop-layout="desktopLayout"
+              :currentCountry="currentCountry"
+              :desktopLayout="desktopLayout"
             ></RegionTable>
           </div>
         </div>
@@ -335,12 +335,6 @@ export default {
     if (this.isWeChat()) {
       this.$i18n.locale = "zh";
     }
-    // miniapp china redirect
-    // if (this.isMiniApp && timeZone == "Asia/Shanghai") {
-    //     window.location.replace("https://uclcssa.cn/public/covid_redirect.html");
-    //     window.ga('send', 'event', "china-redirected", "mini-app-tab", "");
-    //     return;
-    // }
     this.isLocaleCN = this.$i18n.locale === "zh";
     document.title = this.$t("pageTitle");
     window.dateFormat = this.$t("dateFormat");
@@ -392,7 +386,6 @@ export default {
             console.log(data);
             this.dataUs = data.us;
             this.dataGlobal = data.global;
-            // console.log(data);
             this.lastUpdated = `Data updated ${moment(
               data.global.confirmed.last_updated
             ).fromNow()}, data is ${data.isUpToDate ? "" : "NOT"} up to date.
@@ -419,7 +412,7 @@ export default {
               "event",
               "net-request",
               "initial-fetch-loaded",
-              `country-${this.currentCountry};loaded-${resTime}ms;calculated-${performanceTime}ms;`
+              `${this.currentCountry};${resTime};${performanceTime};`
             );
             resolve()
           })
