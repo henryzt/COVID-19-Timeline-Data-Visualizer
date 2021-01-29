@@ -4,7 +4,7 @@
     <Chart
       id="confirmedAndDeathChart1"
       type="area"
-      :dataHistory="ChartData"
+      :dataHistory="chartData"
       :seriesData="confirmedAndDeathChart1"
     ></Chart>
 
@@ -13,7 +13,7 @@
       id="deathChart2"
       type="bar"
       :stacked="true"
-      :dataHistory="ChartData"
+      :dataHistory="chartData"
       :seriesData="deathChart2"
       :colors="['#c40000', '#3d000d', '#2c9100']"
     ></Chart>
@@ -24,7 +24,7 @@
         v-if="!isUk"
         id="curedChart"
         type="bar"
-        :dataHistory="ChartData"
+        :dataHistory="chartData"
         :seriesData="curedChart5"
         :colors="['#0e9100']"
       ></Chart>
@@ -33,7 +33,7 @@
       <Chart
         id="activeChart"
         type="area"
-        :dataHistory="ChartData"
+        :dataHistory="chartData"
         :seriesData="activeChart4"
         :colors="['#ff8600', '#00a004']"
       ></Chart>
@@ -42,7 +42,7 @@
       <Chart
         id="rateChart3"
         type="area"
-        :dataHistory="ChartData"
+        :dataHistory="chartData"
         :seriesData="rateChart3"
         :colors="['#ca0011', '#0088ff']"
       ></Chart>
@@ -61,7 +61,7 @@ import MoreIcon from "mdi-vue/ChevronDown";
 import LessIcon from "mdi-vue/ChevronUp";
 export default {
   name: "ChartSection",
-  props: ["ChartData", "isUk"],
+  props: ["chartData", "isUk"],
   components: {
     Chart,
     MoreIcon,
@@ -77,13 +77,13 @@ export default {
       return [
         {
           name: this.$t("totalConfirmed"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             return a.confirmedBySpecimen ?? a.confirmed;
           }),
         },
         {
           name: this.$t("totalDeaths"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             return a.death;
           }),
         },
@@ -96,7 +96,7 @@ export default {
       return [
         {
           name: this.$t("newCases"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             if (a.confirmedNew) return a.confirmedNew;
             let newConfirmed = a.confirmed - lastConfirmed;
             lastConfirmed = a.confirmed;
@@ -105,7 +105,7 @@ export default {
         },
         {
           name: this.$t("newDeaths"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             if (this.isUk) return a.deathNewBySpecimen;
             let newDeath = a.death - lastDeath;
             lastDeath = a.death;
@@ -118,14 +118,14 @@ export default {
       return [
         {
           name: this.$t("deathRate"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             let rate = ((a.death / a.confirmed) * 100).toPrecision(2);
             return rate;
           }),
         },
         {
           name: this.$t("cureRate"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             let rate = ((a.cured / a.confirmed) * 100).toPrecision(2);
             return rate;
           }),
@@ -136,14 +136,14 @@ export default {
       return [
         {
           name: this.$t("dataSwitch.active"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             let rate = a.confirmed - a.cured - a.death;
             return rate > 0 ? rate : 0;
           }),
         },
         {
           name: this.$t("dataSwitch.cured"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             let rate = a.cured;
             return rate;
           }),
@@ -155,7 +155,7 @@ export default {
       return [
         {
           name: this.$t("dataSwitch.cured"),
-          data: this.ChartData.map((a) => {
+          data: this.chartData.map((a) => {
             let newCured = a.cured - lastCured;
             lastCured = a.cured;
             return newCured > 0 ? newCured : 0;
@@ -173,7 +173,7 @@ export default {
 </script>
 
 <style scoped>
-.showMore{
+.showMore {
   padding-top: 30px;
 }
 </style>

@@ -114,7 +114,7 @@
           <div class="mSection" v-if="!desktopLayout" id="charts" style="padding-top: 0">
             <ChartSection
               v-if="dataCurrent.history || chartData"
-              :chart-data="chartData ? chartData : dataCurrent.history"
+              :chartData="chartData ? chartData : dataCurrent.history"
               :isUk="isUkRealtime"
             ></ChartSection>
           </div>
