@@ -378,7 +378,7 @@ export default {
       return new Promise((resolve, reject) =>{
         console.time("fetch");
         let performanceTimeStart = performance.now();
-        fetch("https://uk.henryz.cc/covid/api.php")
+        fetch("https://uk.henryzt.com/covid/api.php")
           .then(async (res) => {
             console.timeEnd("fetch");
             let data = await res.json();
@@ -503,7 +503,7 @@ export default {
       if(!this.isUkRealtime) this.loadCountryData("United Kingdom");
       this.countryName = "UK";
       this.dataCurrent.uk = {};
-      fetch("https://uk.henryz.cc/covid/uk.php").then(async (res) => {
+      fetch("https://uk.henryzt.com/covid/uk.php").then(async (res) => {
         let data = await res.json();
         console.log(data);
         this.dataUk = data;

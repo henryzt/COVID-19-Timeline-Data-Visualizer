@@ -221,7 +221,7 @@ export default {
           resolve(this.mainLocation);
           return;
         }
-        fetch(`https://uk.henryz.cc/covid/us.php`).then(
+        fetch(`https://uk.henryzt.com/covid/us.php`).then(
           async (res) => {
             let data = await res.json();
             const csv = require("csvtojson");
