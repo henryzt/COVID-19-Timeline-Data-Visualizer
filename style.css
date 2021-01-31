@@ -1,0 +1,250 @@
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web&display=swap");
+
+body {
+  margin: auto;
+  font-family: "Titillium Web", sans-serif;
+  background: #f5f5f5;
+
+}
+
+:root {
+  --red: #ff5151;
+  --orange: #ff7300;
+  --black: #575757;
+  --blue: #0094b9;
+  --green: #28ca00;
+}
+
+.mSection{
+    position: relative;
+    padding-top: 50px;
+}
+
+.nav-link{
+  transition: 0.5s;
+}
+
+
+.mNav {
+  margin: 0 auto;
+  transition: background-color 1s;
+  position: sticky;
+  padding: 30px 10px 10px;
+  text-align: center;
+}
+
+.nav{
+  max-width: 600px;
+  text-align: center;
+  margin: auto;
+}
+
+.navPlaceholder{
+  height: 86px;
+}
+
+.mContent {
+  padding: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 600px;
+  line-height: 30px;
+  box-sizing: border-box;
+}
+
+.loading-animation {
+  background: linear-gradient(
+    135deg,
+    rgba(238, 238, 238, 1) 0%,
+    rgba(238, 238, 238, 1) 33%,
+    rgb(255, 255, 255) 53%,
+    rgba(238, 238, 238, 1) 59%,
+    rgba(238, 238, 238, 1) 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 2s ease infinite;
+}
+
+.title {
+  font-size: 20px;
+  margin: 30px 0px 15px 0;
+  line-height: 22px;
+  padding: 0;
+  padding-left: 10px;
+  border-left: 6px solid rgb(0, 195, 255);
+}
+
+.mBlock {
+  /* box-shadow: 0px 30px 50px -2px rgba(0, 0, 0, 0.05); */
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  color: #252525;
+  animation: fadein 1s ease-out;
+}
+
+.overview {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  text-overflow: fade;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.overview_item {
+  margin: 1px 15px;
+  text-align: center;
+  width: 25% !important;
+}
+
+.overview_number {
+  font-size: 1.7em;
+  padding-top:3px;
+}
+
+.showMore {
+  text-align: center;
+  font-size: 17px;
+  user-select: none;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+/*.center {*/
+/*  text-align: center;*/
+/*  margin: auto inherit;*/
+/*}*/
+
+@keyframes loading {
+  0% {
+    background-position: 120% 0%;
+  }
+  100% {
+    background-position: -50% 0%;
+  }
+}
+
+.btn-group-wrap {
+  /*text-align: center;*/
+  padding-bottom: 10px;
+}
+
+div.btn-group {
+  margin: 0 auto;
+  text-align: center;
+  width: inherit;
+  display: inline-block;
+}
+
+.country-death {
+  padding-top: 3px;
+  font-size: 18px;
+  text-align: center;
+  color: #ff4242;
+}
+.daily-increase {
+  /*padding-top: 10px;*/
+  font-size: 18px;
+  text-align: center;
+}
+/*table, th {*/
+/*  border: 1px solid black;*/
+/*  width: 80%;*/
+/*}*/
+/*td {*/
+/*  border: 1px solid black;*/
+/*  width: 100%;*/
+/*}*/
+
+
+.fixed_nav{
+  box-shadow: 0px 5px 20px -2px rgba(0, 0, 0, 0.1);
+  top:0;
+  left: 0;
+  z-index: 100;
+  padding: 10px;
+  margin: 0;
+  position: fixed;
+  width: 100%;
+  line-height: 20px;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(255,255,255,0.8);
+}
+
+/*circle button*/
+.circle{
+  border-radius: 30px;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.select .vs__selected-options {
+  flex-wrap: nowrap !important;
+}
+
+.switch-header{
+  display: flex;justify-content: space-between;flex-wrap: wrap;
+  padding-bottom: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+.mBlock {
+  padding: 15px;
+}
+  .btn-group-wrap {
+    text-align: center;
+    margin: auto;
+  }
+  .overview_number {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .overview_item{
+    margin: 1px 10px;
+    /*overflow: scroll;*/
+  }
+  .overview_title {
+    font-size: 0.9em;
+  }
+
+  .country-death {
+    font-size: 1em;
+  }
+  .daily-increase {
+    font-size: 1em;
+  }
+}
+
+.mSectionDesktop .btn-group-wrap {
+  text-align: center;
+  margin: auto;
+}
+.mSectionDesktop .overview_number {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.mSectionDesktop .overview_item{
+  margin: 1px 10px;
+  /*overflow: scroll;*/
+}
+.mSectionDesktop .overview_title {
+  font-size: 0.9em;
+}
+
+.mSectionDesktop .country-death {
+  font-size: 1.1em;
+}
+.mSectionDesktop .daily-increase {
+  font-size: 1.1em;
+}
+
+@keyframes fadein {
+    from { opacity: 0; transform: translateY(30px) }
+    to   { opacity: 1; }
+}
