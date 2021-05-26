@@ -97,7 +97,7 @@
           <li>
             © 2020
             <a href="https://github.com/henryz00">@henryz00</a> and
-            <a href="https://github.com/DaviesXue">@DaviesXue</a>
+            <a href="https://github.com/Davi-X">@DaviesXue</a>
             <span>{{isLocaleCN ? " | UCLCSSA 伦敦大学学院中国学联" : " at University College London."}}</span>
           </li>
         </ul>
