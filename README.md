@@ -1,48 +1,27 @@
-# COVID-19 Data Visualizer & Interactive Timeline
+# Vue 3 + Typescript + Vite
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/91994753-67d0-4843-a818-95839ac7023c/deploy-status)](https://app.netlify.com/sites/covid19-realtime/deploys)
-[![Build Status](https://travis-ci.com/henryz00/COVID-19-Timeline-Data-Visualizer.svg?branch=master)](https://travis-ci.com/henryz00/COVID-19-Timeline-Data-Visualizer)
+This template should help get you started developing with Vue 3 and Typescript in Vite.
 
+## Recommended IDE Setup
 
-Coronavirus UK and world data visualiser with interactive timeline using vue and bootstrap
+[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
 
-**[covid19track.site](https://covid19track.site/)**
+### If Using `<script setup>`
 
-![img1](screenshots/1.png)
+[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
 
-Running on [covid19track.site](https://covid19track.site/) and [covid19.uclcssa.cn](https://covid19.uclcssa.cn).
-## Screenshots
-Charts and Data
-![img1](screenshots/2.png)
+## Type Support For `.vue` Imports in TS
 
-Confirmed Cases Bar Race Animation
-![img1](screenshots/3.png)
+Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
 
-UK Region Map
-![img1](screenshots/4.png)
+### If Using Volar
 
-Detailed Region List with Full History Timeline
-![img1](screenshots/5.png)
+Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
 
-Country Drop Down Select
-![img1](screenshots/6.png)
+### If Using Vetur
 
-## Copyright
-You are free to distribute, share or embed whole or part of the site without prior notice to us, 
-as long as you mention the source (covid19track.site or covid19.uclcssa.cn) or keep the about section 
-intact. Please follow our Licence if you would like to modify the source code, it would also be very nice
- if you could show us what did you build :)
-
-## Data Source
-<ul>
-    <li><a href="https://coronavirus.data.gov.uk/developers-guide">GOV.UK</a></li>
-    <li><a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data Repository - Johns Hopkins CSSE</a></li>
-    <li><a href="https://apify.com/covid-19">COVID-19 Data APIs for statistics - APIFY</a></li>
-    <li><a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API - ExpDev07</a></li>
-    <li><a href="https://github.com/nytimes/covid-19-data">Coronavirus Data in the United States - The New York Times</a></li>
-    <li><a href="https://gist.github.com/jrzief/70f1f8a5d066a286da3a1e699823470f">D3 Bar Chart Races (Based on) - jrzief</a></li>
-    <li><a href="https://www.iconfinder.com/p/coronavirus-awareness-icons">Coronavirus Awareness Icons - iconfinder</a></li>
-</ul>
-
-
-Written for UCLCSSA, beautified version of v1.0 from DaviesXue: https://github.com/DaviesXue/UCLCSSA_COVID19
+1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
+2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
+3. Open `src/main.ts` in VSCode
+4. Open the VSCode command palette
+5. Search and run "Select TypeScript version" -> "Use workspace version"
