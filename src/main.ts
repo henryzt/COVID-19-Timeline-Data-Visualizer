@@ -14,6 +14,11 @@ const app = createApp(App)
 app.component(ElButton.name, ElButton);
 app.component(ElSelect.name, ElSelect);
 
+function numberWithCommas(x: number) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+app.config.globalProperties.$padNum = numberWithCommas;
 
 const messages = {
   "zh": zh,
