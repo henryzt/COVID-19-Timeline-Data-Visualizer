@@ -1,5 +1,7 @@
 <template>
-  <h1>{{ msg }}</h1>
+  <div class="block">
+
+  </div>
 
 </template>
 
@@ -8,14 +10,13 @@ import { ref, defineComponent } from 'vue'
 export default defineComponent({
   name: 'MainNumbers',
   props: {
-    msg: {
-      type: String,
+    overviewData: {
+      type: Object,
       required: true
     }
   },
-  setup: () => {
-    const count = ref(0)
-    return { count }
+  setup(props) {
+    console.log(props.overviewData)
   }
 })
 </script>
