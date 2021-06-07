@@ -48,19 +48,23 @@ export function getCountryList(allCountryData: Array<any>) {
   ];
 
   if (allCountryData?.length > 0) {
-    const countryList = allCountryData.map((i) => {
-      return { label: i.country, value: i.country };
-    });
+    const popularCountries = array.map((i) => i.value);
 
-    array = array.concat(countryList)
-  }else{
+    const countryList = allCountryData
+      .filter((i) => !popularCountries.includes(i.country))
+      .map((i) => {
+        return { label: i.country, value: i.country };
+      });
+
+    array = array.concat(countryList);
+  } else {
     const loading = {
       label: "Country List Loading...",
       value: "divider2",
-      disabled: true
-    }
+      disabled: true,
+    };
 
-    array.push(loading)
+    array.push(loading);
   }
 
   return array;

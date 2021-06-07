@@ -7,7 +7,8 @@
       </div>
       <div>
         <n-select
-          v-model:value="selectedValue"
+          :value="modelValue"
+          @update:value="changeCountry"
           filterable
           placeholder="Select Country"
           :options="countryList"
@@ -17,7 +18,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { NSelect } from "naive-ui";
 export default {
   name: "Header",
@@ -26,11 +27,19 @@ export default {
       type: Array,
       default: []
     },
+    modelValue: {
+      type: String,
+      default: "all"
+    }
   },
   data() {
     return {
-      selectedValue: null,
     };
+  },
+  methods: {
+    changeCountry(e) {
+      this.$emit('update:modelValue', e);
+    }
   },
   components: {
     NSelect,

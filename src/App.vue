@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <Header :country-list="countryList"/>
+    <Header :country-list="countryList" v-model="selectedCountry"/>
     <MainNumbers :overview-data="overviewData" />
   </div>
 </template>
@@ -27,13 +27,19 @@ export default defineComponent({
       overviewData: null,
       allCountryData: null,
       countryList: [],
+      selectedCountry: "all"
     };
   },
   async mounted() {
     this.countryList = getCountryList([]);
-    this.overviewData = await getOverviewData("all");
+    this.overviewData = await getOverviewData(this.selectedCountry);
     this.allCountryData = await getAllCountryData();
     this.countryList = getCountryList(this.allCountryData);
+  },
+  watch: {
+    async selectedCountry(country) {
+      this.overviewData = await getOverviewData(this.selectedCountry);
+    }
   },
 });
 </script>
