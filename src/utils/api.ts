@@ -9,12 +9,21 @@ export function getAllCountryData() {
   return request(`countries`);
 }
 
-export function getOverviewData(counrty: string) {
+export async function getOverviewData(counrty: string) {
+  let result, outdated;
   if (counrty === "all") {
-    return request(`all`);
+    result = request(`all?yesterday=true`);
+    outdated = true;
   } else {
-    return request(`countries/${counrty}`);
+    result = await request(`countries/${counrty}`);
+    if (result.todayCases == 0) {
+      result = request(`countries/${counrty}?yesterday=true`);
+      outdated = true;
+    }else{
+      outdated = false;
+    }
   }
+  return Object.assign(result, { outdated });
 }
 
 export function getTimeSeries(counrty: string) {
