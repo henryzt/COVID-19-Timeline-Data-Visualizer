@@ -1,13 +1,14 @@
 <template>
+  <div class="title">Overview</div>
   <div class="overview-wrapper">
     <div class="block overview" v-for="(item, idx) of display" :key="idx">
       <div v-if="item">
         <div :class="{ [item.color]: true }">
-          <div class="overview-title">{{item.title}}</div>
+          <div class="overview-title">{{ item.title }}</div>
           <div class="number" ref="num">
-            {{ $padNum(item.today ?? item.critical) }}
+            {{ $padNum(item.today) }}
           </div>
-          <div class="number-title">Total</div>
+          <div class="number-title">{{ item.totalTitle ?? "Total" }}</div>
           <div class="number total">
             {{ $padNum(item.total) }}
           </div>
@@ -42,24 +43,25 @@ export default defineComponent({
         total: data.cases,
       };
       const deaths = {
-        color: "black",
+        color: "purple",
         title: "Deaths Today",
         today: data.todayDeaths,
         total: data.deaths,
       };
-      const active = {
-        color: "orange",
-        title: "Active Today",
-        critical: data.critical,
-        total: data.active,
-      };
       const recovered = {
-        color: "blue",
+        color: "green",
         title: "Recovered Today",
         today: data.todayRecovered,
         total: data.recovered,
       };
-      this.display = [cases, deaths, active, recovered];
+      const active = {
+        color: "orange",
+        title: "Current Cirtical",
+        today: data.critical,
+        totalTitle: "Current Active",
+        total: data.active,
+      };
+      this.display = [cases, deaths, recovered, active];
     },
   },
 });
@@ -79,24 +81,27 @@ export default defineComponent({
   width: 48%;
   margin-bottom: 30px;
   font-weight: bold;
+  font-size: 14px;
 }
 
-.overview-title{
-  font-size:1em;
-  opacity:0.5;
+.overview-title {
+  font-size: 1em;
+  opacity: 0.5;
 }
 
 .number-title {
-  opacity:0.5;
+  opacity: 0.5;
+  line-height: 1.2em;
 }
 
 .number {
-  font-size: 1.7em;
+  font-size: 2em;
   padding-bottom: 10px;
 }
 
 .total {
-  font-size: 1.2em;
+  font-size: 1.3em;
+  padding-bottom: 0;
 }
 
 .red .number {
@@ -110,5 +115,11 @@ export default defineComponent({
 }
 .orange .number {
   color: var(--orange);
+}
+.purple .number {
+  color: var(--purple);
+}
+.green .number {
+  color: var(--green);
 }
 </style>

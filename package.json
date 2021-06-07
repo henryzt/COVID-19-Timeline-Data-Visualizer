@@ -6,8 +6,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "chart.js": "^3.3.2",
     "element-plus": "^1.0.2-beta.46",
     "vue": "^3.0.5",
+    "vue-chartjs": "^3.5.1",
     "vue-i18n": "^9.1.6"
   },
   "devDependencies": {
