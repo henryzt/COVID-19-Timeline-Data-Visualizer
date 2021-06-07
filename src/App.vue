@@ -1,7 +1,8 @@
 <template>
   <div class="main-content">
-    <Header :country-list="countryList" v-model="selectedCountry"/>
+    <Header :country-list="countryList" v-model="selectedCountry" />
     <MainNumbers :overview-data="overviewData" />
+    <ChartSection />
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import { defineComponent } from "vue";
 import Header from "./components/Header.vue";
 import MainNumbers from "./components/MainNumbers.vue";
+import ChartSection from "./components/ChartSection.vue";
 import {
   getAllCountryData,
   getOverviewData,
@@ -21,13 +23,14 @@ export default defineComponent({
   components: {
     Header,
     MainNumbers,
+    ChartSection,
   },
   data() {
     return {
       overviewData: null,
       allCountryData: null,
       countryList: [],
-      selectedCountry: "all"
+      selectedCountry: "all",
     };
   },
   async mounted() {
@@ -39,7 +42,7 @@ export default defineComponent({
   watch: {
     async selectedCountry(country) {
       this.overviewData = await getOverviewData(this.selectedCountry);
-    }
+    },
   },
 });
 </script>
