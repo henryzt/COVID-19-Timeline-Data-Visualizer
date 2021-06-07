@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
-    <Header />
-    <MainNumbers :overview-data="overviewData"/>
+    <Header :country-list="countryList"/>
+    <MainNumbers :overview-data="overviewData" />
   </div>
 </template>
 
@@ -9,7 +9,12 @@
 import { defineComponent } from "vue";
 import Header from "./components/Header.vue";
 import MainNumbers from "./components/MainNumbers.vue";
-import { getAllCountryData, getOverviewData, getTimeSeries } from "./utils/api";
+import {
+  getAllCountryData,
+  getOverviewData,
+  getTimeSeries,
+  getCountryList,
+} from "./utils/api";
 
 export default defineComponent({
   name: "App",
@@ -17,15 +22,18 @@ export default defineComponent({
     Header,
     MainNumbers,
   },
-  data(){
+  data() {
     return {
       overviewData: null,
       allCountryData: null,
-    }
+      countryList: [],
+    };
   },
   async mounted() {
+    this.countryList = getCountryList([]);
     this.overviewData = await getOverviewData("all");
     this.allCountryData = await getAllCountryData();
+    this.countryList = getCountryList(this.allCountryData);
   },
 });
 </script>

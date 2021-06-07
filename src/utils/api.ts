@@ -20,3 +20,48 @@ export function getOverviewData(counrty: string) {
 export function getTimeSeries(counrty: string) {
   return request(`historical/${counrty}`);
 }
+
+export function getCountryList(allCountryData: Array<any>) {
+  let array = [
+    {
+      label: "Popular",
+      value: "divider0",
+      disabled: true,
+    },
+    {
+      label: "🌍 Worldwide",
+      value: "all",
+    },
+    {
+      label: "🇬🇧 United Kingdom",
+      value: "UK",
+    },
+    {
+      label: "🇺🇸 United States",
+      value: "USA",
+    },
+    {
+      label: "All Countries and regions",
+      value: "divider1",
+      disabled: true,
+    },
+  ];
+
+  if (allCountryData?.length > 0) {
+    const countryList = allCountryData.map((i) => {
+      return { label: i.country, value: i.country };
+    });
+
+    array = array.concat(countryList)
+  }else{
+    const loading = {
+      label: "Country List Loading...",
+      value: "divider2",
+      disabled: true
+    }
+
+    array.push(loading)
+  }
+
+  return array;
+}
