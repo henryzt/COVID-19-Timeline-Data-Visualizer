@@ -2,29 +2,42 @@
   <div>
     <div class="title">Trend Analysis</div>
     <div class="block">
-      <Chart v-if="allTimeSeries" :time-series="currentTimeSeries"></Chart>
+      <Selector :types="chartTypes" v-model="selectedType" />
+      <Chart
+        v-if="allTimeSeries"
+        :time-series="currentTimeSeries"
+        :type="selectedType"
+      ></Chart>
     </div>
   </div>
 </template>
 
 <script>
 import Chart from "./Chart.vue";
+import Selector from "./Selector.vue";
 
 export default {
   name: "ChartSection",
   props: {
     allTimeSeries: {
       type: Object,
-      default: null
+      default: null,
     },
+  },
+  data() {
+    return {
+      chartTypes: ["cases", "deaths", "recovered"],
+      selectedType: "cases",
+    };
   },
   components: {
     Chart,
+    Selector,
   },
   computed: {
     currentTimeSeries() {
-      return this.allTimeSeries?.cases 
-    }
+      return this.allTimeSeries?.[this.selectedType];
+    },
   },
 };
 </script>

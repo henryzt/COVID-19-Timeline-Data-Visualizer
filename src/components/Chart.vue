@@ -64,6 +64,16 @@ export default defineComponent({
       this.updateChart();
     },
   },
+  computed: {
+    color() {
+      const colors = {
+        "cases":"#ff5151",
+        "deaths":"#4b3077",
+        "recovered":"#28ca00",
+      }
+      return colors[this.type] ?? "#3a4de9";
+    }
+  },
   methods: {
     updateChart() {
       const timeSeries = this.timeSeries;
@@ -77,16 +87,17 @@ export default defineComponent({
         },
         yAxis: {
           type: "value",
-          axisLabel:{
-            width: 250
-          }
+          axisLabel: {
+            formatter: function (value) {
+              return value >= 100000 ? value.toExponential() : value;
+            },
+          },
         },
         tooltip: {
           trigger: "axis",
         },
         grid: {
           right: 5,
-          left: "15%"
         },
         toolbox: {
           feature: {
@@ -111,15 +122,21 @@ export default defineComponent({
             name: this.type,
             data: data,
             type: "line",
+            itemStyle: {
+              color: this.color,
+            },
+            lineStyle: {
+              color: this.color,
+            },
             areaStyle: {
               color: new graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "rgba(58,77,233,0.8)",
+                  color: this.color + "a0", // hex rgba
                 },
                 {
                   offset: 1,
-                  color: "rgba(58,77,233,0.3)",
+                  color: this.color + "09",
                 },
               ]),
             },
