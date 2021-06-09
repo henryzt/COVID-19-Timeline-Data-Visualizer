@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
     <Header :country-list="countryList" v-model="selectedCountry" />
-    <MainNumbers :overview-data="overviewData" />
+    <MainNumbers :overview-data="overviewData" :all-time-series="timeSeries" />
     <ChartSection :all-time-series="timeSeries" />
   </div>
 </template>

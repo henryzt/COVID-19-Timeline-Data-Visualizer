@@ -6,7 +6,7 @@
       <Chart
         v-if="allTimeSeries"
         :time-series="currentTimeSeries"
-        :type="selectedType"
+        :data-type="selectedType"
       ></Chart>
     </div>
   </div>

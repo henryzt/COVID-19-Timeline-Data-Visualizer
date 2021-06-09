@@ -3,7 +3,15 @@
   <div class="overview-wrapper">
     <div class="block overview" v-for="(item, idx) of display" :key="idx">
       <div v-if="item">
-        <div :class="{ [item.color]: true }">
+        <div class="bg-chart">
+          <Chart
+            v-if="allTimeSeries"
+            :time-series="allTimeSeries[item.type]"
+            :data-type="item.type"
+            type="minimum"
+          ></Chart>
+        </div>
+        <div :class="{ [item.color]: true }" style="position: relative; z-index: 100">
           <div class="overview-title">{{ item.title }}</div>
           <div class="number" ref="num">
             {{ $padNum(item.today) }}
@@ -20,6 +28,8 @@
 
 <script>
 import { ref, defineComponent } from "vue";
+import Chart from "./Chart.vue";
+
 export default defineComponent({
   name: "MainNumbers",
   props: {
@@ -27,6 +37,13 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    allTimeSeries: {
+      type: Object,
+      required: true,
+    },
+  },
+  components: {
+    Chart,
   },
   data() {
     return {
@@ -38,24 +55,28 @@ export default defineComponent({
       console.log(data);
       const cases = {
         color: "red",
+        type: "cases",
         title: "Cases Today",
         today: data.todayCases,
         total: data.cases,
       };
       const deaths = {
         color: "purple",
+        type: "deaths",
         title: "Deaths Today",
         today: data.todayDeaths,
         total: data.deaths,
       };
       const recovered = {
         color: "green",
+        type: "recovered",
         title: "Recovered Today",
         today: data.todayRecovered,
         total: data.recovered,
       };
       const active = {
         color: "orange",
+        type: "recovered",
         title: "Current Cirtical",
         today: data.critical,
         totalTitle: "Current Active",
@@ -82,6 +103,7 @@ export default defineComponent({
   margin-bottom: 30px;
   font-weight: bold;
   font-size: 14px;
+  overflow: hidden;
 }
 
 .overview-title {
@@ -102,6 +124,24 @@ export default defineComponent({
 .total {
   font-size: 1.3em;
   padding-bottom: 0;
+}
+
+.bg-chart {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-chart::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(90deg, white, white, rgba(255, 255, 255, 0.2));
 }
 
 .red .number {

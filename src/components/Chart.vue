@@ -46,9 +46,13 @@ export default defineComponent({
       type: Object,
       default: null,
     },
-    type: {
+    dataType: {
       type: String,
       default: "cases",
+    },
+    type: {
+      type: String,
+      default: "full",
     },
   },
   data() {
@@ -67,15 +71,81 @@ export default defineComponent({
   computed: {
     color() {
       const colors = {
-        "cases":"#ff5151",
-        "deaths":"#4b3077",
-        "recovered":"#28ca00",
-      }
-      return colors[this.type] ?? "#3a4de9";
-    }
+        cases: "#ff5151",
+        deaths: "#4b3077",
+        recovered: "#28ca00",
+      };
+      return colors[this.dataType] ?? "#3a4de9";
+    },
   },
   methods: {
     updateChart() {
+      if (this.type == "full") {
+        this.fullLineChart();
+      } else if (this.type == "minimum") {
+        this.minimumLineChart();
+      }
+    },
+    minimumLineChart() {
+      const timeSeries = this.timeSeries;
+      const labels = Object.keys(timeSeries);
+      const data = Object.values(timeSeries);
+
+      const option = {
+        xAxis: {
+          show: false,
+          type: "category",
+          data: labels,
+        },
+        yAxis: {
+          show: false,
+          type: "value",
+          axisLabel: {
+            formatter: function (value) {
+              return value >= 100000 ? value.toExponential() : value;
+            },
+          },
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        grid: {
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom:0,
+          height: 150
+        },
+        series: [
+          {
+            name: this.dataType,
+            data: data,
+            type: "line",
+            itemStyle: {
+              color: this.color,
+            },
+            lineStyle: {
+              color: this.color,
+            },
+            areaStyle: {
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: this.color + "a0", // hex rgba
+                },
+                {
+                  offset: 1,
+                  color: this.color + "09",
+                },
+              ]),
+            },
+          },
+        ],
+      };
+
+      this.option = option;
+    },
+    fullLineChart() {
       const timeSeries = this.timeSeries;
       const labels = Object.keys(timeSeries);
       const data = Object.values(timeSeries);
@@ -119,7 +189,7 @@ export default defineComponent({
         ],
         series: [
           {
-            name: this.type,
+            name: this.dataType,
             data: data,
             type: "line",
             itemStyle: {
