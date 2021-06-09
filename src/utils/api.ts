@@ -26,8 +26,9 @@ export async function getOverviewData(counrty: string) {
   return Object.assign(result, { outdated });
 }
 
-export function getTimeSeries(counrty: string) {
-  return request(`historical/${counrty}`);
+export async function getTimeSeries(counrty: string) {
+  const data = await request(`historical/${counrty}?lastdays=all`);
+  return data.country ? data.timeline : data;
 }
 
 export function getCountryList(allCountryData: Array<any>) {

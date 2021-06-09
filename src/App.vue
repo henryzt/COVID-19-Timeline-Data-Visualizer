@@ -2,7 +2,7 @@
   <div class="main-content">
     <Header :country-list="countryList" v-model="selectedCountry" />
     <MainNumbers :overview-data="overviewData" />
-    <ChartSection />
+    <ChartSection :all-time-series="timeSeries" />
   </div>
 </template>
 
@@ -28,6 +28,7 @@ export default defineComponent({
   data() {
     return {
       overviewData: null,
+      timeSeries: null,
       allCountryData: null,
       countryList: [],
       selectedCountry: "all",
@@ -35,13 +36,19 @@ export default defineComponent({
   },
   async mounted() {
     this.countryList = getCountryList([]);
-    this.overviewData = await getOverviewData(this.selectedCountry);
+    this.updateCountryData();
     this.allCountryData = await getAllCountryData();
     this.countryList = getCountryList(this.allCountryData);
   },
   watch: {
-    async selectedCountry(country) {
+    selectedCountry() {
+      this.updateCountryData();
+    },
+  },
+  methods: {
+    async updateCountryData() {
       this.overviewData = await getOverviewData(this.selectedCountry);
+      this.timeSeries = await getTimeSeries(this.selectedCountry);
     },
   },
 });

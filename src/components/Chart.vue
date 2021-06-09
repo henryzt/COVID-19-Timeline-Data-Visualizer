@@ -5,21 +5,24 @@
 <script>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { PieChart } from "echarts/charts";
+import { LineChart } from "echarts/charts";
+import { graphic } from "echarts/core";
 import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
+  GridComponent,
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, defineComponent } from "vue";
 
 use([
   CanvasRenderer,
-  PieChart,
+  LineChart,
   TitleComponent,
   TooltipComponent,
   LegendComponent,
+  GridComponent,
 ]);
 
 export default defineComponent({
@@ -30,40 +33,48 @@ export default defineComponent({
   provide: {
     [THEME_KEY]: "light",
   },
-  setup: () => {
+  props: {
+    timeSeries: {
+      type: Object,
+      default: null,
+    },
+    type: {
+      type: String,
+      default: "cases",
+    },
+  },
+  setup: (props) => {
+    const timeSeries = props.timeSeries;
+    const labels = Object.keys(timeSeries)
+    const data = Object.values(timeSeries)
+
     const option = ref({
-      title: {
-        text: "Traffic Sources",
-        left: "center",
+      xAxis: {
+        type: "category",
+        data: labels,
+      },
+      yAxis: {
+        type: "value",
       },
       tooltip: {
-        trigger: "item",
-        formatter: "{a} <br/>{b} : {c} ({d}%)",
-      },
-      legend: {
-        orient: "vertical",
-        left: "left",
-        data: ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
+        trigger: "axis",
       },
       series: [
         {
-          name: "Traffic Sources",
-          type: "pie",
-          radius: "55%",
-          center: ["50%", "60%"],
-          data: [
-            { value: 335, name: "Direct" },
-            { value: 310, name: "Email" },
-            { value: 234, name: "Ad Networks" },
-            { value: 135, name: "Video Ads" },
-            { value: 1548, name: "Search Engines" },
-          ],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: "rgba(0, 0, 0, 0.5)",
-            },
+          name: props.type,
+          data: data,
+          type: "line",
+          areaStyle: {
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: "rgba(58,77,233,0.8)",
+              },
+              {
+                offset: 1,
+                color: "rgba(58,77,233,0.3)",
+              },
+            ]),
           },
         },
       ],
