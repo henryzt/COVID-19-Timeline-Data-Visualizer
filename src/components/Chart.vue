@@ -12,6 +12,10 @@ import {
   TooltipComponent,
   LegendComponent,
   GridComponent,
+  DataZoomComponent,
+  DataZoomInsideComponent,
+  DataZoomSliderComponent,
+  ToolboxComponent,
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, defineComponent } from "vue";
@@ -23,6 +27,10 @@ use([
   TooltipComponent,
   LegendComponent,
   GridComponent,
+  DataZoomComponent,
+  DataZoomInsideComponent,
+  DataZoomSliderComponent,
+  ToolboxComponent,
 ]);
 
 export default defineComponent({
@@ -43,44 +51,84 @@ export default defineComponent({
       default: "cases",
     },
   },
-  setup: (props) => {
-    const timeSeries = props.timeSeries;
-    const labels = Object.keys(timeSeries)
-    const data = Object.values(timeSeries)
+  data() {
+    return {
+      option: {},
+    };
+  },
+  mounted() {
+    this.updateChart();
+  },
+  watch: {
+    timeSeries() {
+      this.updateChart();
+    },
+  },
+  methods: {
+    updateChart() {
+      const timeSeries = this.timeSeries;
+      const labels = Object.keys(timeSeries);
+      const data = Object.values(timeSeries);
 
-    const option = ref({
-      xAxis: {
-        type: "category",
-        data: labels,
-      },
-      yAxis: {
-        type: "value",
-      },
-      tooltip: {
-        trigger: "axis",
-      },
-      series: [
-        {
-          name: props.type,
-          data: data,
-          type: "line",
-          areaStyle: {
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: "rgba(58,77,233,0.8)",
-              },
-              {
-                offset: 1,
-                color: "rgba(58,77,233,0.3)",
-              },
-            ]),
+      const option = {
+        xAxis: {
+          type: "category",
+          data: labels,
+        },
+        yAxis: {
+          type: "value",
+          axisLabel:{
+            width: 250
+          }
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        grid: {
+          right: 5,
+          left: "15%"
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none",
+            },
           },
         },
-      ],
-    });
+        dataZoom: [
+          {
+            type: "inside",
+            start: 50,
+            end: 100,
+          },
+          {
+            start: 0,
+            end: 100,
+          },
+        ],
+        series: [
+          {
+            name: this.type,
+            data: data,
+            type: "line",
+            areaStyle: {
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: "rgba(58,77,233,0.8)",
+                },
+                {
+                  offset: 1,
+                  color: "rgba(58,77,233,0.3)",
+                },
+              ]),
+            },
+          },
+        ],
+      };
 
-    return { option };
+      this.option = option;
+    },
   },
 });
 </script>
