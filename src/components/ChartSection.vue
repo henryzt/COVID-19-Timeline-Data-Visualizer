@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      chartTypes: ["cases", "deaths", "recovered"],
+      chartTypes: ["cases", "deaths", "recovered", "active"],
       selectedType: "cases",
     };
   },

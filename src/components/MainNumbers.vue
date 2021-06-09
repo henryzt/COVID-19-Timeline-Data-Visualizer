@@ -11,8 +11,8 @@
             type="minimum"
           ></Chart>
         </div>
-        <div :class="{ [item.color]: true }" style="position: relative; z-index: 100">
-          <div class="overview-title">{{ item.title }}</div>
+        <div :class="{ [item.color]: true, 'ov-item': true }">
+          <div class="ov-title">{{ item.title }}</div>
           <div class="number" ref="num">
             {{ $padNum(item.today) }}
           </div>
@@ -76,7 +76,7 @@ export default defineComponent({
       };
       const active = {
         color: "orange",
-        type: "recovered",
+        type: "active",
         title: "Current Cirtical",
         today: data.critical,
         totalTitle: "Current Active",
@@ -106,9 +106,14 @@ export default defineComponent({
   overflow: hidden;
 }
 
-.overview-title {
+.ov-title {
   font-size: 1em;
   opacity: 0.5;
+}
+
+.ov-item {
+  position: relative;
+  z-index: 100;
 }
 
 .number-title {
@@ -141,7 +146,12 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(90deg, white, white, rgba(255, 255, 255, 0.2));
+  background-image: linear-gradient(
+    90deg,
+    white,
+    white,
+    rgba(255, 255, 255, 0)
+  );
 }
 
 .red .number {

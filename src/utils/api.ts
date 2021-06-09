@@ -19,7 +19,7 @@ export async function getOverviewData(counrty: string) {
     if (result.todayCases == 0) {
       result = request(`countries/${counrty}?yesterday=true`);
       outdated = true;
-    }else{
+    } else {
       outdated = false;
     }
   }
@@ -27,8 +27,14 @@ export async function getOverviewData(counrty: string) {
 }
 
 export async function getTimeSeries(counrty: string) {
-  const data = await request(`historical/${counrty}?lastdays=all`);
-  return data.country ? data.timeline : data;
+  let data = await request(`historical/${counrty}?lastdays=all`);
+  data = data.country ? data.timeline : data;
+  // get active cases time series
+  data.active = Object.assign({}, data.cases);
+  for (let i in data.cases) {
+    data.active[i] = data.cases[i] - data.deaths[i] - data.recovered[i];
+  }
+  return data;
 }
 
 export function getCountryList(allCountryData: Array<any>) {
