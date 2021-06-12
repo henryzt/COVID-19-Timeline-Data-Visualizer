@@ -101,14 +101,14 @@ export default defineComponent({
   justify-content: space-between;
   width: 48%;
   margin-bottom: 30px;
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 14px;
   overflow: hidden;
 }
 
 .ov-title {
   font-size: 1em;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .ov-item {
@@ -117,7 +117,7 @@ export default defineComponent({
 }
 
 .number-title {
-  opacity: 0.5;
+  opacity: 0.6;
   line-height: 1.2em;
 }
 
@@ -154,22 +154,22 @@ export default defineComponent({
   );
 }
 
-.red .number {
+.red {
   color: var(--red);
 }
-.black .number {
+.black {
   color: var(--black);
 }
-.blue .number {
+.blue {
   color: var(--blue);
 }
-.orange .number {
+.orange {
   color: var(--orange);
 }
-.purple .number {
+.purple {
   color: var(--purple);
 }
-.green .number {
+.green {
   color: var(--green);
 }
 </style>

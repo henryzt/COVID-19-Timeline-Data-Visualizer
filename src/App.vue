@@ -3,6 +3,7 @@
     <Header :country-list="countryList" v-model="selectedCountry" />
     <MainNumbers :overview-data="overviewData" :all-time-series="timeSeries" />
     <ChartSection :all-time-series="timeSeries" />
+    <TableSection  />
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import { defineComponent } from "vue";
 import Header from "./components/Header.vue";
 import MainNumbers from "./components/MainNumbers.vue";
 import ChartSection from "./components/ChartSection.vue";
+import TableSection from "./components/TableSection.vue";
 import {
   getAllCountryData,
   getOverviewData,
@@ -24,6 +26,7 @@ export default defineComponent({
     Header,
     MainNumbers,
     ChartSection,
+    TableSection
   },
   data() {
     return {
