@@ -15,15 +15,14 @@ body {
   --green: #28ca00;
 }
 
-.main-section{
-    position: relative;
-    padding-top: 50px;
+.main-section {
+  position: relative;
+  padding-top: 50px;
 }
 
-.nav-link{
+.nav-link {
   transition: 0.5s;
 }
-
 
 .main-nav {
   margin: 0 auto;
@@ -33,13 +32,13 @@ body {
   text-align: center;
 }
 
-.nav{
+.nav {
   max-width: 600px;
   text-align: center;
   margin: auto;
 }
 
-.nav-placeholder{
+.nav-placeholder {
   height: 86px;
 }
 
@@ -70,7 +69,7 @@ body {
   padding: 20px;
   color: #252525;
   box-sizing: border-box;
-  transition: background 0.5s;
+  transition: all 3s;
 }
 
 .loading-block {
@@ -82,8 +81,10 @@ body {
     rgba(238, 238, 238, 1) 59%,
     rgba(238, 238, 238, 1) 100%
   );
-  background-size: 200% 100%;
+  background-size: 230% 100%;
   animation: loading 2s ease infinite;
+  transition: all 3s;
+
 }
 
 .overview {
@@ -104,7 +105,7 @@ body {
 
 .overview-number {
   font-size: 1.7em;
-  padding-top:3px;
+  padding-top: 3px;
 }
 
 .show-more {
@@ -115,13 +116,12 @@ body {
   opacity: 0.7;
 }
 
-
 @keyframes loading {
   0% {
-    background-position: 120% 0%;
+    background-position: 150% 0%;
   }
   100% {
-    background-position: -50% 0%;
+    background-position: -30% 0%;
   }
 }
 
@@ -147,11 +147,9 @@ div.btn-group {
   text-align: center;
 }
 
-
-
-.fixed-nav{
+.fixed-nav {
   box-shadow: 0px 5px 20px -2px rgba(0, 0, 0, 0.1);
-  top:0;
+  top: 0;
   left: 0;
   z-index: 100;
   padding: 10px;
@@ -161,27 +159,28 @@ div.btn-group {
   line-height: 20px;
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 /*circle button*/
-.circle{
+.circle {
   border-radius: 30px;
   padding: 10px;
   width: 50px;
   height: 50px;
 }
 
-
-.switch-header{
-  display: flex;justify-content: space-between;flex-wrap: wrap;
+.switch-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   padding-bottom: 5px;
 }
 
 @media only screen and (max-width: 600px) {
-.main-lock {
-  padding: 15px;
-}
+  .main-lock {
+    padding: 15px;
+  }
   .btn-group-wrap {
     text-align: center;
     margin: auto;
@@ -190,7 +189,7 @@ div.btn-group {
     font-size: 1.2em;
     font-weight: bold;
   }
-  .overview-item{
+  .overview-item {
     margin: 1px 10px;
     /*overflow: scroll;*/
   }
@@ -206,8 +205,23 @@ div.btn-group {
   }
 }
 
+.fly-in{
+  animation: flyin 1s ease-out;
+}
 
-@keyframes fadein {
-    from { opacity: 0; transform: translateY(30px) }
-    to   { opacity: 1; }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+@keyframes flyin {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+  }
 }

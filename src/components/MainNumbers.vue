@@ -3,18 +3,21 @@
   <div class="overview-wrapper">
     <div
       class="block overview"
-      :class="{ 'loading-block': loading }"
+      :class="{ 'loading-block': loading || !allTimeSeries }"
       v-for="(item, idx) of display"
       :key="idx"
     >
       <div v-if="item">
-        <div class="bg-chart" v-if="allTimeSeries">
-          <Chart
-            :time-series="allTimeSeries[item.type]"
-            :data-type="item.type"
-            type="minimum"
-          ></Chart>
-        </div>
+        <transition name="fade">
+          <div class="bg-chart" v-if="!loading">
+            <Chart
+              v-if="allTimeSeries"
+              :time-series="allTimeSeries[item.type]"
+              :data-type="item.type"
+              type="minimum"
+            ></Chart>
+          </div>
+        </transition>
         <div :class="{ [item.color]: true, 'ov-item': true }">
           <div class="ov-title">{{ item.title }}</div>
           <div class="number" ref="num">
