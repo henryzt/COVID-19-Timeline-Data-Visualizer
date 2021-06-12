@@ -1,9 +1,16 @@
 <template>
   <div class="main-content">
     <Header :country-list="countryList" v-model="selectedCountry" />
-    <MainNumbers :overview-data="overviewData" :all-time-series="timeSeries" />
-    <ChartSection :all-time-series="timeSeries" />
-    <TableSection :all-country-data="allCountryData" />
+    <MainNumbers
+      :loading="!loaded.overviewData"
+      :overview-data="overviewData"
+      :all-time-series="loaded.timeSeries ? timeSeries : null"
+    />
+    <ChartSection :loading="!loaded.timeSeries" :all-time-series="timeSeries" />
+    <TableSection
+      :loading="!loaded.allCountryData"
+      :all-country-data="allCountryData"
+    />
   </div>
 </template>
 
@@ -35,12 +42,18 @@ export default defineComponent({
       allCountryData: null,
       countryList: [],
       selectedCountry: "all",
+      loaded: {
+        overviewData: false,
+        timeSeries: false,
+        allCountryData: false,
+      },
     };
   },
   async mounted() {
     this.countryList = getCountryList([]);
     this.updateCountryData();
     this.allCountryData = await getAllCountryData();
+    this.loaded.allCountryData = true;
     this.countryList = getCountryList(this.allCountryData);
   },
   watch: {
@@ -50,8 +63,12 @@ export default defineComponent({
   },
   methods: {
     async updateCountryData() {
+      this.loaded.overviewData = false;
+      this.loaded.timeSeries = false;
       this.overviewData = await getOverviewData(this.selectedCountry);
+      this.loaded.overviewData = true;
       this.timeSeries = await getTimeSeries(this.selectedCountry);
+      this.loaded.timeSeries = true;
     },
   },
 });

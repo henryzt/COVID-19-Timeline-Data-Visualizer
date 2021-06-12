@@ -1,5 +1,6 @@
 <template>
-  <v-chart class="chart" :option="option" />
+  <n-empty v-if="noData" description="No data yet" />
+  <v-chart v-else class="chart" :option="option" />
 </template>
 
 <script>
@@ -19,6 +20,8 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, defineComponent } from "vue";
+import { NEmpty } from "naive-ui";
+
 
 use([
   CanvasRenderer,
@@ -37,6 +40,7 @@ export default defineComponent({
   name: "Chart",
   components: {
     VChart,
+    NEmpty
   },
   provide: {
     [THEME_KEY]: "light",
@@ -57,6 +61,7 @@ export default defineComponent({
   },
   data() {
     return {
+      noData: false,
       option: {},
     };
   },
@@ -81,6 +86,11 @@ export default defineComponent({
   },
   methods: {
     updateChart() {
+      if (!this.timeSeries) {
+        this.noData = true;
+        return;
+      }
+      this.noData = false;
       if (this.type == "full") {
         this.fullLineChart();
       } else if (this.type == "minimum") {
@@ -114,8 +124,8 @@ export default defineComponent({
           right: 0,
           left: 0,
           top: 0,
-          bottom:0,
-          height: 150
+          bottom: 0,
+          height: 150,
         },
         series: [
           {

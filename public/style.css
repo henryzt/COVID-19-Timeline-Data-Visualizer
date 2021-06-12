@@ -53,19 +53,6 @@ body {
   box-sizing: border-box;
 }
 
-.loading-animation {
-  background: linear-gradient(
-    135deg,
-    rgba(238, 238, 238, 1) 0%,
-    rgba(238, 238, 238, 1) 33%,
-    rgb(255, 255, 255) 53%,
-    rgba(238, 238, 238, 1) 59%,
-    rgba(238, 238, 238, 1) 100%
-  );
-  background-size: 200% 100%;
-  animation: loading 2s ease infinite;
-}
-
 .title {
   font-size: 20px;
   margin: 30px 0px 15px 0;
@@ -83,6 +70,20 @@ body {
   padding: 20px;
   color: #252525;
   box-sizing: border-box;
+  transition: background 0.5s;
+}
+
+.loading-block {
+  background: linear-gradient(
+    135deg,
+    rgba(238, 238, 238, 1) 0%,
+    rgba(238, 238, 238, 1) 33%,
+    rgb(255, 255, 255) 53%,
+    rgba(238, 238, 238, 1) 59%,
+    rgba(238, 238, 238, 1) 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 2s ease infinite;
 }
 
 .overview {

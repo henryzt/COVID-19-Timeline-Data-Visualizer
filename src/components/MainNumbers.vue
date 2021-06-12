@@ -1,11 +1,15 @@
 <template>
   <div class="title">Overview</div>
   <div class="overview-wrapper">
-    <div class="block overview" v-for="(item, idx) of display" :key="idx">
+    <div
+      class="block overview"
+      :class="{ 'loading-block': loading }"
+      v-for="(item, idx) of display"
+      :key="idx"
+    >
       <div v-if="item">
-        <div class="bg-chart">
+        <div class="bg-chart" v-if="allTimeSeries">
           <Chart
-            v-if="allTimeSeries"
             :time-series="allTimeSeries[item.type]"
             :data-type="item.type"
             type="minimum"
@@ -33,6 +37,10 @@ import Chart from "./Chart.vue";
 export default defineComponent({
   name: "MainNumbers",
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     overviewData: {
       type: Object,
       required: true,
@@ -104,6 +112,7 @@ export default defineComponent({
   /* font-weight: bold; */
   font-size: 14px;
   overflow: hidden;
+  height: 160px;
 }
 
 .ov-title {
