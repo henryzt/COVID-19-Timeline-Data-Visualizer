@@ -3,7 +3,7 @@
     <Header :country-list="countryList" v-model="selectedCountry" />
     <MainNumbers :overview-data="overviewData" :all-time-series="timeSeries" />
     <ChartSection :all-time-series="timeSeries" />
-    <TableSection  />
+    <TableSection :all-country-data="allCountryData" />
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default defineComponent({
     Header,
     MainNumbers,
     ChartSection,
-    TableSection
+    TableSection,
   },
   data() {
     return {

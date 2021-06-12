@@ -3,7 +3,8 @@
     <n-data-table
       ref="table"
       :columns="columns"
-      :data="data"
+      :data="allCountryData"
+      :pagination="pagination"
     />
   </n-space>
 </template>
@@ -13,89 +14,71 @@ import { NSpace, NDataTable } from "naive-ui";
 
 const columns = [
   {
-    title: 'Name',
-    key: 'name',
-    defaultSortOrder: 'ascend',
-    sorter: 'default'
+    title: "Country",
+    key: "country",
+    defaultSortOrder: "ascend",
+    sorter: "default",
   },
   {
-    title: 'Age',
-    key: 'age',
-    sorter: (row1, row2) => row1.age - row2.age
+    title: "Cases",
+    key: "cases",
+    sorter: (row1, row2) => row1.cases - row2.cases,
   },
   {
-    title: 'Address',
-    key: 'address',
-    defaultFilterOptionValues: ['London', 'New York'],
-    filterOptions: [
-      {
-        label: 'London',
-        value: 'London'
-      },
-      {
-        label: 'New York',
-        value: 'New York'
-      }
-    ],
-    filter (value, row) {
-      return ~row.address.indexOf(value)
-    }
-  }
-]
-
-const data = [
-  {
-    key: 0,
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park'
+    title: "Active",
+    key: "active",
+    sorter: (row1, row2) => row1.active - row2.active,
   },
   {
-    key: 1,
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park'
+    title: "Deaths",
+    key: "deaths",
+    sorter: (row1, row2) => row1.deaths - row2.deaths,
   },
-  {
-    key: 2,
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park'
-  },
-  {
-    key: 3,
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park'
-  }
-]
+];
 
 export default {
   components: {
     NDataTable,
-    NSpace
+    NSpace,
   },
-  data () {
+  props: {
+    allCountryData: {
+      type: Object,
+      default: {},
+    },
+  },
+  data() {
     return {
-      data: data,
       columns,
-    }
+      pagination: {
+        pageSize: 10,
+        showSizePicker: true,
+        pageSizes: [10, 50, 100, 300],
+        onChange: (page) => {
+          this.pagination.page = page
+        },
+        onPageSizeChange: (pageSize) => {
+          this.pagination.pageSize = pageSize
+          this.pagination.page = 1
+        }
+      },
+    };
   },
   methods: {
-    filterAddress () {
+    filterAddress() {
       this.$refs.table.filter({
-        address: ['London']
-      })
+        address: ["London"],
+      });
     },
-    sortName () {
-      this.$refs.table.sort('name', 'ascend')
+    sortName() {
+      this.$refs.table.sort("name", "ascend");
     },
-    clearFilters () {
-      this.$refs.table.filter(null)
+    clearFilters() {
+      this.$refs.table.filter(null);
     },
-    clearSorter () {
-      this.$refs.table.sort(null)
-    }
-  }
-}
+    clearSorter() {
+      this.$refs.table.sort(null);
+    },
+  },
+};
 </script>
