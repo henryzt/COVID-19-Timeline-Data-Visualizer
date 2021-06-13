@@ -64,11 +64,20 @@
         border-top: 5px solid #f3f3f3;
         width: 36px;
         height: 36px;
-        animation: spin 1s linear infinite;
+        animation: fadein 1s ease-in, spin 1s linear infinite;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
 
       @keyframes spin {

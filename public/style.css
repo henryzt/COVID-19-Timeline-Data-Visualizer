@@ -219,14 +219,6 @@ div.btn-group {
   opacity: 0;
 }
 
-@keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 @keyframes flyin {
   from {
     opacity: 0;
