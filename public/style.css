@@ -208,6 +208,9 @@ div.btn-group {
 .fly-in{
   animation: flyin 1s ease-out;
 }
+.fade-in{
+  animation: fadein 1s ease-out;
+}
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity 1s;
@@ -216,6 +219,14 @@ div.btn-group {
   opacity: 0;
 }
 
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 @keyframes flyin {
   from {
     opacity: 0;

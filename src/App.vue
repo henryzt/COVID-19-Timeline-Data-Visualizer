@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content">
+  <div class="main-content fade-in">
     <Header :country-list="countryList" v-model="selectedCountry" />
     <MainNumbers
       :loading="!loaded.overviewData"
