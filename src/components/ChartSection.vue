@@ -2,10 +2,12 @@
   <div>
     <div class="title">Trend Analysis</div>
     <n-spin :show="loading">
-      <div class="block">
+      <div v-if="!currentTimeSeries" class="block">
+        <n-empty v-if="!loading" class="empty" description="No data yet" />
+      </div>
+      <div v-else class="block">
         <Selector :types="chartTypes" v-model="selectedType" />
         <Chart
-          v-if="allTimeSeries"
           :time-series="currentTimeSeries"
           :data-type="selectedType"
         ></Chart>
@@ -18,6 +20,7 @@
 import Chart from "./Chart.vue";
 import Selector from "./Selector.vue";
 import { NSpin } from "naive-ui";
+import { NEmpty } from "naive-ui";
 
 export default {
   name: "ChartSection",
@@ -29,7 +32,7 @@ export default {
     loading: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {
@@ -40,7 +43,8 @@ export default {
   components: {
     Chart,
     Selector,
-    NSpin
+    NSpin,
+    NEmpty,
   },
   computed: {
     currentTimeSeries() {
@@ -51,4 +55,11 @@ export default {
 </script>
 
 <style scoped>
+.block {
+  min-height: 430px;
+}
+
+.empty {
+  padding-top: 150px;
+}
 </style>

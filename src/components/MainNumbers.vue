@@ -3,15 +3,14 @@
   <div class="overview-wrapper">
     <div
       class="block overview"
-      :class="{ 'loading-block': loading || !allTimeSeries }"
+      :class="{ 'loading-block': loading }"
       v-for="(item, idx) of display"
       :key="idx"
     >
       <div v-if="item">
         <transition name="fade">
-          <div class="bg-chart" v-if="!loading">
+          <div class="bg-chart" v-if="allTimeSeries">
             <Chart
-              v-if="allTimeSeries"
               :time-series="allTimeSeries[item.type]"
               :data-type="item.type"
               type="minimum"
