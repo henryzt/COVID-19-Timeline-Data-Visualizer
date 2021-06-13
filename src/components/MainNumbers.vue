@@ -20,11 +20,11 @@
         <div :class="{ [item.color]: true, 'ov-item': true }">
           <div class="ov-title">{{ item.title }}</div>
           <div class="number" ref="num">
-            <count-to :end-val="item.today" :duration='1000'/>
+            <count-to :end-val="item.today" :duration='1000' />
           </div>
           <div class="number-title">{{ item.totalTitle ?? "Total" }}</div>
           <div class="number total">
-            {{ $padNum(item.total) }}
+            <count-to :end-val="item.total" :duration='1000' />
           </div>
         </div>
       </div>
@@ -36,6 +36,7 @@
 import { ref, defineComponent } from "vue";
 import Chart from "./Chart.vue";
 import { CountTo } from 'vue3-count-to';
+
 
 export default defineComponent({
   name: "MainNumbers",

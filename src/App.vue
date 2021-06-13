@@ -11,6 +11,7 @@
       :loading="!loaded.allCountryData"
       :all-country-data="allCountryData"
     />
+    <Credits />
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import Header from "./components/Header.vue";
 import MainNumbers from "./components/MainNumbers.vue";
 import ChartSection from "./components/ChartSection.vue";
 import TableSection from "./components/TableSection.vue";
+import Credits from "./components/Credits.vue";
 import {
   getAllCountryData,
   getOverviewData,
@@ -34,6 +36,7 @@ export default defineComponent({
     MainNumbers,
     ChartSection,
     TableSection,
+    Credits
   },
   data() {
     return {
