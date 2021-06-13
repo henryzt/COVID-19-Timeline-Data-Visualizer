@@ -13,6 +13,7 @@
     "vue3-count-to": "^1.0.9"
   },
   "devDependencies": {
+    "@vicons/ionicons5": "^0.8.0",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.5",
     "naive-ui": "^2.11.3",
