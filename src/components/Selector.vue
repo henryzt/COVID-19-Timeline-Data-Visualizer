@@ -15,6 +15,7 @@
       <!-- overflow -->
 
       <n-dropdown
+        v-if="limit < types.length"
         trigger="hover"
         @select="changeType"
         placement="bottom-start"

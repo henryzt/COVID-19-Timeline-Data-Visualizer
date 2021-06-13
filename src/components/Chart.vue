@@ -6,7 +6,6 @@
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { LineChart } from "echarts/charts";
-import { graphic } from "echarts/core";
 import {
   TitleComponent,
   TooltipComponent,
@@ -19,6 +18,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, defineComponent } from "vue";
+import { getChartOption } from "../utils/chart";
 
 use([
   CanvasRenderer,
@@ -82,142 +82,12 @@ export default defineComponent({
   methods: {
     updateChart() {
       if (!this.timeSeries) return;
-
-      if (this.type == "full") {
-        this.fullLineChart();
-      } else if (this.type == "minimum") {
-        this.minimumLineChart();
-      }
-    },
-    minimumLineChart() {
-      const timeSeries = this.timeSeries;
-      const labels = Object.keys(timeSeries);
-      const data = Object.values(timeSeries);
-
-      const option = {
-        xAxis: {
-          show: false,
-          type: "category",
-          data: labels,
-        },
-        yAxis: {
-          show: false,
-          type: "value",
-          axisLabel: {
-            formatter: function (value) {
-              return value >= 100000 ? value.toExponential() : value;
-            },
-          },
-        },
-        tooltip: {
-          trigger: "axis",
-        },
-        grid: {
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          height: 150,
-        },
-        series: [
-          {
-            name: this.dataType,
-            data: data,
-            type: "line",
-            itemStyle: {
-              color: this.color,
-            },
-            lineStyle: {
-              color: this.color,
-            },
-            areaStyle: {
-              color: new graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: this.color + "a0", // hex rgba
-                },
-                {
-                  offset: 1,
-                  color: this.color + "09",
-                },
-              ]),
-            },
-          },
-        ],
-      };
-
-      this.option = option;
-    },
-    fullLineChart() {
-      const timeSeries = this.timeSeries;
-      const labels = Object.keys(timeSeries);
-      const data = Object.values(timeSeries);
-
-      const option = {
-        xAxis: {
-          type: "category",
-          data: labels,
-        },
-        yAxis: {
-          type: "value",
-          axisLabel: {
-            formatter: function (value) {
-              return value >= 100000 ? value.toExponential() : value;
-            },
-          },
-        },
-        tooltip: {
-          trigger: "axis",
-        },
-        grid: {
-          right: 5,
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none",
-            },
-          },
-        },
-        dataZoom: [
-          {
-            type: "inside",
-            start: 50,
-            end: 100,
-          },
-          {
-            start: 0,
-            end: 100,
-          },
-        ],
-        series: [
-          {
-            name: this.dataType,
-            data: data,
-            type: "line",
-            itemStyle: {
-              color: this.color,
-            },
-            lineStyle: {
-              color: this.color,
-            },
-            areaStyle: {
-              color: new graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: this.color + "a0", // hex rgba
-                },
-                {
-                  offset: 1,
-                  color: this.color + "09",
-                },
-              ]),
-            },
-          },
-        ],
-      };
-
-      this.option = option;
+      this.option = getChartOption(
+        this.type,
+        this.timeSeries,
+        this.dataType,
+        this.color
+      );
     },
   },
 });
