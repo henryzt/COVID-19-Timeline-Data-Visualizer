@@ -69,15 +69,6 @@ export default {
     return {
       pagination: {
         pageSize: 10,
-        showSizePicker: true,
-        pageSizes: [10, 50, 100, 300],
-        onChange: (page) => {
-          this.pagination.page = page;
-        },
-        onPageSizeChange: (pageSize) => {
-          this.pagination.pageSize = pageSize;
-          this.pagination.page = 1;
-        },
       },
     };
   },

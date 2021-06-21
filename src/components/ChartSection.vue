@@ -2,12 +2,15 @@
   <div>
     <div class="title">Trend Analysis</div>
     <n-spin :show="loading">
-      <div v-if="!currentTimeSeries" class="block">
-        <n-empty v-if="!loading" class="empty" description="No data yet" />
-      </div>
-      <div v-else class="block">
+      <div class="block">
         <Selector :types="chartTypes" v-model="selectedType" />
+        <n-empty
+          v-if="!currentTimeSeries && !loading"
+          class="empty"
+          description="No data yet"
+        />
         <Chart
+          v-else-if="currentTimeSeries"
           :time-series="currentTimeSeries"
           :data-type="selectedType"
         ></Chart>
@@ -36,7 +39,14 @@ export default {
   },
   data() {
     return {
-      chartTypes: ["cases", "deaths", "recovered", "active"],
+      chartTypes: [
+        "cases",
+        "deaths",
+        "recovered",
+        "active",
+        "critical",
+        "tests",
+      ],
       selectedType: "cases",
     };
   },

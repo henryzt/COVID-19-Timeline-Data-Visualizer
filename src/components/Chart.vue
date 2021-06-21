@@ -75,6 +75,8 @@ export default defineComponent({
         deaths: "#4b3077",
         recovered: "#28ca00",
         active: "#ff7300",
+        tests: "#00b8ff",
+        critical: "#f00",
       };
       return colors[this.dataType] ?? "#3a4de9";
     },
