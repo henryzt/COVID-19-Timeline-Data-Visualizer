@@ -5,6 +5,7 @@
       :columns="columns"
       :data="allCountryData"
       :pagination="pagination"
+      :scroll-x="1200"
     />
   </n-space>
 </template>
@@ -12,73 +13,71 @@
 <script>
 import { NSpace, NDataTable } from "naive-ui";
 
-const columns = [
-  {
-    title: "Country",
-    key: "country",
-    defaultSortOrder: "ascend",
-    sorter: "default",
-  },
-  {
-    title: "Cases",
-    key: "cases",
-    sorter: (row1, row2) => row1.cases - row2.cases,
-  },
-  {
-    title: "Active",
-    key: "active",
-    sorter: (row1, row2) => row1.active - row2.active,
-  },
-  {
-    title: "Deaths",
-    key: "deaths",
-    sorter: (row1, row2) => row1.deaths - row2.deaths,
-  },
-];
+const keys = {};
+
+keys.total = ["cases", "deaths", "active", "critical", "recovered", "tests"];
+keys.daily = ["todayCases", "todayDeaths", "todayRecovered"];
+keys.rate = keys.total.map((i) => i + "PerOneMillion");
+
+const country = {
+  title: "Country",
+  key: "country",
+  sorter: "default",
+  fixed: "left",
+  width: 150,
+};
 
 export default {
   components: {
     NDataTable,
     NSpace,
   },
+  computed: {
+    columns() {
+      const columns = keys[this.dataType].map((item) => {
+        return {
+          title: item,
+          key: item,
+          sorter: (row1, row2) => row1[item] - row2[item],
+        };
+      });
+      const res = [country].concat(columns);
+      return res;
+    },
+  },
   props: {
     allCountryData: {
       type: Object,
       default: {},
     },
+    dataType: {
+      type: String,
+      default: "total",
+    },
+  },
+  watch: {
+    columns(){
+      this.$nextTick(()=>{
+        this.$refs.table.sort(this.columns[1].key, "descend");
+      })
+    }
   },
   data() {
     return {
-      columns,
       pagination: {
         pageSize: 10,
         showSizePicker: true,
         pageSizes: [10, 50, 100, 300],
         onChange: (page) => {
-          this.pagination.page = page
+          this.pagination.page = page;
         },
         onPageSizeChange: (pageSize) => {
-          this.pagination.pageSize = pageSize
-          this.pagination.page = 1
-        }
+          this.pagination.pageSize = pageSize;
+          this.pagination.page = 1;
+        },
       },
     };
   },
-  methods: {
-    filterAddress() {
-      this.$refs.table.filter({
-        address: ["London"],
-      });
-    },
-    sortName() {
-      this.$refs.table.sort("name", "ascend");
-    },
-    clearFilters() {
-      this.$refs.table.filter(null);
-    },
-    clearSorter() {
-      this.$refs.table.sort(null);
-    },
-  },
+  methods: {},
 };
 </script>
