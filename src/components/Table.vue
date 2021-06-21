@@ -5,7 +5,7 @@
       :columns="columns"
       :data="allCountryData"
       :pagination="pagination"
-      :scroll-x="1200"
+      :scroll-x="scrollLength"
     />
   </n-space>
 </template>
@@ -44,6 +44,9 @@ export default {
       const res = [country].concat(columns);
       return res;
     },
+    scrollLength(){
+      return 200 * this.columns.length;
+    }
   },
   props: {
     allCountryData: {
