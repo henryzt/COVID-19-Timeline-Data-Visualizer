@@ -34,6 +34,19 @@ export async function getTimeSeries(counrty: string) {
   for (let i in data.cases) {
     data.active[i] = data.cases[i] - data.deaths[i] - data.recovered[i];
   }
+  // get daily time series
+  for (let key of Object.keys(data)) {
+    const timeSeries = data[key];
+    const dailyTimeSeries = {};
+    const tsEntires = Object.entries(timeSeries);
+    let lastNumber = 0;
+    for (const [key, value] of tsEntires) {
+      let diff = value - lastNumber;
+      dailyTimeSeries[key] = diff > 0 ? diff : 0;
+      lastNumber = value;
+    }
+    data[key + "Daily"] = dailyTimeSeries;
+  }
   return data;
 }
 

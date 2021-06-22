@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">Trend Analysis</div>
+    <div class="title">{{title}}</div>
     <n-spin :show="loading">
       <div class="block">
         <Selector :types="dataTypes" v-model="selectedType" />
@@ -39,7 +39,7 @@ export default {
     },
     isDaily: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data() {
@@ -56,22 +56,14 @@ export default {
   },
   computed: {
     currentTimeSeries() {
-      let timeSeries = this.allTimeSeries?.[this.selectedType];
-      if (this.isDaily && timeSeries) {
-        const dailyTimeSeries = {};
-        const tsEntires = Object.entries(timeSeries);
-        let lastNumber = 0;
-        for (const [key, value] of tsEntires) {
-          console.log(key, value, value - lastNumber)
-          dailyTimeSeries[key] = value - lastNumber;
-          lastNumber = value;
-        }
-        return dailyTimeSeries;
-      }
-      return timeSeries;
+      const type = this.selectedType + (this.isDaily ? "Daily" : "");
+      return this.allTimeSeries?.[type];
     },
     chartType() {
       return this.isDaily ? "bar" : "line";
+    },
+    title() {
+      return this.isDaily ? "Daily Trend Analysis" : "Cumulative Trend Analysis";
     },
   },
 };

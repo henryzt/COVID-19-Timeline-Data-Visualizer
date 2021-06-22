@@ -7,6 +7,11 @@
       :all-time-series="loaded.timeSeries ? timeSeries : null"
     />
     <ChartSection :loading="!loaded.timeSeries" :all-time-series="timeSeries" />
+    <ChartSection
+      :loading="!loaded.timeSeries"
+      :all-time-series="timeSeries"
+      :is-daily="true"
+    />
     <TableSection
       :loading="!loaded.allCountryData"
       :all-country-data="allCountryData"
@@ -36,7 +41,7 @@ export default defineComponent({
     MainNumbers,
     ChartSection,
     TableSection,
-    Credits
+    Credits,
   },
   data() {
     return {
