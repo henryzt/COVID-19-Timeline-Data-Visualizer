@@ -3,7 +3,7 @@
     <div class="title">Trend Analysis</div>
     <n-spin :show="loading">
       <div class="block">
-        <Selector :types="chartTypes" v-model="selectedType" />
+        <Selector :types="dataTypes" v-model="selectedType" />
         <n-empty
           v-if="!currentTimeSeries && !loading"
           class="empty"
@@ -13,6 +13,7 @@
           v-else-if="currentTimeSeries"
           :time-series="currentTimeSeries"
           :data-type="selectedType"
+          :chart-type="chartType"
         ></Chart>
       </div>
     </n-spin>
@@ -36,15 +37,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    isDaily: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
-      chartTypes: [
-        "cases",
-        "deaths",
-        "recovered",
-        "active"
-      ],
+      dataTypes: ["cases", "deaths", "recovered", "active"],
       selectedType: "cases",
     };
   },
@@ -56,7 +56,22 @@ export default {
   },
   computed: {
     currentTimeSeries() {
-      return this.allTimeSeries?.[this.selectedType];
+      let timeSeries = this.allTimeSeries?.[this.selectedType];
+      if (this.isDaily && timeSeries) {
+        const dailyTimeSeries = {};
+        const tsEntires = Object.entries(timeSeries);
+        let lastNumber = 0;
+        for (const [key, value] of tsEntires) {
+          console.log(key, value, value - lastNumber)
+          dailyTimeSeries[key] = value - lastNumber;
+          lastNumber = value;
+        }
+        return dailyTimeSeries;
+      }
+      return timeSeries;
+    },
+    chartType() {
+      return this.isDaily ? "bar" : "line";
     },
   },
 };

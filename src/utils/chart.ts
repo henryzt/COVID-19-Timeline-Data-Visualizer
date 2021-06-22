@@ -4,11 +4,11 @@ function formatter(value: Number) {
   return value >= 100000 ? value.toExponential() : value;
 }
 
-function lineSeries(dataType: string, color: string, data: Array<any>) {
+function getSeries(dataType: string, chartType: string, color: string, data: Array<any>) {
   return {
     name: dataType,
     data: data,
-    type: "line",
+    type: chartType,
     itemStyle: {
       color: color,
     },
@@ -30,7 +30,7 @@ function lineSeries(dataType: string, color: string, data: Array<any>) {
   };
 }
 
-function minimumLineChart(timeSeries: object, dataType: string, color: string) {
+function minimumChart(timeSeries: object, chartType: string, dataType: string, color: string) {
   const labels = Object.keys(timeSeries);
   const data = Object.values(timeSeries);
 
@@ -57,11 +57,11 @@ function minimumLineChart(timeSeries: object, dataType: string, color: string) {
       bottom: 0,
       height: 150,
     },
-    series: [lineSeries(dataType, color, data)],
+    series: [getSeries(dataType, chartType, color, data)],
   };
 }
 
-function fullLineChart(timeSeries: object, dataType: string, color: string) {
+function fullChart(timeSeries: object, chartType: string, dataType: string, color: string) {
   const labels = Object.keys(timeSeries);
   const data = Object.values(timeSeries);
 
@@ -100,7 +100,7 @@ function fullLineChart(timeSeries: object, dataType: string, color: string) {
         end: 100,
       },
     ],
-    series: [lineSeries(dataType, color, data)],
+    series: [getSeries(dataType, chartType, color, data)],
   };
 }
 
@@ -112,8 +112,8 @@ export function getChartOption(
   color: string
 ) {
   if (type == "full") {
-    return fullLineChart(timeSeries, dataType, color);
+    return fullChart(timeSeries, chartType, dataType, color);
   } else if (type == "minimum") {
-    return minimumLineChart(timeSeries, dataType, color);
+    return minimumChart(timeSeries, chartType, dataType, color);
   }
 }
