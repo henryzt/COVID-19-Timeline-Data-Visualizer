@@ -59,16 +59,15 @@
     </div>
     <style>
       .loader {
-        border: 5px solid #3498db;
+        border: 5px solid #00c3ff;
         border-radius: 50%;
         border-top: 5px solid #f3f3f3;
         width: 36px;
         height: 36px;
         animation: fadein 1s ease-in, spin 1s linear infinite;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        top: calc(50% - 18px);
+        left: calc(50% - 18px);
       }
 
       @keyframes fadein {
