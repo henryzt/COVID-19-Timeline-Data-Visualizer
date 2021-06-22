@@ -5,7 +5,7 @@
 <script>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { LineChart } from "echarts/charts";
+import { LineChart, BarChart } from "echarts/charts";
 import {
   TitleComponent,
   TooltipComponent,
@@ -23,6 +23,7 @@ import { getChartOption } from "../utils/chart";
 use([
   CanvasRenderer,
   LineChart,
+  BarChart,
   TitleComponent,
   TooltipComponent,
   LegendComponent,
@@ -50,9 +51,13 @@ export default defineComponent({
       type: String,
       default: "cases",
     },
+    chartType: {
+      type: String,
+      default: "line",
+    },
     type: {
       type: String,
-      default: "full",
+      default: "full", // full, minimum
     },
   },
   data() {
@@ -86,6 +91,7 @@ export default defineComponent({
       if (!this.timeSeries) return;
       this.option = getChartOption(
         this.type,
+        this.chartType,
         this.timeSeries,
         this.dataType,
         this.color

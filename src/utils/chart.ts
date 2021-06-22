@@ -1,11 +1,11 @@
 import { graphic } from "echarts/core";
 
-function formatter(value:Number){
-    return value >= 100000 ? value.toExponential() : value;
+function formatter(value: Number) {
+  return value >= 100000 ? value.toExponential() : value;
 }
 
-function lineSeries(dataType: string, color: string, data: Array<any>){
-  return  {
+function lineSeries(dataType: string, color: string, data: Array<any>) {
+  return {
     name: dataType,
     data: data,
     type: "line",
@@ -27,7 +27,7 @@ function lineSeries(dataType: string, color: string, data: Array<any>){
         },
       ]),
     },
-  }
+  };
 }
 
 function minimumLineChart(timeSeries: object, dataType: string, color: string) {
@@ -44,7 +44,7 @@ function minimumLineChart(timeSeries: object, dataType: string, color: string) {
       show: false,
       type: "value",
       axisLabel: {
-        formatter
+        formatter,
       },
     },
     tooltip: {
@@ -57,13 +57,9 @@ function minimumLineChart(timeSeries: object, dataType: string, color: string) {
       bottom: 0,
       height: 150,
     },
-    series: [
-      lineSeries(dataType, color, data)
-    ],
+    series: [lineSeries(dataType, color, data)],
   };
-
 }
-
 
 function fullLineChart(timeSeries: object, dataType: string, color: string) {
   const labels = Object.keys(timeSeries);
@@ -77,7 +73,7 @@ function fullLineChart(timeSeries: object, dataType: string, color: string) {
     yAxis: {
       type: "value",
       axisLabel: {
-        formatter
+        formatter,
       },
     },
     tooltip: {
@@ -104,14 +100,17 @@ function fullLineChart(timeSeries: object, dataType: string, color: string) {
         end: 100,
       },
     ],
-    series: [
-      lineSeries(dataType, color, data)
-    ],
+    series: [lineSeries(dataType, color, data)],
   };
-
 }
 
-export function getChartOption(type: string, timeSeries: object, dataType: string, color: string){
+export function getChartOption(
+  type: string,
+  chartType: string,
+  timeSeries: object,
+  dataType: string,
+  color: string
+) {
   if (type == "full") {
     return fullLineChart(timeSeries, dataType, color);
   } else if (type == "minimum") {

@@ -43,9 +43,7 @@ export default {
         "cases",
         "deaths",
         "recovered",
-        "active",
-        "critical",
-        "tests",
+        "active"
       ],
       selectedType: "cases",
     };
