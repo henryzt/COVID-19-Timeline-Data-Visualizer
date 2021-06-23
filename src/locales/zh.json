@@ -1,3 +1,49 @@
 {
-  "title": "实时疫情动态"
+  "title": "实时疫情动态",
+  "subtitles": {
+    "overview": "今日概览",
+    "nearby": "附近疫情",
+    "cumulative": "累计数据分析",
+    "daily": "日增数据分析",
+    "region": "国家与地区分析",
+    "about": "关于",
+    "map": "地图"
+  },
+  "today": {
+    "cases": "今日确诊",
+    "deaths": "今日死亡",
+    "active": "目前活跃",
+    "critical": "目前重症",
+    "recovered": "今日治愈",
+    "tests": "今日测试"
+  },
+  "type": {
+    "cases": "累计确诊",
+    "deaths": "累计死亡",
+    "active": "目前活跃",
+    "critical": "目前重症",
+    "recovered": "累计治愈",
+    "tests": "累计测试",
+    "todayCases": "今日确诊",
+    "todayDeaths": "今日死亡",
+    "todayRecovered": "今日治愈",
+    "casesPerOneMillion": "百万人确诊率",
+    "deathsPerOneMillion": "百万人死亡率",
+    "testsPerOneMillion": "百万人测试率",
+    "activePerOneMillion": "百万人在诊率",
+    "recoveredPerOneMillion": "百万人治愈率",
+    "criticalPerOneMillion": "百万人重症率",
+    "total": "累计",
+    "daily": "今日",
+    "rate": "百万率"
+  },
+  "dropdown":{
+    "popular": "热门",
+    "world": "🌍 全球实时",
+    "uk": "🇬🇧 英国实时",
+    "us": "🇺🇸 美国实时",
+    "all": "所有国家和地区"
+  },
+  "country": "国家或地区",
+  "selectCountry": "选择国家或地区"
 }

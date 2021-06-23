@@ -1,7 +1,7 @@
 {
   "title": "Trend and Analysis",
   "subtitles": {
-    "today": "Today Overview",
+    "overview": "Today Overview",
     "nearby": "Cases Near Me",
     "cumulative": "Cumulative Trend Analysis",
     "daily": "Daily Trend Analysis",
@@ -37,5 +37,13 @@
     "daily": "Daily",
     "rate": "Rate"
   },
-  "country": "Country"
+  "dropdown":{
+    "popular": "Popular",
+    "world": "🌍 Worldwide",
+    "uk": "🇬🇧 United Kingdom",
+    "us": "🇺🇸 United States",
+    "all": "All Countries and regions"
+  },
+  "country": "Country",
+  "selectCountry": "Select Country"
 }

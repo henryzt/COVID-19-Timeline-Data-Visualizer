@@ -58,13 +58,13 @@ export default defineComponent({
     };
   },
   async mounted() {
-    // this.$i18n.locale = "zh";
+    this.$i18n.locale = "zh";
 
-    this.countryList = getCountryList([]);
+    this.countryList = getCountryList([], this.$t);
     this.updateCountryData();
     this.allCountryData = await getAllCountryData();
     this.loaded.allCountryData = true;
-    this.countryList = getCountryList(this.allCountryData);
+    this.countryList = getCountryList(this.allCountryData, this.$t);
   },
   watch: {
     selectedCountry() {

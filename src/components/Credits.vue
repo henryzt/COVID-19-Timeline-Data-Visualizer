@@ -1,5 +1,5 @@
 <template>
-  <div class="title">About</div>
+  <div class="title">{{ $t("subtitles.about") }}</div>
   <ul>
     <li>
       This project is open sourced at

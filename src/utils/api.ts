@@ -50,27 +50,27 @@ export async function getTimeSeries(counrty: string) {
   return data;
 }
 
-export function getCountryList(allCountryData: Array<any>) {
+export function getCountryList(allCountryData: Array<any>, t:any) {
   let array = [
     {
-      label: "Popular",
+      label: t("dropdown.popular"),
       value: "divider0",
       disabled: true,
     },
     {
-      label: "🌍 Worldwide",
+      label: t("dropdown.world"),
       value: "all",
     },
     {
-      label: "🇬🇧 United Kingdom",
+      label: t("dropdown.uk"),
       value: "UK",
     },
     {
-      label: "🇺🇸 United States",
+      label: t("dropdown.us"),
       value: "USA",
     },
     {
-      label: "All Countries and regions",
+      label: t("dropdown.all"),
       value: "divider1",
       disabled: true,
     },

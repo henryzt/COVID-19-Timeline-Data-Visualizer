@@ -1,5 +1,5 @@
 <template>
-  <div class="title">Overview</div>
+  <div class="title">{{ $t("subtitles.overview") }}</div>
   <div class="overview-wrapper">
     <div
       class="block overview"
@@ -22,7 +22,7 @@
           <div class="number" ref="num">
             <count-to :end-val="item.today" :duration='1000' />
           </div>
-          <div class="number-title">{{ item.totalTitle ?? "Total" }}</div>
+          <div class="number-title">{{ item.totalTitle ?? $t("type.total") }}</div>
           <div class="number total">
             <count-to :end-val="item.total" :duration='1000' />
           </div>
