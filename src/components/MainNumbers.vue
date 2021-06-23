@@ -69,30 +69,30 @@ export default defineComponent({
       const cases = {
         color: "red",
         type: "cases",
-        title: "Cases Today",
+        title: this.$t("today.cases"),
         today: data.todayCases,
         total: data.cases,
       };
       const deaths = {
         color: "purple",
         type: "deaths",
-        title: "Deaths Today",
+        title: this.$t("today.deaths"),
         today: data.todayDeaths,
         total: data.deaths,
       };
       const recovered = {
         color: "green",
         type: "recovered",
-        title: "Recovered Today",
+        title: this.$t("today.recovered"),
         today: data.todayRecovered,
         total: data.recovered,
       };
       const active = {
         color: "orange",
         type: "active",
-        title: "Current Cirtical",
+        title: this.$t("today.critical"),
         today: data.critical,
-        totalTitle: "Current Active",
+        totalTitle: this.$t("today.active"),
         total: data.active,
       };
       this.display = [cases, deaths, recovered, active];

@@ -58,6 +58,8 @@ export default defineComponent({
     };
   },
   async mounted() {
+    // this.$i18n.locale = "zh";
+
     this.countryList = getCountryList([]);
     this.updateCountryData();
     this.allCountryData = await getAllCountryData();

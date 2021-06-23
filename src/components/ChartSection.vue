@@ -63,7 +63,7 @@ export default {
       return this.isDaily ? "bar" : "line";
     },
     title() {
-      return this.isDaily ? "Daily Trend Analysis" : "Cumulative Trend Analysis";
+      return this.isDaily ? this.$t("subtitles.daily") : this.$t("subtitles.cumulative") ;
     },
   },
 };

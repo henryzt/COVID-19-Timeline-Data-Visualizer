@@ -10,7 +10,7 @@
         size="small"
         @click="changeType(type)"
       >
-        {{ type }}
+        {{ $t(`type.${type}`) }}
       </n-button>
       <!-- overflow -->
 
@@ -30,7 +30,7 @@
           <n-icon size="15">
             <ChevronDown />
           </n-icon>
-          <span v-if="isOverflowActive">{{modelValue}}</span>
+          <span v-if="isOverflowActive">{{$t(`type.${modelValue}`)}}</span>
         </n-button>
       </n-dropdown>
     </n-button-group>
@@ -75,7 +75,7 @@ export default {
       const options = overflowData.map((i) => {
         return {
           key: i,
-          label: i,
+          label: this.$t(`type.${i}`),
         };
       });
       return options;

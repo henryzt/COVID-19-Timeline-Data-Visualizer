@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">Region Analysis</div>
+    <div class="title">{{ $t("subtitles.region") }}</div>
     <n-spin :show="loading">
       <div class="block">
         <Selector :types="tableTypes" v-model="selectedType" />

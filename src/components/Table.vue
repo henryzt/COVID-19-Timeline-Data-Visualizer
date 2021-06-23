@@ -19,14 +19,6 @@ keys.total = ["cases", "deaths", "active", "critical", "recovered", "tests"];
 keys.daily = ["todayCases", "todayDeaths", "todayRecovered"];
 keys.rate = keys.total.map((i) => i + "PerOneMillion");
 
-const country = {
-  title: "Country",
-  key: "country",
-  sorter: "default",
-  fixed: "left",
-  width: 150,
-};
-
 export default {
   components: {
     NDataTable,
@@ -34,9 +26,17 @@ export default {
   },
   computed: {
     columns() {
+      const country = {
+        title: this.$t("country"),
+        key: "country",
+        sorter: "default",
+        fixed: "left",
+        width: 150,
+      };
+
       const columns = keys[this.dataType].map((item) => {
         return {
-          title: item,
+          title: this.$t(`type.${item}`),
           key: item,
           sorter: (row1, row2) => row1[item] - row2[item],
         };
@@ -44,9 +44,9 @@ export default {
       const res = [country].concat(columns);
       return res;
     },
-    scrollLength(){
-      return 200 * this.columns.length;
-    }
+    scrollLength() {
+      return 150 * this.columns.length;
+    },
   },
   props: {
     allCountryData: {
@@ -59,11 +59,11 @@ export default {
     },
   },
   watch: {
-    columns(){
-      this.$nextTick(()=>{
+    columns() {
+      this.$nextTick(() => {
         this.$refs.table.sort(this.columns[1].key, "descend");
-      })
-    }
+      });
+    },
   },
   data() {
     return {
