@@ -58,8 +58,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.$i18n.locale = "zh";
-
+    this.initLocation()
     this.countryList = getCountryList([], this.$t);
     this.updateCountryData();
     this.allCountryData = await getAllCountryData();
@@ -73,12 +72,33 @@ export default defineComponent({
   },
   methods: {
     async updateCountryData() {
+      localStorage.setItem("lastCountry", this.selectedCountry);
       this.loaded.overviewData = false;
       this.loaded.timeSeries = false;
       this.overviewData = await getOverviewData(this.selectedCountry);
       this.loaded.overviewData = true;
       this.timeSeries = await getTimeSeries(this.selectedCountry);
       this.loaded.timeSeries = true;
+    },
+    initLocation() {
+      let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const lastCountry = localStorage.getItem("lastCountry");
+      if (lastCountry) {
+        this.selectedCountry = lastCountry;
+        return;
+      }
+      if (timezone.includes("Europe/London")) {
+        this.selectedCountry = "UK";
+      } else if (timezone.includes("America")) {
+        this.selectedCountry = "USA";
+      } else {
+        this.selectedCountry = "all";
+      }
+    },
+    changeLang(lang:string) {
+      this.$i18n.locale = lang;
+      document.title = this.$t("pageTitle");
     },
   },
 });
