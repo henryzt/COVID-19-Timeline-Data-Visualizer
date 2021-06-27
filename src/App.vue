@@ -16,7 +16,7 @@
       :loading="!loaded.allCountryData"
       :all-country-data="allCountryData"
     />
-    <Credits />
+    <Credits @changeLang="changeLang" />
   </div>
 </template>
 
@@ -58,7 +58,8 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.initLocation()
+    this.initLanguage();
+    this.initLocation();
     this.countryList = getCountryList([], this.$t);
     this.updateCountryData();
     this.allCountryData = await getAllCountryData();
@@ -96,9 +97,19 @@ export default defineComponent({
         this.selectedCountry = "all";
       }
     },
-    changeLang(lang:string) {
+    initLanguage() {
+      const lastLang = localStorage.getItem("lastLang");
+      if (lastLang) {
+        this.changeLang(lastLang);
+      }
+    },
+    changeLang(lang: string) {
       this.$i18n.locale = lang;
       document.title = this.$t("pageTitle");
+      if (this.allCountryData) {
+        this.countryList = getCountryList(this.allCountryData, this.$t);
+      }
+      localStorage.setItem("lastLang", lang);
     },
   },
 });

@@ -35,7 +35,9 @@
     "criticalPerOneMillion": "百万人重症率",
     "total": "累计",
     "daily": "今日",
-    "rate": "百万率"
+    "rate": "百万率",
+    "en" : "English",
+    "zh" : "中文"
   },
   "dropdown":{
     "popular": "热门",

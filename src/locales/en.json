@@ -35,9 +35,11 @@
     "criticalPerOneMillion": "Critical per 1m",
     "total": "Total",
     "daily": "Daily",
-    "rate": "Rate"
+    "rate": "Rate",
+    "en": "English",
+    "zh": "中文"
   },
-  "dropdown":{
+  "dropdown": {
     "popular": "Popular",
     "world": "🌍 Worldwide",
     "uk": "🇬🇧 United Kingdom",

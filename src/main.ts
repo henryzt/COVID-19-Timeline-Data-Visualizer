@@ -23,8 +23,8 @@ const messages = {
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
-  fallbackLocale: 'zh',
+  locale: navigator.language.split("-")[0],
+  fallbackLocale: 'en',
   globalInjection: true,
   messages,
 })
