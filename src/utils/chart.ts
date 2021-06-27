@@ -65,6 +65,7 @@ function fullChart(timeSeries: object, chartType: string, dataType: string, colo
   const labels = Object.keys(timeSeries);
   const data = Object.values(timeSeries);
 
+  const dataStart = chartType === "line" ? 50 : 90;
   return {
     xAxis: {
       type: "category",
@@ -92,7 +93,7 @@ function fullChart(timeSeries: object, chartType: string, dataType: string, colo
     dataZoom: [
       {
         type: "inside",
-        start: 50,
+        start: dataStart,
         end: 100,
       },
       {

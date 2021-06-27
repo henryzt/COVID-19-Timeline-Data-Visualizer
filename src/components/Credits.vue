@@ -1,19 +1,19 @@
 <template>
   <div class="title">{{ $t("subtitles.about") }}</div>
   <ul class="about">
+    <li>Data provided by <n-a href="https://disease.sh/">disease.sh</n-a> API.</li>
     <li>
-      This project is open sourced at
+      This project is open-sourced at
       <n-a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK"
         >github repository here</n-a
       >, pull requests and issues are welcomed!
     </li>
     <li>
-      © 2021
+      © 2021 Developed by
       <n-a href="https://github.com/henryz00">@henryz00</n-a>
-
-      Previous versions build by
-      <a href="https://github.com/henryz00">@henryz00</a> and
-      <n-a href="https://github.com/DaviesXue">@DaviesXue</n-a>
+      | Previous versions developed by
+      <n-a href="https://github.com/henryz00">@henryz00</n-a> and
+      <n-a href="https://github.com/Davi-X">@Davi-X</n-a>
       at University College London.
     </li>
   </ul>
