@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content fade-in">
+  <div v-if="render" class="main-content fade-in">
     <Header :country-list="countryList" v-model="selectedCountry" />
     <MainNumbers
       :loading="!loaded.overviewData"
@@ -45,6 +45,7 @@ export default defineComponent({
   },
   data() {
     return {
+      render: true,
       overviewData: null,
       timeSeries: null,
       allCountryData: null,
@@ -110,6 +111,13 @@ export default defineComponent({
         this.countryList = getCountryList(this.allCountryData, this.$t);
       }
       localStorage.setItem("lastLang", lang);
+      this.forceReload();
+    },
+    forceReload() {
+      this.render = false;
+      this.$nextTick(() => {
+        this.render = true;
+      });
     },
   },
 });

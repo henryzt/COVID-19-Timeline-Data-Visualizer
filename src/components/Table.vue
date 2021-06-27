@@ -42,6 +42,9 @@ export default {
         };
       });
       const res = [country].concat(columns);
+      this.$nextTick(() => {
+        this.$refs.table?.sort(this.columns[1].key, "descend");
+      });
       return res;
     },
     scrollLength() {
@@ -59,11 +62,7 @@ export default {
     },
   },
   watch: {
-    columns() {
-      this.$nextTick(() => {
-        this.$refs.table.sort(this.columns[1].key, "descend");
-      });
-    },
+    columns() {},
   },
   data() {
     return {

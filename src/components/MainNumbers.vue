@@ -63,10 +63,20 @@ export default defineComponent({
       display: [null, null, null, null],
     };
   },
+  mounted () {
+    if(this.overviewData){
+      this.loadDisplay()
+    }
+  },
   watch: {
-    overviewData(data) {
-      console.log(data);
-      const cases = {
+    overviewData() {
+      this.loadDisplay()
+    },
+  },
+  methods: {
+    loadDisplay() {
+      const data = this.overviewData;
+            const cases = {
         color: "red",
         type: "cases",
         title: this.$t("today.cases"),
@@ -96,7 +106,7 @@ export default defineComponent({
         total: data.active,
       };
       this.display = [cases, deaths, recovered, active];
-    },
+    }
   },
 });
 </script>
