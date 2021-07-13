@@ -6,6 +6,7 @@
       :overview-data="overviewData"
       :all-time-series="loaded.timeSeries ? timeSeries : null"
     />
+    <component v-if="localComponent" :is="localComponent"></component>
     <ChartSection :loading="!loaded.timeSeries" :all-time-series="timeSeries" />
     <ChartSection
       :loading="!loaded.timeSeries"
@@ -33,6 +34,7 @@ import {
   getTimeSeries,
   getCountryList,
 } from "./utils/api";
+import {getLocalComponent} from "./utils/local"
 
 export default defineComponent({
   name: "App",
@@ -71,6 +73,11 @@ export default defineComponent({
     selectedCountry() {
       this.updateCountryData();
     },
+  },
+  computed: {
+    localComponent(){
+      return getLocalComponent(this.selectedCountry)
+    }
   },
   methods: {
     async updateCountryData() {

@@ -8,7 +8,8 @@
     "daily": "Daily Trend Analysis",
     "region": "Region Analysis",
     "about": "About",
-    "map": "Map"
+    "map": "Map",
+    "country": "Country Overview"
   },
   "today": {
     "cases": "Cases Today",
