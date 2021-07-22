@@ -49,5 +49,20 @@
     "all": "All Countries and regions"
   },
   "country": "Country",
-  "selectCountry": "Select Country"
+  "selectCountry": "Select Country",
+  "uk": {
+    "option": {
+      "confirmed": "Total Confirmed",
+      "death": "Total Death",
+      "hospitalCases": "Current Admitted",
+      "covidOccupiedMVBeds": "Current Severe",
+      "confirmedRate": "Infect Rate %"
+    },
+    "nation": {
+      "England": "England",
+      "Scotland": "Scotland",
+      "Wales": "Wales",
+      "NIreland": "North Ireland"
+    }
+  }
 }

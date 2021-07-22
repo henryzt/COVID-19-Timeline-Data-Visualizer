@@ -49,5 +49,20 @@
     "all": "所有国家和地区"
   },
   "country": "国家或地区",
-  "selectCountry": "选择国家或地区"
+  "selectCountry": "选择国家或地区",
+  "uk": {
+    "option": {
+      "confirmed": "确诊人数",
+      "death": "死亡人数",
+      "hospitalCases": "目前在院",
+      "covidOccupiedMVBeds": "目前重症",
+      "confirmedRate": "确诊率 %"
+    },
+    "nation": {
+      "England": "英格兰",
+      "Scotland": "苏格兰",
+      "Wales": "威尔士",
+      "NIreland": "北爱尔兰"
+    }
+  }
 }
