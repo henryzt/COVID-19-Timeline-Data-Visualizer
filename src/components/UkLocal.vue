@@ -1,11 +1,17 @@
 <template>
   <div>
     <UkRegionSection :NationData="nation"></UkRegionSection>
+    <NearbyCasesFinder
+    v-if="utla"
+      :regionData="utla"
+      currentCountry="UK"
+    ></NearbyCasesFinder>
   </div>
 </template>
 
 <script>
 import UkRegionSection from "./UkRegionSection.vue";
+import NearbyCasesFinder from "./NearbyCasesFinder.vue";
 
 export default {
   name: "UkLocal",
@@ -15,7 +21,7 @@ export default {
       utla: null,
       display: null,
       chartData: null,
-      overview: null
+      overview: null,
     };
   },
   async mounted() {
@@ -38,10 +44,13 @@ export default {
         "deathRate":"cumDeaths28DaysByPublishDateRate",
         "testedNew":"newTestsByPublishDate",
         "tested":"cumTestsByPublishDate"
-    }`.replaceAll(" ", "").replaceAll("\n", "");
+    }`
+      .replaceAll(" ", "")
+      .replaceAll("\n", "");
 
     const structure = "&structure=" + encodeURIComponent(queries);
-    const baseUrl = "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=";
+    const baseUrl =
+      "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=";
 
     const nationRes = await fetch(`${baseUrl}nation${structure}`);
     const nation = await nationRes.json();
@@ -53,7 +62,9 @@ export default {
 
     this.loadUkRealtimeDisplay();
 
-    const utlaRes = await fetch(`${baseUrl}utla&latestBy=newCasesByPublishDate${structure}`);
+    const utlaRes = await fetch(
+      `${baseUrl}utla&latestBy=newCasesByPublishDate${structure}`
+    );
     const utla = await utlaRes.json();
     this.utla = utla.data;
   },
@@ -73,6 +84,7 @@ export default {
   },
   components: {
     UkRegionSection,
+    NearbyCasesFinder,
   },
 };
 </script>

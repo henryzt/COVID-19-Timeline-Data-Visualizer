@@ -64,5 +64,22 @@
       "Wales": "威尔士",
       "NIreland": "北爱尔兰"
     }
+  },
+  "nearBy": {
+    "usDefault": "搜索州或郡名即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+    "ukDefault": "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+    "postcodeErr": "抱歉，您输入的邮编有误",
+    "ukResult": "目前，<span>{0}</span>区共有<span>{1}</span>例确诊，今日增加<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。此区域内十万人感染率为<span>{4}</span>，总死亡<span>{5}</span>例，今日新增<span>{6}</span>例。",
+    "notFound": "抱歉，我们无法找到<span>{0}</span>的相关信息",
+    "locating": "定位中，请稍候...",
+    "notUk": "很抱歉，我们无法定位您到英国的地区",
+    "notUs": "很抱歉，我们无法定位您到美国的地区",
+    "rejected": "很抱歉，我们无法定位，因为您已拒绝位置授权",
+    "unsupported": "很抱歉，您的浏览器不支持定位",
+    "search": "查询",
+    "switchCountyState": "切换州或郡数据",
+    "goToRegional": "前往地区数据版块",
+    "empty": "请选择一个区域或者您输入的邮编",
+    "ukPlaceholder": "选择区域或输入邮编"
   }
 }
