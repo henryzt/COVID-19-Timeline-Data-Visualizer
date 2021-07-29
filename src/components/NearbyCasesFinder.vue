@@ -264,16 +264,16 @@ export default {
           resolve(this.mainLocation);
           return;
         }
-        fetch(`https://uk.henryzt.com/covid/us.php`).then(async (res) => {
-          let data = await res.json();
-          const csv = require("csvtojson");
-          let json = await csv().fromString(data.global);
-          let usStates = await csv().fromString(data.us);
-          // console.log(json, usStates);
-          this.mainLocation = json.filter((ele) => ele.Country_Region === "US");
-          this.statesLocation = usStates.sort((a, b) => b.Active - a.Active);
-          resolve(json);
-        });
+        // fetch(`https://uk.henryzt.com/covid/us.php`).then(async (res) => {
+        //   let data = await res.json();
+        //   const csv = require("csvtojson");
+        //   let json = await csv().fromString(data.global);
+        //   let usStates = await csv().fromString(data.us);
+        //   // console.log(json, usStates);
+        //   this.mainLocation = json.filter((ele) => ele.Country_Region === "US");
+        //   this.statesLocation = usStates.sort((a, b) => b.Active - a.Active);
+        //   resolve(json);
+        // });
       });
     },
     calculateDistanceFromLocation(position) {
@@ -422,5 +422,11 @@ export default {
 
 .nearby-block {
   padding: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+  .nearby-block {
+    padding: 15px;
+  }
 }
 </style>

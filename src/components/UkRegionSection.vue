@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">{{ $t("subtitles.country") }}</div>
-    <n-tabs justify-content="space-evenly">
+    <n-tabs justify-content="space-around" :tab-style="{margin: '0 5px'}">
       <n-tab-pane
         v-for="option in options"
         :key="option"
@@ -24,7 +24,7 @@
       </div>
     </div>
     <n-spin v-else show>
-      <div class="block" style="height:150px"></div>
+      <div class="block" style="height: 150px"></div>
     </n-spin>
   </div>
 </template>
@@ -45,7 +45,7 @@ export default {
     CountTo,
     NTabs,
     NTabPane,
-    NSpin
+    NSpin,
   },
   data() {
     return {
@@ -101,5 +101,29 @@ export default {
 }
 .overview-title {
   font-size: 0.9em;
+}
+
+@media only screen and (max-width: 600px) {
+  .block {
+    padding: 15px;
+  }
+  .overview-number {
+    font-size: 1em;
+    font-weight: bold;
+  }
+  .overview-item {
+    margin: 1px 3px;
+    overflow: hidden;
+  }
+  .overview-title {
+    font-size: 0.9em;
+  }
+
+  .country-death {
+    font-size: 1em;
+  }
+  .daily-increase {
+    font-size: 1em;
+  }
 }
 </style>

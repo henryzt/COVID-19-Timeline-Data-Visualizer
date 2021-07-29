@@ -82,6 +82,6 @@
     "switchCountyState": "Switch State/County Data",
     "goToRegional": "Go to Regional Data Section",
     "empty": "Please select an area or the value you entered",
-    "ukPlaceholder": "Enter a name or UK Postcode..."
+    "ukPlaceholder": "Enter a postcode or name..."
   }
 }
