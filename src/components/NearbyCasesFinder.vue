@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: THIS FILE IS FROM OLD VERSION, NEED TO REFACTOR -->
   <div class="title">{{ $t("subtitles.nearby") }}</div>
   <n-spin :show="loading">
     <div class="block nearby-block">
