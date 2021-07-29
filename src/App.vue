@@ -53,6 +53,7 @@ export default defineComponent({
       allCountryData: null,
       countryList: [],
       selectedCountry: "all",
+      localTableData: null,
       loaded: {
         overviewData: false,
         timeSeries: false,
@@ -102,7 +103,7 @@ export default defineComponent({
       } else if (timezone.includes("America")) {
         this.selectedCountry = "USA";
       } else {
-        this.selectedCountry = "all";
+        this.selectedCountry = "UK"; // "all"
       }
     },
     initLanguage() {
