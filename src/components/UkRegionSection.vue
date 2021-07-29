@@ -1,7 +1,12 @@
 <template>
   <div>
-    <div class="title">{{ $t("subtitles.country") }}</div>
-    <n-tabs justify-content="space-around" :tab-style="{margin: '0 5px'}">
+    <div class="title">
+      {{ $t("subtitles.country") }}
+      <div v-if="NationData" class="title-date">
+        {{ $t("updatedAt") + $d(new Date(NationData[0].date)) }}
+      </div>
+    </div>
+    <n-tabs justify-content="space-around" :tab-style="{ margin: '0 5px' }">
       <n-tab-pane
         v-for="option in options"
         :key="option"

@@ -1,5 +1,10 @@
 <template>
-  <div class="title">{{ $t("subtitles.overview") }}</div>
+  <div class="title">
+    {{ $t("subtitles.overview") }}
+    <div v-if="overviewData" class="title-date">
+      {{ $t("updatedAt") + $d(new Date(overviewData.updated)) }}
+    </div>
+  </div>
   <div class="overview-wrapper">
     <div
       class="block overview"
@@ -20,11 +25,13 @@
         <div :class="{ [item.color]: true, 'ov-item': true }">
           <div class="ov-title">{{ item.title }}</div>
           <div class="number" ref="num">
-            <count-to :end-val="item.today" :duration='1000' />
+            <count-to :end-val="item.today" :duration="1000" />
           </div>
-          <div class="number-title">{{ item.totalTitle ?? $t("type.total") }}</div>
+          <div class="number-title">
+            {{ item.totalTitle ?? $t("type.total") }}
+          </div>
           <div class="number total">
-            <count-to :end-val="item.total" :duration='1000' />
+            <count-to :end-val="item.total" :duration="1000" />
           </div>
         </div>
       </div>
@@ -35,8 +42,7 @@
 <script>
 import { ref, defineComponent } from "vue";
 import Chart from "./Chart.vue";
-import { CountTo } from 'vue3-count-to';
-
+import { CountTo } from "vue3-count-to";
 
 export default defineComponent({
   name: "MainNumbers",
@@ -56,27 +62,27 @@ export default defineComponent({
   },
   components: {
     Chart,
-    CountTo
+    CountTo,
   },
   data() {
     return {
       display: [null, null, null, null],
     };
   },
-  mounted () {
-    if(this.overviewData){
-      this.loadDisplay()
+  mounted() {
+    if (this.overviewData) {
+      this.loadDisplay();
     }
   },
   watch: {
     overviewData() {
-      this.loadDisplay()
+      this.loadDisplay();
     },
   },
   methods: {
     loadDisplay() {
       const data = this.overviewData;
-            const cases = {
+      const cases = {
         color: "red",
         type: "cases",
         title: this.$t("today.cases"),
@@ -106,7 +112,7 @@ export default defineComponent({
         total: data.active,
       };
       this.display = [cases, deaths, recovered, active];
-    }
+    },
   },
 });
 </script>
