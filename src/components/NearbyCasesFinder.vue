@@ -1,17 +1,16 @@
 <template>
   <div class="title">{{ $t("subtitles.nearby") }}</div>
-  <div class="block">
-    <div style="display: flex; align-items: center; margin-bottom: 20px">
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg circle"
-        @click="locateUserGPS"
-      >
-        <div style="margin-top: -2px"><!-- <LocateIcon /> -->locate</div>
-      </button>
+  <n-spin :show="loading">
+    <div class="block nearby-block">
+      <div style="display: flex; align-items: center; margin-bottom: 20px">
+        <n-button circle size="large" type="primary" @click="locateUserGPS">
+          <n-icon size="20" style="width:50px">
+            <Navigate />
+          </n-icon>
+        </n-button>
 
-      <div style="margin: 0 20px; width: 100%">
-        <!-- <vSelect
+        <div style="margin: 0 20px; width: 100%">
+          <!-- <vSelect
           v-if="currentCountry==='UK' && regionData"
           class="select"
           :clearable="false"
@@ -24,18 +23,19 @@
           push-tags
           taggable
         ></vSelect> -->
-        <n-select
-          v-if="currentCountry === 'UK' && regionData"
-          :value="inputValue"
-          @update:value="
-            inputValue = $event;
-            findUKPostcode();
-          "
-          filterable
-          :placeholder="$t('nearBy.ukPlaceholder')"
-          :options="selectOptions"
-        />
-        <vSelect
+          <n-select
+            v-if="currentCountry === 'UK' && regionData"
+            filterable
+            tag
+            :placeholder="$t('nearBy.ukPlaceholder')"
+            :options="selectOptions"
+            :value="inputValue"
+            @update:value="
+              inputValue = $event;
+              findUKPostcode();
+            "
+          />
+          <!-- <vSelect
           v-else-if="mainLocation"
           class="select"
           :clearable="false"
@@ -44,61 +44,58 @@
           label="Combined_Key"
           @input="findUSCounty"
           placeholder="Search..."
-        ></vSelect>
-        <div v-else style="text-align: center">Loading...</div>
-      </div>
+        ></vSelect> -->
+          <div v-else style="text-align: center">Loading...</div>
+        </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        style="width: 100px"
-        @click="findUKPostcode"
+        <n-button type="primary" style="width: 100px" @click="findUKPostcode">
+          {{ $t("nearBy.search") }}
+        </n-button>
+      </div>
+      <!-- <div
+        v-if="displayInfo === $t('nearBy.locating')"
+        style="margin: 5px; text-align: center"
       >
-        {{ $t("nearBy.search") }}
-      </button>
-    </div>
-    <div
-      v-if="displayInfo === $t('nearBy.locating')"
-      style="margin: 5px; text-align: center"
-    >
+        <div
+          class="spinner-border text-primary"
+          style="width: 2rem; height: 2rem"
+          role="status"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div> -->
       <div
-        class="spinner-border text-primary"
-        style="width: 2rem; height: 2rem"
-        role="status"
-      >
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <div
-      class="displayInfo"
-      style="text-align: center"
-      v-html="displayInfo"
-    ></div>
+        class="displayInfo"
+        style="text-align: center"
+        v-html="displayInfo"
+      ></div>
 
-    <div
-      v-if="isResult"
-      style="text-align: center; margin-top: 20px; color: silver"
-    >
-      <a
-        href="javascript: void(0)"
-        v-if="currentCountry === 'US'"
-        @click="switchStateCounty"
+      <div
+        v-if="isResult"
+        style="text-align: center; margin-top: 20px; color: silver"
       >
-        {{ $t("nearBy.switchCountyState") }}
-        <br />
-      </a>
-      <a href="#regionData">{{ $t("nearBy.goToRegional") }}</a>
-      <div v-if="$i18n.locale !== 'zh'">
+        <n-a
+          href="javascript: void(0)"
+          v-if="currentCountry === 'US'"
+          @click="switchStateCounty"
+        >
+          {{ $t("nearBy.switchCountyState") }}
+          <br />
+        </n-a>
+        <!-- <n-a href="#regionData">{{ $t("nearBy.goToRegional") }}</n-a> -->
+        <!-- <div v-if="$i18n.locale !== 'zh'">
         <hr />
         share
-        <!-- <ShareIcons style="margin-top: 20px;" :title="displayInfo"></ShareIcons> -->
+        <ShareIcons style="margin-top: 20px;" :title="displayInfo"></ShareIcons>
+      </div> -->
       </div>
     </div>
-  </div>
+  </n-spin>
 </template>
 
 <script>
-import { NSelect } from "naive-ui";
+import { NSelect, NButton, NA, NSpin, NIcon } from "naive-ui";
+import { Navigate } from "@vicons/ionicons5";
 
 const getGetOrdinal = function (n) {
   //ref https://community.shopify.com/c/Shopify-Design/Ordinal-Number-in-javascript-1st-2nd-3rd-4th/td-p/72156
@@ -111,11 +108,16 @@ export default {
   name: "NearbyCasesFinder",
   props: ["regionData", "currentCountry"],
   components: {
-    NSelect
+    NSelect,
+    NButton,
+    NA,
+    NSpin,
+    NIcon,
+    Navigate
   },
   data: function () {
     return {
-      inputValue: "",
+      inputValue: null,
       displayInfo:
         "<div style='opacity: 0.7; font-size: 14px;'>" +
         (this.currentCountry === "UK"
@@ -395,11 +397,19 @@ export default {
   mounted() {
     if (this.currentCountry === "US") this.getUSLocationData();
   },
-  computed:{
-    selectOptions(){
-      return this.regionData.map((e) => ({label:e.areaName, value:e.areaName}))
+  computed: {
+    selectOptions() {
+      return this.regionData.map((e) => ({
+        label: e.areaName,
+        value: e.areaName,
+      })).sort((a, b) =>
+        a.label.localeCompare(b.label)
+      );;
+    },
+    loading(){
+      return this.displayInfo === this.$t('nearBy.locating') || !this.regionData;
     }
-  }
+  },
 };
 </script>
 
@@ -408,5 +418,9 @@ export default {
   color: darkred;
   padding: 0 5px;
   font-weight: bolder;
+}
+
+.nearby-block {
+  padding: 30px;
 }
 </style>

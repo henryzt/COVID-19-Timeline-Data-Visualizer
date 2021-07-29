@@ -2,7 +2,6 @@
   <div>
     <UkRegionSection :NationData="nation"></UkRegionSection>
     <NearbyCasesFinder
-    v-if="utla"
       :regionData="utla"
       currentCountry="UK"
     ></NearbyCasesFinder>

@@ -23,12 +23,15 @@
         </div>
       </div>
     </div>
+    <n-spin v-else show>
+      <div class="block" style="height:150px"></div>
+    </n-spin>
   </div>
 </template>
 
 <script>
 import { CountTo } from "vue3-count-to";
-import { NTabs, NTabPane } from "naive-ui";
+import { NTabs, NTabPane, NSpin } from "naive-ui";
 
 export default {
   name: "UkRegionSection",
@@ -42,6 +45,7 @@ export default {
     CountTo,
     NTabs,
     NTabPane,
+    NSpin
   },
   data() {
     return {
