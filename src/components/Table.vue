@@ -26,9 +26,9 @@ export default {
   },
   computed: {
     columns() {
-      const country = {
+      const locationName = {
         title: this.$t("country"),
-        key: "country",
+        key: "locationName",
         sorter: "default",
         fixed: "left",
         width: 150,
@@ -41,7 +41,7 @@ export default {
           sorter: (row1, row2) => row1[item] - row2[item],
         };
       });
-      const res = [country].concat(columns);
+      const res = [locationName].concat(columns);
       this.$nextTick(() => {
         this.$refs.table?.sort(this.columns[1].key, "descend");
       });

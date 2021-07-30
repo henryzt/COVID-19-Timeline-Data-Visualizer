@@ -6,7 +6,7 @@
       :overview-data="overviewData"
       :all-time-series="loaded.timeSeries ? timeSeries : null"
     />
-    <component v-if="localComponent" :is="localComponent"></component>
+    <component v-if="localComponent" :is="localComponent" @local-data-ready="handleLocalData"></component>
     <ChartSection :loading="!loaded.timeSeries" :all-time-series="timeSeries" />
     <ChartSection
       :loading="!loaded.timeSeries"
@@ -83,12 +83,18 @@ export default defineComponent({
   methods: {
     async updateCountryData() {
       localStorage.setItem("lastCountry", this.selectedCountry);
+      this.localTableData = null;
       this.loaded.overviewData = false;
       this.loaded.timeSeries = false;
       this.overviewData = await getOverviewData(this.selectedCountry);
       this.loaded.overviewData = true;
       this.timeSeries = await getTimeSeries(this.selectedCountry);
       this.loaded.timeSeries = true;
+    },
+    handleLocalData(data) {
+      if("tableData" in data){
+        this.localTableData = data.tableData;
+      }
     },
     initLocation() {
       let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -125,6 +131,7 @@ export default defineComponent({
       this.render = false;
       this.$nextTick(() => {
         this.render = true;
+        window.scrollTo({ top: 0 });
       });
     },
   },

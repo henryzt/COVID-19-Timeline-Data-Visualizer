@@ -66,6 +66,8 @@ export default {
     );
     const utla = await utlaRes.json();
     this.utla = utla.data;
+
+    this.reportLocalData()
   },
   methods: {
     loadUkRealtimeDisplay() {
@@ -80,6 +82,29 @@ export default {
       };
       this.chartData = this.overview.reverse();
     },
+    reportLocalData(){
+      const tableData = this.utla.map(e => ({
+        locationName: e.areaName,
+        cases: e.confirmed,
+        deaths: e.death,
+        active: e.hospitalCases,
+        critical: e.covidOccupiedMVBeds,
+        tested: e.tested,
+        admission: e.hospitalCases,
+        todayCases: e.confirmedNew,
+        todayDeaths: e.deathNew,
+        todayTested: e.testedNew,
+        todayAdmission: e.admissionsNew,
+        casesPerOneMillion: e.confirmedRate,
+        deathPerOneMillion: e.deathRate
+      }))
+
+      const localData = {
+        tableData
+      }
+      
+      this.$emit("localDataReady", localData)
+    }
   },
   components: {
     UkRegionSection,

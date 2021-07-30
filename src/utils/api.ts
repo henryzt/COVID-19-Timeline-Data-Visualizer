@@ -5,8 +5,12 @@ async function request(endpoint: string) {
   return response.json();
 }
 
-export function getAllCountryData() {
-  return request(`countries`);
+export async function getAllCountryData() {
+  const countries = await request(`countries`);
+  countries.forEach((e) => {
+    e.locationName = e.country;
+  });
+  return countries;
 }
 
 export async function getOverviewData(counrty: string) {
