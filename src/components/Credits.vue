@@ -1,7 +1,11 @@
 <template>
   <div class="title">{{ $t("subtitles.about") }}</div>
   <ul class="about">
-    <li>Data provided by <n-a href="https://disease.sh/">disease.sh</n-a> API.</li>
+    <li>
+      Data provided by <n-a href="https://disease.sh/">disease.sh</n-a> API.
+      Designed with <n-a href="https://naiveui.com">Naive-UI</n-a> and
+      <n-a href="https://echarts.apache.org/">ECharts</n-a>.
+    </li>
     <li>
       This project is open-sourced at
       <n-a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK"
@@ -14,7 +18,8 @@
       | Previous versions developed by
       <n-a href="https://github.com/henryz00">@henryz00</n-a> and
       <n-a href="https://github.com/Davi-X">@Davi-X</n-a>
-      at University College London.
+      at University College London. Special thanks to
+      <n-a href="https://github.com/jieyouxu">@jieyouxu</n-a>.
     </li>
   </ul>
   <div class="lang-switch">
@@ -32,23 +37,23 @@ export default {
   data() {
     return {
       langs: ["en", "zh"],
-      selectedLang: this.$i18n.locale
+      selectedLang: this.$i18n.locale,
     };
   },
   watch: {
     selectedLang(newValue) {
-      this.$emit("changeLang", newValue)
-    }
+      this.$emit("changeLang", newValue);
+    },
   },
 };
 </script>
 
 <style scoped>
-.about{
+.about {
   opacity: 0.7;
 }
 
-.lang-switch{
+.lang-switch {
   opacity: 0.7;
   padding-top: 20px;
   padding-bottom: 50px;
