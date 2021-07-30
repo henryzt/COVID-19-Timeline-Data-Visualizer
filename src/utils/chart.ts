@@ -1,7 +1,7 @@
 import { graphic } from "echarts/core";
 
-function formatter(value: Number) {
-  return value >= 100000 ? value.toExponential() : value;
+function formatter(value: Number): string {
+  return value >= 100000 ? value.toExponential() : value.toString();
 }
 
 function getSeries(dataType: string, chartType: string, color: string, data: Array<any>) {

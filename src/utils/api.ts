@@ -1,6 +1,6 @@
 const apiUrl = "https://disease.sh/v3/covid-19/";
 
-async function request(endpoint: string) {
+async function request(endpoint: string): Promise<any> {
   const response = await fetch(apiUrl + endpoint);
   return response.json();
 }
@@ -13,28 +13,28 @@ export async function getAllCountryData() {
   return countries;
 }
 
-export async function getOverviewData(counrty: string) {
+export async function getOverviewData(country: string) {
   let result, outdated;
-  if (counrty === "all") {
-    result = request(`all?yesterday=true`);
+  if (country === "all") {
+    result = await request(`all?yesterday=true`);
     outdated = true;
   } else {
-    result = await request(`countries/${counrty}`);
+    result = await request(`countries/${country}`);
     if (result.todayCases == 0) {
-      result = request(`countries/${counrty}?yesterday=true`);
+      result = await request(`countries/${country}?yesterday=true`);
       outdated = true;
     } else {
       outdated = false;
     }
   }
-  return Object.assign(result, { outdated });
+  return  { ...result, outdated };
 }
 
-export async function getTimeSeries(counrty: string) {
-  let data = await request(`historical/${counrty}?lastdays=all`);
+export async function getTimeSeries(country: string) {
+  let data = await request(`historical/${country}?lastdays=all`);
   data = data.country ? data.timeline : data;
   // get active cases time series
-  data.active = Object.assign({}, data.cases);
+  data.active = { ...data.cases };
   for (let i in data.cases) {
     data.active[i] = data.cases[i] - data.deaths[i] - data.recovered[i];
   }
@@ -84,10 +84,8 @@ export function getCountryList(allCountryData: Array<any>, t:any) {
     const popularCountries = array.map((i) => i.value);
 
     const countryList = allCountryData
-      .filter((i) => !popularCountries.includes(i.country))
-      .map((i) => {
-        return { label: i.country, value: i.country };
-      });
+      .filter(i => !popularCountries.includes(i.country))
+      .map((i) => ({ label: i.country, value: i.country }));
 
     array = array.concat(countryList);
   } else {
