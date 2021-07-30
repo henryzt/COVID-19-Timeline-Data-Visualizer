@@ -41,7 +41,9 @@
     "daily": "Daily",
     "rate": "Rate",
     "en": "English",
-    "zh": "中文"
+    "zh": "中文",
+    "global": "Global",
+    "local": "Country"
   },
   "dropdown": {
     "popular": "Popular",

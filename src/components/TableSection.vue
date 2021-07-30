@@ -1,14 +1,19 @@
 <template>
   <div>
-    <div class="title">{{ $t("subtitles.region") }}</div>
+    <div class="title">
+      {{ $t("subtitles.region") }}
+      <div class="title-selector" v-if="localTableData">
+        <Selector :types="locationTypes" v-model="selectedLocation" />
+      </div>
+    </div>
     <n-spin :show="loading">
       <div class="block">
         <Selector :types="tableTypes" v-model="selectedType" />
         <Table
           class="table"
-          v-if="allCountryData"
+          v-if="globalTableData"
           :data-type="selectedType"
-          :all-country-data="allCountryData"
+          :table-data="tableData"
         />
       </div>
     </n-spin>
@@ -22,9 +27,13 @@ import { NSpin } from "naive-ui";
 
 export default {
   props: {
-    allCountryData: {
+    globalTableData: {
       type: Object,
-      default: {},
+      default: null,
+    },
+    localTableData: {
+      type: Object,
+      default: null,
     },
     loading: {
       type: Boolean,
@@ -35,12 +44,26 @@ export default {
     return {
       tableTypes: ["total", "daily", "rate"],
       selectedType: "total",
+      locationTypes: ["global", "local"],
+      selectedLocation: "global",
     };
   },
   components: {
     Table,
     NSpin,
     Selector,
+  },
+  computed: {
+    tableData() {
+      return this.selectedLocation === "local"
+        ? this.localTableData
+        : this.globalTableData;
+    },
+  },
+  watch: {
+    localTableData(newValue) {
+      this.selectedLocation = newValue ? "local" : "global";
+    }
   },
 };
 </script>

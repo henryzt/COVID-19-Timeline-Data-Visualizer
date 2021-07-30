@@ -14,8 +14,9 @@
       :is-daily="true"
     />
     <TableSection
-      :loading="!loaded.allCountryData"
-      :all-country-data="allCountryData"
+      :loading="!loaded.globalTableData"
+      :global-table-data="globalTableData"
+      :local-table-data="localTableData"
     />
     <Credits @changeLang="changeLang" />
   </div>
@@ -50,14 +51,14 @@ export default defineComponent({
       render: true,
       overviewData: null,
       timeSeries: null,
-      allCountryData: null,
+      globalTableData: null,
+      localTableData: null,
       countryList: [],
       selectedCountry: "all",
-      localTableData: null,
       loaded: {
         overviewData: false,
         timeSeries: false,
-        allCountryData: false,
+        globalTableData: false,
       },
     };
   },
@@ -66,9 +67,9 @@ export default defineComponent({
     this.initLocation();
     this.countryList = getCountryList([], this.$t);
     this.updateCountryData();
-    this.allCountryData = await getAllCountryData();
-    this.loaded.allCountryData = true;
-    this.countryList = getCountryList(this.allCountryData, this.$t);
+    this.globalTableData = await getAllCountryData();
+    this.loaded.globalTableData = true;
+    this.countryList = getCountryList(this.globalTableData, this.$t);
   },
   watch: {
     selectedCountry() {
@@ -121,8 +122,8 @@ export default defineComponent({
     changeLang(lang: string) {
       this.$i18n.locale = lang;
       document.title = this.$t("pageTitle");
-      if (this.allCountryData) {
-        this.countryList = getCountryList(this.allCountryData, this.$t);
+      if (this.globalTableData) {
+        this.countryList = getCountryList(this.globalTableData, this.$t);
       }
       localStorage.setItem("lastLang", lang);
       this.forceReload();

@@ -3,7 +3,7 @@
     <n-data-table
       ref="table"
       :columns="columns"
-      :data="allCountryData"
+      :data="tableData"
       :pagination="pagination"
       :scroll-x="scrollLength"
     />
@@ -52,7 +52,7 @@ export default {
     },
   },
   props: {
-    allCountryData: {
+    tableData: {
       type: Object,
       default: {},
     },

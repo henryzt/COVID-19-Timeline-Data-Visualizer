@@ -41,7 +41,9 @@
     "daily": "今日",
     "rate": "百万率",
     "en": "English",
-    "zh": "中文"
+    "zh": "中文",
+    "global": "全球",
+    "local": "国家"
   },
   "dropdown": {
     "popular": "热门",
