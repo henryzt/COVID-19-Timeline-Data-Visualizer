@@ -87,14 +87,8 @@ export default {
         locationName: e.areaName,
         cases: e.confirmed,
         deaths: e.death,
-        active: e.hospitalCases,
-        critical: e.covidOccupiedMVBeds,
-        tested: e.tested,
-        admission: e.hospitalCases,
         todayCases: e.confirmedNew,
         todayDeaths: e.deathNew,
-        todayTested: e.testedNew,
-        todayAdmission: e.admissionsNew,
         casesPerOneMillion: e.confirmedRate,
         deathPerOneMillion: e.deathRate
       }))

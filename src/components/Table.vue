@@ -15,8 +15,8 @@ import { NSpace, NDataTable } from "naive-ui";
 
 const keys = {};
 
-keys.total = ["cases", "deaths", "active", "critical", "recovered", "tests"];
-keys.daily = ["todayCases", "todayDeaths", "todayRecovered"];
+keys.total = ["cases", "deaths", "active", "critical", "admission", "recovered", "tests"];
+keys.daily = ["todayCases", "todayDeaths", "todayAdmission", "todayRecovered"];
 keys.rate = keys.total.map((i) => i + "PerOneMillion");
 
 export default {
@@ -34,13 +34,19 @@ export default {
         width: 150,
       };
 
-      const columns = keys[this.dataType].map((item) => {
+      let columns = keys[this.dataType].map((item) => {
         return {
           title: this.$t(`type.${item}`),
           key: item,
           sorter: (row1, row2) => row1[item] - row2[item],
         };
       });
+
+      if(this.tableData && this.tableData.length > 0){
+        const entryProps = this.tableData[0];
+        columns = columns.filter(i => i.key in entryProps);
+      }
+
       const res = [locationName].concat(columns);
       this.$nextTick(() => {
         this.$refs.table?.sort(this.columns[1].key, "descend");
@@ -53,8 +59,8 @@ export default {
   },
   props: {
     tableData: {
-      type: Object,
-      default: {},
+      type: Array,
+      default: [],
     },
     dataType: {
       type: String,
