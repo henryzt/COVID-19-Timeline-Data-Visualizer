@@ -34,7 +34,7 @@ export default {
       default: null,
     },
     loading: {
-      type: boolean,
+      type: Boolean,
       default: false,
     },
     isDaily: {

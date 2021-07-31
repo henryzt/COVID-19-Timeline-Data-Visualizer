@@ -188,7 +188,7 @@ div.btn-group {
 }
 
 @media only screen and (max-width: 600px) {
-  .main-lock {
+  .main-block {
     padding: 15px;
   }
   .btn-group-wrap {

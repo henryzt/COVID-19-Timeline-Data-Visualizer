@@ -15,7 +15,7 @@ import { NSpace, NDataTable } from "naive-ui";
 
 const totalKeys = ["cases", "deaths", "active", "critical", "admission", "recovered", "tests"];
 const dailyKeys = ["todayCases", "todayDeaths", "todayAdmission", "todayRecovered"];
-const rateKeys = totalKeys.map(key => `${key}PerOneMillion`;
+const rateKeys = totalKeys.map(key => `${key}PerOneMillion`);
 
 const keys = {
   total: totalKeys,

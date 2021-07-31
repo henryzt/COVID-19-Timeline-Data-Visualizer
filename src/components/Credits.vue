@@ -8,8 +8,8 @@
     </li>
     <li>
       This project is open-sourced at
-      <n-a href="https://github.com/henryz00/COVID-19-Data-Visualizer-UK"
-        >github repository here</n-a
+      <n-a href="https://github.com/henryz00/COVID-19-Timeline-Data-Visualizer"
+        >the github repository here</n-a
       >, pull requests and issues are welcomed!
     </li>
     <li>
