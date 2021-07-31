@@ -18,7 +18,12 @@
           />
         </div>
         <div v-else>
-          Hello
+          <Map
+            class="table"
+            v-if="globalTableData"
+            :data-type="selectedType"
+            :table-data="tableData"
+          />
         </div>
       </div>
     </n-spin>
@@ -27,6 +32,7 @@
 
 <script>
 import Table from "./Table.vue";
+import Map from "./Map.vue";
 import Selector from "./Selector.vue";
 import { NSpin } from "naive-ui";
 
@@ -66,6 +72,7 @@ export default {
   },
   components: {
     Table,
+    Map,
     NSpin,
     Selector,
   },
