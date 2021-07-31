@@ -13,7 +13,13 @@
       :all-time-series="timeSeries"
       :is-daily="true"
     />
-    <TableSection
+    <TableMapSection
+      section-type="map"
+      :loading="!loaded.globalTableData"
+      :global-table-data="globalTableData"
+      :local-table-data="localTableData"
+    />
+    <TableMapSection
       :loading="!loaded.globalTableData"
       :global-table-data="globalTableData"
       :local-table-data="localTableData"
@@ -27,7 +33,7 @@ import { defineComponent } from "vue";
 import Header from "./components/Header.vue";
 import MainNumbers from "./components/MainNumbers.vue";
 import ChartSection from "./components/ChartSection.vue";
-import TableSection from "./components/TableSection.vue";
+import TableMapSection from "./components/TableMapSection.vue";
 import Credits from "./components/Credits.vue";
 import {
   getAllCountryData,
@@ -43,7 +49,7 @@ export default defineComponent({
     Header,
     MainNumbers,
     ChartSection,
-    TableSection,
+    TableMapSection,
     Credits,
   },
   data() {
