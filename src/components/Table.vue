@@ -13,11 +13,15 @@
 <script>
 import { NSpace, NDataTable } from "naive-ui";
 
-const keys = {};
+const totalKeys = ["cases", "deaths", "active", "critical", "admission", "recovered", "tests"];
+const dailyKeys = ["todayCases", "todayDeaths", "todayAdmission", "todayRecovered"];
+const rateKeys = totalKeys.map(key => `${key}PerOneMillion`;
 
-keys.total = ["cases", "deaths", "active", "critical", "admission", "recovered", "tests"];
-keys.daily = ["todayCases", "todayDeaths", "todayAdmission", "todayRecovered"];
-keys.rate = keys.total.map((i) => i + "PerOneMillion");
+const keys = {
+  total: totalKeys,
+  daily: dailyKeys,
+  rate: rateKeys,
+};
 
 export default {
   components: {

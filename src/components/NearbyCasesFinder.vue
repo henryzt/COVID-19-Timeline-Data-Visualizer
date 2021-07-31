@@ -405,7 +405,7 @@ export default {
         value: e.areaName,
       })).sort((a, b) =>
         a.label.localeCompare(b.label)
-      );;
+      );
     },
     loading(){
       return this.displayInfo === this.$t('nearBy.locating') || !this.regionData;

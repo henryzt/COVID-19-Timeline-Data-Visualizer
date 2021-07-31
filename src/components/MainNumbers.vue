@@ -138,7 +138,7 @@ export default defineComponent({
 
 .ov-title {
   font-size: 1em;
-  opacity: 0.6;
+  opacity: .6;
 }
 
 .ov-item {

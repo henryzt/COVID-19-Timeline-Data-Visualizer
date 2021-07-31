@@ -39,8 +39,7 @@ export async function getTimeSeries(country: string) {
     data.active[i] = data.cases[i] - data.deaths[i] - data.recovered[i];
   }
   // get daily time series
-  for (let key of Object.keys(data)) {
-    const timeSeries = data[key];
+  for (const [key, timeSeries] of Object.entries(data)) {
     const dailyTimeSeries = {};
     const tsEntires = Object.entries(timeSeries);
     let lastNumber = 0;
@@ -54,7 +53,7 @@ export async function getTimeSeries(country: string) {
   return data;
 }
 
-export function getCountryList(allCountryData: Array<any>, t:any) {
+export function getCountryList(allCountryData: any[], t:any) {
   let array = [
     {
       label: t("dropdown.popular"),
@@ -87,7 +86,7 @@ export function getCountryList(allCountryData: Array<any>, t:any) {
       .filter(i => !popularCountries.includes(i.country))
       .map((i) => ({ label: i.country, value: i.country }));
 
-    array = array.concat(countryList);
+    array = [...array, ...countryList];
   } else {
     const loading = {
       label: "Country List Loading...",
