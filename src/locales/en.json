@@ -11,7 +11,7 @@
     "daily": "Daily Trend Analysis",
     "region": "Region Analysis",
     "about": "About",
-    "map": "Map",
+    "map": "Map Analysis",
     "country": "Country Overview"
   },
   "today": {
@@ -47,7 +47,8 @@
     "en": "English",
     "zh": "中文",
     "global": "Global",
-    "local": "Country"
+    "local": "Country",
+    "population": "Population"
   },
   "dropdown": {
     "popular": "Popular",

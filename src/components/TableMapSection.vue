@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      {{ $t("subtitles.region") }}
+      {{ isTableType ? $t("subtitles.region") : $t("subtitles.map") }}
       <div class="title-selector" v-if="localTableData">
         <Selector :types="locationTypes" v-model="selectedLocation" />
       </div>
@@ -82,6 +82,13 @@ export default {
         "tests",
         "critical",
         "active",
+        "casesPerOneMillion",
+        "deathsPerOneMillion",
+        "testsPerOneMillion",
+        "activePerOneMillion",
+        "recoveredPerOneMillion",
+        "criticalPerOneMillion",
+        "population",
       ];
       this.selectedType = this.dataTypes[0];
     }

@@ -11,7 +11,7 @@
     "daily": "日增数据分析",
     "region": "国家与地区分析",
     "about": "关于",
-    "map": "地图",
+    "map": "地图分析",
     "country": "国家概览"
   },
   "today": {
@@ -47,7 +47,8 @@
     "en": "English",
     "zh": "中文",
     "global": "全球",
-    "local": "国家"
+    "local": "国家",
+    "population": "总人口数"
   },
   "dropdown": {
     "popular": "热门",

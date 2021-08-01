@@ -68,7 +68,7 @@ export default {
   },
   watch: {
     dataType() {
-      this.register();
+      this.updateChart();
     },
     tableData() {
       this.register();
