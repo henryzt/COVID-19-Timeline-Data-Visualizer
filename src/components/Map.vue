@@ -1,5 +1,8 @@
 <template>
-  <v-chart class="chart" :option="option" />
+  <n-spin :show="loading">
+    <v-chart v-if="render" class="chart" :option="option" />
+    <n-empty v-else class="empty" :description="$t('noData')" />
+  </n-spin>
 </template>
 
 <script>
@@ -14,6 +17,7 @@ import {
   GeoComponent,
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
+import { NSpin, NEmpty } from "naive-ui";
 
 use([
   CanvasRenderer,
@@ -28,6 +32,8 @@ use([
 export default {
   components: {
     VChart,
+    NSpin,
+    NEmpty,
   },
   provide: {
     [THEME_KEY]: "light",
@@ -45,11 +51,16 @@ export default {
       type: String,
       default: "all",
     },
+    isLocal: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       option: {},
       render: true,
+      loading: true,
     };
   },
   mounted() {
@@ -59,14 +70,24 @@ export default {
     dataType() {
       this.register();
     },
+    tableData() {
+      this.register();
+    },
+  },
+  computed: {
+    mapFile() {
+      const country = this.country === "all" ? "Global" : this.country;
+      return this.isLocal ? country : "Global";
+    },
   },
   methods: {
     register() {
-      fetch("/maps/global.json")
+      this.loading = true;
+      fetch(`/maps/${this.mapFile}.json`)
         .then((response) => response.json())
         .then((mapJson) => {
           let offset = null;
-          if (this.country === "usa") {
+          if (this.mapFile === "USA") {
             offset = {
               Alaska: {
                 left: -131,
@@ -85,12 +106,16 @@ export default {
               },
             };
           }
-          registerMap(this.country, mapJson, offset);
+          registerMap(this.mapFile, mapJson, offset);
           this.updateChart();
         });
     },
     updateChart() {
-      if (!this.tableData) return;
+      if (!this.tableData || !(this.dataType in this.tableData[0])) {
+        this.loading = false;
+        this.render = false;
+        return;
+      }
       const mapData = this.tableData.map((e) => ({
         name: e.locationName,
         value: e[this.dataType],
@@ -102,10 +127,6 @@ export default {
         prev.value < curr.value ? curr : prev
       );
       this.option = {
-        title: {
-          text: "USA Population Estimates",
-          left: "right",
-        },
         tooltip: {
           trigger: "item",
           showDelay: 0,
@@ -135,7 +156,7 @@ export default {
               "#a50026",
             ],
           },
-          text: ["High", "Low"], 
+          text: ["High", "Low"],
           calculable: true,
         },
         toolbox: {
@@ -153,7 +174,7 @@ export default {
             name: this.$t(`type.${this.dataType}`),
             type: "map",
             roam: true,
-            map: this.country,
+            map: this.mapFile,
             emphasis: {
               label: {
                 show: true,
@@ -163,6 +184,8 @@ export default {
           },
         ],
       };
+      this.render = true;
+      this.loading = false;
     },
   },
 };
@@ -170,6 +193,6 @@ export default {
 
 <style scoped>
 .chart {
-  height: 400px;
+  height: 430px;
 }
 </style>

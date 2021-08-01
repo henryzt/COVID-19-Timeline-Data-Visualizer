@@ -187,6 +187,10 @@ div.btn-group {
   padding-bottom: 5px;
 }
 
+.empty {
+  padding-top: 150px;
+}
+
 @media only screen and (max-width: 600px) {
   .main-block {
     padding: 15px;

@@ -7,7 +7,7 @@
         <n-empty
           v-if="!currentTimeSeries && !loading"
           class="empty"
-          description="No data yet"
+          :description="$t('noData')"
         />
         <Chart
           v-else-if="currentTimeSeries"
@@ -23,8 +23,7 @@
 <script>
 import Chart from "./Chart.vue";
 import Selector from "./Selector.vue";
-import { NSpin } from "naive-ui";
-import { NEmpty } from "naive-ui";
+import { NSpin, NEmpty } from "naive-ui";
 
 export default {
   name: "ChartSection",
@@ -72,9 +71,5 @@ export default {
 <style scoped>
 .block {
   min-height: 430px;
-}
-
-.empty {
-  padding-top: 150px;
 }
 </style>

@@ -3,6 +3,7 @@
   "title": "Trend and Analysis",
   "dateFormat": "DD MMM YY",
   "updatedAt": "Updated at ",
+  "noData": "No data yet",
   "subtitles": {
     "overview": "Today Overview",
     "nearby": "Cases Near Me",

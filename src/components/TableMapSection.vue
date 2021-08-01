@@ -21,6 +21,7 @@
           <Map
             class="table"
             v-if="globalTableData"
+            :is-local="selectedLocation === 'local'"
             :country="country"
             :data-type="selectedType"
             :table-data="tableData"
@@ -68,10 +69,20 @@ export default {
       selectedLocation: "global",
     };
   },
-  mounted(){
-    if(!this.isTableType){
+  mounted() {
+    if (!this.isTableType) {
       // section is a map
-      this.dataTypes = ["cases", "deaths", "recovered", "active"]
+      this.dataTypes = [
+        "cases",
+        "deaths",
+        "todayCases",
+        "todayDeaths",
+        "todayRecovered",
+        "recovered",
+        "tests",
+        "critical",
+        "active",
+      ];
       this.selectedType = this.dataTypes[0];
     }
   },
