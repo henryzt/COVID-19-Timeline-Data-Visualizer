@@ -15,6 +15,7 @@
     />
     <TableMapSection
       section-type="map"
+      :country="selectedCountry"
       :loading="!loaded.globalTableData"
       :global-table-data="globalTableData"
       :local-table-data="localTableData"

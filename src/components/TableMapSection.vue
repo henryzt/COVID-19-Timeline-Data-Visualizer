@@ -21,6 +21,7 @@
           <Map
             class="table"
             v-if="globalTableData"
+            :country="country"
             :data-type="selectedType"
             :table-data="tableData"
           />
@@ -53,6 +54,10 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+    country: {
+      type: String,
+      default: "all",
     },
   },
   data() {

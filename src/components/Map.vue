@@ -49,14 +49,15 @@ export default {
   data() {
     return {
       option: {},
+      render: true,
     };
   },
   mounted() {
     this.register();
   },
-  computed: {
-    name() {
-      return this.data;
+  watch: {
+    dataType() {
+      this.register();
     },
   },
   methods: {
@@ -90,15 +91,19 @@ export default {
     },
     updateChart() {
       if (!this.tableData) return;
-      const mapData = this.tableData.map((e)=>({
+      const mapData = this.tableData.map((e) => ({
         name: e.locationName,
-        value: e[this.dataType]
-      }))
+        value: e[this.dataType],
+      }));
+      const minItem = mapData.reduce((prev, curr) =>
+        prev.value < curr.value ? prev : curr
+      );
+      const maxItem = mapData.reduce((prev, curr) =>
+        prev.value < curr.value ? curr : prev
+      );
       this.option = {
         title: {
-          text: "USA Population Estimates (2012)",
-          subtext: "Data from www.census.gov",
-          sublink: "http://www.census.gov/popest/data/datasets.html",
+          text: "USA Population Estimates",
           left: "right",
         },
         tooltip: {
@@ -113,8 +118,8 @@ export default {
         },
         visualMap: {
           left: "right",
-          min: 500000,
-          max: 38000000,
+          min: minItem.value,
+          max: maxItem.value,
           inRange: {
             color: [
               "#313695",
@@ -130,7 +135,7 @@ export default {
               "#a50026",
             ],
           },
-          text: ["High", "Low"], // 文本，默认为数值文本
+          text: ["High", "Low"], 
           calculable: true,
         },
         toolbox: {
@@ -140,13 +145,12 @@ export default {
           top: "top",
           feature: {
             dataView: { readOnly: false },
-            restore: {},
             saveAsImage: {},
           },
         },
         series: [
           {
-            name: "USA PopEstimates",
+            name: this.$t(`type.${this.dataType}`),
             type: "map",
             roam: true,
             map: this.country,
