@@ -65,7 +65,7 @@
       "death": "Total Death",
       "hospitalCases": "Current Admitted",
       "covidOccupiedMVBeds": "Current Severe",
-      "confirmedRate": "Rate per 1m"
+      "confirmedRate": "Cases per 100k"
     },
     "nation": {
       "England": "England",
