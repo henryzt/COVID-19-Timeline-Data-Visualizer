@@ -161,7 +161,6 @@ export default {
         },
         toolbox: {
           show: true,
-          //orient: 'vertical',
           left: "left",
           top: "top",
           feature: {

@@ -18,7 +18,7 @@
           />
         </div>
         <div v-else>
-          <Map
+          <MapView
             class="table"
             v-if="globalTableData"
             :is-local="selectedLocation === 'local'"
@@ -34,7 +34,7 @@
 
 <script>
 import Table from "./Table.vue";
-import Map from "./Map.vue";
+import MapView from "./MapView.vue";
 import Selector from "./Selector.vue";
 import { NSpin } from "naive-ui";
 
@@ -95,7 +95,7 @@ export default {
   },
   components: {
     Table,
-    Map,
+    MapView,
     NSpin,
     Selector,
   },

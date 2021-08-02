@@ -65,7 +65,7 @@
       "death": "死亡人数",
       "hospitalCases": "目前在院",
       "covidOccupiedMVBeds": "目前重症",
-      "confirmedRate": "确诊率 %"
+      "confirmedRate": "百万人确诊率"
     },
     "nation": {
       "England": "英格兰",
