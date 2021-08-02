@@ -1,0 +1,96 @@
+{
+  "pageTitle": "COVID-19 Realtime Trend Visualizer - Coronavirus Nearby Cases Finder",
+  "title": "Trend and Analysis",
+  "dateFormat": "DD MMM YY",
+  "updatedAt": "Updated at ",
+  "noData": "No data yet",
+  "subtitles": {
+    "overview": "Today Overview",
+    "nearby": "Cases Near Me",
+    "cumulative": "Cumulative Trend Analysis",
+    "daily": "Daily Trend Analysis",
+    "region": "Region Analysis",
+    "about": "About",
+    "map": "Map Analysis",
+    "country": "Country Overview"
+  },
+  "today": {
+    "cases": "Cases Today",
+    "deaths": "Deaths Today",
+    "active": "Current Active",
+    "critical": "Current Critical",
+    "recovered": "Recovered Today",
+    "tests": "Tests Today"
+  },
+  "type": {
+    "cases": "Cases",
+    "deaths": "Deaths",
+    "active": "Active",
+    "critical": "Critical",
+    "recovered": "Recovered",
+    "tests": "Tests",
+    "admission": "Admissions",
+    "todayAdmission": "Admissions Today",
+    "todayCases": "Cases Today",
+    "todayDeaths": "Deaths Today",
+    "todayRecovered": "Recovered Today",
+    "casesPerOneMillion": "Cases per 1m",
+    "deathsPerOneMillion": "Deaths per 1m",
+    "testsPerOneMillion": "Tests per 1m",
+    "activePerOneMillion": "Active per 1m",
+    "recoveredPerOneMillion": "Recovered per 1m",
+    "criticalPerOneMillion": "Critical per 1m",
+    "admissionPerOneMillion": "Admission per 1m",
+    "total": "Total",
+    "daily": "Daily",
+    "rate": "Rate",
+    "en": "English",
+    "zh": "中文",
+    "global": "Global",
+    "local": "Country",
+    "population": "Population"
+  },
+  "dropdown": {
+    "popular": "Popular",
+    "world": "🌍 Worldwide",
+    "uk": "🇬🇧 United Kingdom",
+    "us": "🇺🇸 United States",
+    "all": "All Countries and regions"
+  },
+  "country": "Country",
+  "selectCountry": "Select Country",
+  "uk": {
+    "option": {
+      "confirmed": "Total Confirmed",
+      "death": "Total Death",
+      "hospitalCases": "Current Admitted",
+      "covidOccupiedMVBeds": "Current Severe",
+      "confirmedRate": "Cases per 100k"
+    },
+    "nation": {
+      "England": "England",
+      "Scotland": "Scotland",
+      "Wales": "Wales",
+      "NIreland": "North Ireland"
+    }
+  },
+  "nearBy": {
+    "ukDefault": "Search cases in NHS region by postcode, or tap the left-side icon to locate.",
+    "usDefault": "Search cases and rankings by county, or tap the left-side icon to locate.",
+    "postcodeErr": "Sorry, the UK postcode your entered is invalid.",
+    "ukResult": "Currently, there are<span>{1}</span> confirmed cases in<span>{0}</span>, daily increase by <span>{2}</span> cases, ranked <span>{3}</span> in all upper regions. The rate of infection per 100k people is <span>{4}</span>. There are <span>{5}</span> deaths, <span>{6}</span> new deaths today.",
+    "usResult": "Currently, there are<span>{1}</span> active cases in<span>{0}</span>. Cumulatively, there are<span>{2}</span> confirmed cases, <span>{3}</span> deaths<span>({4}%)</span> and <span>{5}</span> recovered<span>({6}%)</span>. It is ranked <span>{7}</span> in all US counties.",
+    "usStateResult": "In the State of {0}, there are<span>{1}</span> people tested in total, the average testing rate is<span>{2}%</span>, ranked <span>{11}</span> highest in all states. Of those<span>{3}</span> tested positive, <span>{4}</span> are hospitalized ({5}%),<span>{6}</span> deaths ({7}%), <span>{8}</span> recovered. Currently there are<span>{9}</span> active cases. It is ranked <span>{10}</span> in all states.",
+    "notFound": "Sorry, we cannot find any data on <span>{0}</span>",
+    "locating": "Locating, please wait...",
+    "notUk": "Sorry, but we cannot locate you onto an UK region.",
+    "notUs": "Sorry, but we cannot locate you onto an US county.",
+    "rejected": "Sorry, but you have denied the GPS permission.",
+    "unsupported": "Sorry, Geolocation is not supported by this browser.",
+    "search": "Search",
+    "switchCountyState": "Switch State/County Data",
+    "goToRegional": "Go to Regional Data Section",
+    "empty": "Please select an area or the value you entered",
+    "ukPlaceholder": "Enter a postcode or name..."
+  }
+}

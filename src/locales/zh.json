@@ -1,0 +1,94 @@
+{
+  "pageTitle": "COVID-19 实时疫情数据跟踪 - 全球及地区附近数据查询",
+  "title": "实时疫情动态",
+  "dateFormat": "YYYY-MM-DD",
+  "updatedAt": "更新于 ",
+  "noData": "暂无此数据",
+  "subtitles": {
+    "overview": "今日概览",
+    "nearby": "附近疫情",
+    "cumulative": "累计数据分析",
+    "daily": "日增数据分析",
+    "region": "国家与地区分析",
+    "about": "关于",
+    "map": "地图分析",
+    "country": "国家概览"
+  },
+  "today": {
+    "cases": "今日确诊",
+    "deaths": "今日死亡",
+    "active": "目前活跃",
+    "critical": "目前重症",
+    "recovered": "今日治愈",
+    "tests": "今日检测"
+  },
+  "type": {
+    "cases": "确诊",
+    "deaths": "死亡",
+    "active": "活跃",
+    "critical": "重症",
+    "recovered": "治愈",
+    "tests": "测试",
+    "admission": "住院",
+    "todayAdmission": "今日住院",
+    "todayCases": "今日确诊",
+    "todayDeaths": "今日死亡",
+    "todayRecovered": "今日治愈",
+    "casesPerOneMillion": "百万人确诊率",
+    "deathsPerOneMillion": "百万人死亡率",
+    "testsPerOneMillion": "百万人测试率",
+    "activePerOneMillion": "百万人在诊率",
+    "recoveredPerOneMillion": "百万人治愈率",
+    "criticalPerOneMillion": "百万人重症率",
+    "admissionPerOneMillion": "百万人住院率",
+    "total": "累计",
+    "daily": "今日",
+    "rate": "百万率",
+    "en": "English",
+    "zh": "中文",
+    "global": "全球",
+    "local": "国家",
+    "population": "总人口数"
+  },
+  "dropdown": {
+    "popular": "热门",
+    "world": "🌍 全球实时",
+    "uk": "🇬🇧 英国实时",
+    "us": "🇺🇸 美国实时",
+    "all": "所有国家和地区"
+  },
+  "country": "国家或地区",
+  "selectCountry": "选择国家或地区",
+  "uk": {
+    "option": {
+      "confirmed": "确诊人数",
+      "death": "死亡人数",
+      "hospitalCases": "目前在院",
+      "covidOccupiedMVBeds": "目前重症",
+      "confirmedRate": "十万人确诊"
+    },
+    "nation": {
+      "England": "英格兰",
+      "Scotland": "苏格兰",
+      "Wales": "威尔士",
+      "NIreland": "北爱尔兰"
+    }
+  },
+  "nearBy": {
+    "usDefault": "搜索州或郡名即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+    "ukDefault": "输入您的英国邮编即可查询最近的区域确诊数量，点击左侧按钮可以自动定位。",
+    "postcodeErr": "抱歉，您输入的邮编有误",
+    "ukResult": "目前，<span>{0}</span>区共有<span>{1}</span>例确诊，今日增加<span>{2}</span>例，在NHS地区中排名第<span>{3}</span>。此区域内十万人感染率为<span>{4}</span>，总死亡<span>{5}</span>例，今日新增<span>{6}</span>例。",
+    "notFound": "抱歉，我们无法找到<span>{0}</span>的相关信息",
+    "locating": "定位中，请稍候...",
+    "notUk": "很抱歉，我们无法定位您到英国的地区",
+    "notUs": "很抱歉，我们无法定位您到美国的地区",
+    "rejected": "很抱歉，我们无法定位，因为您已拒绝位置授权",
+    "unsupported": "很抱歉，您的浏览器不支持定位",
+    "search": "查询",
+    "switchCountyState": "切换州或郡数据",
+    "goToRegional": "前往地区数据版块",
+    "empty": "请选择一个区域或者您输入的邮编",
+    "ukPlaceholder": "选择区域或输入邮编"
+  }
+}
