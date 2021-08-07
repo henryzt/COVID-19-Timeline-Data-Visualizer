@@ -19,11 +19,11 @@ function getSeries(dataType: string, chartType: string, color: string, data: Arr
       color: new graphic.LinearGradient(0, 0, 0, 1, [
         {
           offset: 0,
-          color: color + "a0", // hex rgba
+          color: color, // hex rgba
         },
         {
           offset: 1,
-          color: color + "09",
+          color: "#fff",
         },
       ]),
     },
