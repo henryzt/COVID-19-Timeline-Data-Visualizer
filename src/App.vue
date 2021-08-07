@@ -1,12 +1,26 @@
 <template>
   <div v-if="render" class="main-content fade-in">
     <Header :country-list="countryList" v-model="selectedCountry" />
+    <n-alert
+      v-if="errorMsg"
+      title="Network Error"
+      type="error"
+      @on-close="errorMsg = null"
+      closable
+    >
+      {{ errorMsg }}
+    </n-alert>
     <MainNumbers
       :loading="!loaded.overviewData"
       :overview-data="overviewData"
       :all-time-series="loaded.timeSeries ? timeSeries : null"
     />
-    <component v-if="localComponent" :is="localComponent" @local-data-ready="handleLocalData"></component>
+    <component
+      v-if="localComponent"
+      :is="localComponent"
+      @local-data-ready="handleLocalData"
+      @error="errorMsg = $event"
+    ></component>
     <ChartSection :loading="!loaded.timeSeries" :all-time-series="timeSeries" />
     <ChartSection
       :loading="!loaded.timeSeries"
@@ -42,7 +56,8 @@ import {
   getTimeSeries,
   getCountryList,
 } from "./utils/api";
-import {getLocalComponent} from "./utils/local"
+import { getLocalComponent } from "./utils/local";
+import { NAlert } from "naive-ui";
 
 export default defineComponent({
   name: "App",
@@ -52,6 +67,7 @@ export default defineComponent({
     ChartSection,
     TableMapSection,
     Credits,
+    NAlert,
   },
   data() {
     return {
@@ -62,6 +78,7 @@ export default defineComponent({
       localTableData: null,
       countryList: [],
       selectedCountry: "all",
+      errorMsg: null,
       loaded: {
         overviewData: false,
         timeSeries: false,
@@ -70,13 +87,17 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.initLanguage();
-    this.initLocation();
-    this.countryList = getCountryList([], this.$t);
-    this.updateCountryData();
-    this.globalTableData = await getAllCountryData();
-    this.loaded.globalTableData = true;
-    this.countryList = getCountryList(this.globalTableData, this.$t);
+    try {
+      this.initLanguage();
+      this.initLocation();
+      this.countryList = getCountryList([], this.$t);
+      this.updateCountryData();
+      this.globalTableData = await getAllCountryData();
+      this.loaded.globalTableData = true;
+      this.countryList = getCountryList(this.globalTableData, this.$t);
+    } catch (error) {
+      this.handleError(error.toString());
+    }
   },
   watch: {
     selectedCountry() {
@@ -84,23 +105,27 @@ export default defineComponent({
     },
   },
   computed: {
-    localComponent(){
-      return getLocalComponent(this.selectedCountry)
-    }
+    localComponent() {
+      return getLocalComponent(this.selectedCountry);
+    },
   },
   methods: {
     async updateCountryData() {
-      localStorage.setItem("lastCountry", this.selectedCountry);
-      this.localTableData = null;
-      this.loaded.overviewData = false;
-      this.loaded.timeSeries = false;
-      this.overviewData = await getOverviewData(this.selectedCountry);
-      this.loaded.overviewData = true;
-      this.timeSeries = await getTimeSeries(this.selectedCountry);
-      this.loaded.timeSeries = true;
+      try {
+        localStorage.setItem("lastCountry", this.selectedCountry);
+        this.localTableData = null;
+        this.loaded.overviewData = false;
+        this.loaded.timeSeries = false;
+        this.overviewData = await getOverviewData(this.selectedCountry);
+        this.loaded.overviewData = true;
+        this.timeSeries = await getTimeSeries(this.selectedCountry);
+        this.loaded.timeSeries = true;
+      } catch (error) {
+        this.handleError(error.toString());
+      }
     },
     handleLocalData(data) {
-      if("tableData" in data){
+      if ("tableData" in data) {
         this.localTableData = data.tableData;
       }
     },
@@ -125,6 +150,9 @@ export default defineComponent({
       if (lastLang) {
         this.changeLang(lastLang);
       }
+    },
+    handleError(error: string) {
+      this.errorMsg = error;
     },
     changeLang(lang: string) {
       this.$i18n.locale = lang;

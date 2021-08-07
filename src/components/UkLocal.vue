@@ -47,27 +47,31 @@ export default {
       .replaceAll(" ", "")
       .replaceAll("\n", "");
 
-    const structure = "&structure=" + encodeURIComponent(queries);
-    const baseUrl =
-      "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=";
+    try {
+      const structure = "&structure=" + encodeURIComponent(queries);
+      const baseUrl =
+        "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=";
 
-    const nationRes = await fetch(`${baseUrl}nation${structure}`);
-    const nation = await nationRes.json();
-    this.nation = nation.data;
+      const nationRes = await fetch(`${baseUrl}nation${structure}`);
+      const nation = await nationRes.json();
+      this.nation = nation.data;
 
-    const overviewRes = await fetch(`${baseUrl}overview${structure}`);
-    const overview = await overviewRes.json();
-    this.overview = overview.data;
+      const overviewRes = await fetch(`${baseUrl}overview${structure}`);
+      const overview = await overviewRes.json();
+      this.overview = overview.data;
 
-    this.loadUkRealtimeDisplay();
+      this.loadUkRealtimeDisplay();
 
-    const utlaRes = await fetch(
-      `${baseUrl}utla&latestBy=newCasesByPublishDate${structure}`
-    );
-    const utla = await utlaRes.json();
-    this.utla = utla.data;
+      const utlaRes = await fetch(
+        `${baseUrl}utla&latestBy=newCasesByPublishDate${structure}`
+      );
+      const utla = await utlaRes.json();
+      this.utla = utla.data;
 
-    this.reportLocalData()
+      this.reportLocalData();
+    } catch (e) {
+      this.reportError(e.toString());
+    }
   },
   methods: {
     loadUkRealtimeDisplay() {
@@ -82,23 +86,26 @@ export default {
       };
       this.chartData = this.overview.reverse();
     },
-    reportLocalData(){
-      const tableData = this.utla.map(e => ({
+    reportLocalData() {
+      const tableData = this.utla.map((e) => ({
         locationName: e.areaName,
         cases: e.confirmed,
         deaths: e.death,
         todayCases: e.confirmedNew,
         todayDeaths: e.deathNew,
         casesPerOneMillion: e.confirmedRate,
-        deathPerOneMillion: e.deathRate
-      }))
+        deathPerOneMillion: e.deathRate,
+      }));
 
       const localData = {
-        tableData
-      }
-      
-      this.$emit("localDataReady", localData)
-    }
+        tableData,
+      };
+
+      this.$emit("localDataReady", localData);
+    },
+    reportError(error) {
+      this.$emit("error", error);
+    },
   },
   components: {
     UkRegionSection,

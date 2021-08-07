@@ -1,8 +1,12 @@
 const apiUrl = "https://disease.sh/v3/covid-19/";
 
 async function request(endpoint: string): Promise<any> {
-  const response = await fetch(apiUrl + endpoint);
-  return response.json();
+  try {
+    const response = await fetch(apiUrl + endpoint);
+    return response.json();
+  } catch (e) {
+    throw e;
+  }
 }
 
 export async function getAllCountryData() {
@@ -27,7 +31,7 @@ export async function getOverviewData(country: string) {
       outdated = false;
     }
   }
-  return  { ...result, outdated };
+  return { ...result, outdated };
 }
 
 export async function getTimeSeries(country: string) {
@@ -53,7 +57,7 @@ export async function getTimeSeries(country: string) {
   return data;
 }
 
-export function getCountryList(allCountryData: any[], t:any) {
+export function getCountryList(allCountryData: any[], t: any) {
   let array = [
     {
       label: t("dropdown.popular"),
@@ -83,7 +87,7 @@ export function getCountryList(allCountryData: any[], t:any) {
     const popularCountries = array.map((i) => i.value);
 
     const countryList = allCountryData
-      .filter(i => !popularCountries.includes(i.country))
+      .filter((i) => !popularCountries.includes(i.country))
       .map((i) => ({ label: i.country, value: i.country }));
 
     array = [...array, ...countryList];
