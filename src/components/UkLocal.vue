@@ -24,7 +24,7 @@ export default {
     };
   },
   async mounted() {
-    const queries = `{
+    const queriesJson = {
         "date":"date",
         "areaName":"areaName",
         "areaCode":"areaCode",
@@ -43,9 +43,9 @@ export default {
         "deathRate":"cumDeaths28DaysByPublishDateRate",
         "testedNew":"newTestsByPublishDate",
         "tested":"cumTestsByPublishDate"
-    }`
-      .replaceAll(" ", "")
-      .replaceAll("\n", "");
+    }
+
+    const queries = JSON.stringify(queriesJson);
 
     try {
       const structure = "&structure=" + encodeURIComponent(queries);
