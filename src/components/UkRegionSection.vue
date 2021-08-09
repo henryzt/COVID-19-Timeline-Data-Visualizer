@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       tag: "confirmed",
-      nations: ["England", "Scotland", "Wales", "NIreland"],
+      nations: ["England", "Scotland", "Wales", "Northern Ireland"],
       options: [
         "confirmed",
         "death",
