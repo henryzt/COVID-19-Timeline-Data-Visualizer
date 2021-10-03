@@ -37,9 +37,25 @@ export async function getOverviewData(country: string) {
 export async function getTimeSeries(country: string) {
   let data = await request(`historical/${country}?lastdays=all`);
   data = data.country ? data.timeline : data;
+  // filter empty recovered cases
+  let gotNonZeroData = false;
+  let gotZeroAfterNonZero = false;
+  const datesToDelete = [];
+  for (let i in data.recovered) {
+    if (gotZeroAfterNonZero && !data.recovered[i]) {
+      datesToDelete.push(i);
+    } else if (data.recovered[i] && !gotNonZeroData) {
+      gotNonZeroData = true;
+    } else if (!data.recovered[i] && gotNonZeroData) {
+      gotZeroAfterNonZero = true;
+      datesToDelete.push(i);
+    }
+  }
+  datesToDelete.forEach(e => delete data.recovered[e]);
   // get active cases time series
-  data.active = { ...data.cases };
+  data.active = { ...data.recovered };
   for (let i in data.cases) {
+    if (!data.recovered[i] || !data.deaths[i]) break;
     data.active[i] = data.cases[i] - data.deaths[i] - data.recovered[i];
   }
   // get daily time series
