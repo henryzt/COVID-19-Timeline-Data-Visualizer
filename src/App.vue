@@ -1,6 +1,10 @@
 <template>
   <div v-if="render" class="main-content fade-in">
-    <Header :country-list="countryList" v-model="selectedCountry" />
+    <Header 
+      :override-title="branding?.mainTitle" 
+      :country-list="countryList" 
+      v-model="selectedCountry" 
+    />
     <n-alert
       v-if="errorMsg"
       title="Network Error"
@@ -39,7 +43,7 @@
       :global-table-data="globalTableData"
       :local-table-data="localTableData"
     />
-    <Brandings />
+    <Brandings @brandingReady="setBranding" />
     <Credits @changeLang="changeLang" />
   </div>
 </template>
@@ -87,6 +91,7 @@ export default defineComponent({
         timeSeries: false,
         globalTableData: false,
       },
+      branding: null,
     };
   },
   async mounted() {
@@ -165,6 +170,9 @@ export default defineComponent({
       }
       localStorage.setItem("lastLang", lang);
       this.forceReload();
+    },
+    setBranding(branding: any) { // TODO: typing
+      this.branding = branding;
     },
     forceReload() {
       this.render = false;

@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <div class="header-title">
-        <h2>COVID-19</h2>
+        <h2>{{ overrideTitle ?? "COVID-19" }}</h2>
         <h3>{{ $t("title") }}</h3>
       </div>
       <div>
@@ -23,6 +23,10 @@ import { NSelect } from "naive-ui";
 export default {
   name: "Header",
   props: {
+    overrideTitle: {
+      type: String,
+      default: null
+    },
     countryList: {
       type: Array,
       default: []

@@ -37,8 +37,8 @@ export default {
         }
       })
       .then((json) => {
-        console.log(json);
         this.b = json;
+        this.$emit("brandingReady", json);
       })
       .catch(() => {});
   },
