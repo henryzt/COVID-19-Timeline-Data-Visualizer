@@ -3,7 +3,7 @@
   <!-- please do not remove the credit links -->
   <ul class="about">
     <li>
-      Data provided by <n-a href="https://disease.sh/">disease.sh</n-a> API.
+      Data provided by <n-a href="https://disease.sh/">disease.sh</n-a> API and GOV.UK.
       Designed with <n-a href="https://naiveui.com">Naive-UI</n-a> and
       <n-a href="https://echarts.apache.org/">ECharts</n-a>.
     </li>

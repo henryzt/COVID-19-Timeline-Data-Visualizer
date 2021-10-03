@@ -39,6 +39,7 @@
       :global-table-data="globalTableData"
       :local-table-data="localTableData"
     />
+    <Brandings />
     <Credits @changeLang="changeLang" />
   </div>
 </template>
@@ -50,6 +51,7 @@ import MainNumbers from "./components/MainNumbers.vue";
 import ChartSection from "./components/ChartSection.vue";
 import TableMapSection from "./components/TableMapSection.vue";
 import Credits from "./components/Credits.vue";
+import Brandings from "./components/Brandings.vue";
 import {
   getAllCountryData,
   getOverviewData,
@@ -68,6 +70,7 @@ export default defineComponent({
     TableMapSection,
     Credits,
     NAlert,
+    Brandings
   },
   data() {
     return {
