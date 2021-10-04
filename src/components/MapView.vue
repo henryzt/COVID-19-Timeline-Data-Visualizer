@@ -1,6 +1,9 @@
 <template>
   <n-spin :show="loading">
-    <v-chart v-if="render" class="chart" :option="option" />
+    <div v-if="render">
+      <v-chart ref="chart" class="chart" :option="option" :updateOptions="{ notMerge: true }" />
+      <Selector class="center" :types="['mapView', 'barView']" v-model="viewType" />
+    </div>
     <n-empty v-else class="empty" :description="$t('noData')" />
   </n-spin>
 </template>
@@ -8,7 +11,9 @@
 <script>
 import { use, registerMap } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
+import { UniversalTransition } from "echarts/features";
 import { MapChart } from "echarts/charts";
+import Selector from "./Selector.vue";
 import {
   TitleComponent,
   ToolboxComponent,
@@ -27,13 +32,36 @@ use([
   TooltipComponent,
   VisualMapComponent,
   GeoComponent,
+  UniversalTransition,
 ]);
+
+const tooltip = {
+  trigger: "item",
+  showDelay: 0,
+  transitionDuration: 0.2,
+  formatter: function (params) {
+    var value = (params.value + "").split(".");
+    value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, "$1,");
+    return params.seriesName + "<br/>" + params.name + ": " + value;
+  },
+};
+
+const toolbox = {
+  show: true,
+  left: "right",
+  top: "top",
+  feature: {
+    dataView: { readOnly: false },
+    saveAsImage: {},
+  },
+};
 
 export default {
   components: {
     VChart,
     NSpin,
     NEmpty,
+    Selector,
   },
   provide: {
     [THEME_KEY]: "light",
@@ -61,6 +89,7 @@ export default {
       option: {},
       render: true,
       loading: true,
+      viewType: "mapView",
     };
   },
   mounted() {
@@ -72,6 +101,10 @@ export default {
     },
     tableData() {
       this.register();
+    },
+    viewType() {
+      // this.$refs.chart.clear();
+      this.updateChart();
     },
   },
   computed: {
@@ -120,23 +153,54 @@ export default {
         name: e.locationName,
         value: e[this.dataType],
       }));
-      const minItem = mapData.reduce((prev, curr) =>
-        prev.value < curr.value ? prev : curr
-      );
-      const maxItem = mapData.reduce((prev, curr) =>
-        prev.value < curr.value ? curr : prev
-      );
+
+      if (this.viewType === "mapView") {
+        this.loadMapOption(mapData);
+      } else {
+        this.loadBarOption(mapData);
+      }
+      this.render = true;
+      this.loading = false;
+    },
+    loadBarOption(mapData) {
+      const barData = mapData
+        .sort(function (a, b) {
+          return a.value - b.value;
+        })
+        .slice(-40);
       this.option = {
-        tooltip: {
-          trigger: "item",
-          showDelay: 0,
-          transitionDuration: 0.2,
-          formatter: function (params) {
-            var value = (params.value + "").split(".");
-            value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, "$1,");
-            return params.seriesName + "<br/>" + params.name + ": " + value;
-          },
+        xAxis: {
+          type: "value",
         },
+        yAxis: {
+          type: "category",
+          axisLabel: {
+            rotate: 30,
+          },
+          data: barData.map(function (item) {
+            return item.name;
+          }),
+        },
+        tooltip,
+        toolbox,
+        animationDurationUpdate: 1000,
+        series: {
+          type: "bar",
+          id: "cases",
+          name: this.$t(`type.${this.dataType}`),
+          data: barData.map(function (item) {
+            return item.value;
+          }),
+          universalTransition: true,
+        },
+      };
+    },
+    loadMapOption(mapData) {
+      const minItem = mapData.reduce((prev, curr) => (prev.value < curr.value ? prev : curr));
+      const maxItem = mapData.reduce((prev, curr) => (prev.value < curr.value ? curr : prev));
+
+      this.option = {
+        tooltip,
         visualMap: {
           left: "right",
           min: minItem.value,
@@ -159,21 +223,16 @@ export default {
           text: ["High", "Low"],
           calculable: true,
         },
-        toolbox: {
-          show: true,
-          left: "left",
-          top: "top",
-          feature: {
-            dataView: { readOnly: false },
-            saveAsImage: {},
-          },
-        },
+        toolbox,
         series: [
           {
             name: this.$t(`type.${this.dataType}`),
             type: "map",
             roam: true,
             map: this.mapFile,
+            id: "cases",
+            animationDurationUpdate: 1000,
+            universalTransition: true,
             emphasis: {
               label: {
                 show: true,
@@ -183,8 +242,6 @@ export default {
           },
         ],
       };
-      this.render = true;
-      this.loading = false;
     },
   },
 };
@@ -193,5 +250,9 @@ export default {
 <style scoped>
 .chart {
   height: 430px;
+}
+
+.center {
+  text-align: center;
 }
 </style>

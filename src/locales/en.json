@@ -48,7 +48,9 @@
     "zh": "中文",
     "global": "Global",
     "local": "Country",
-    "population": "Population"
+    "population": "Population",
+    "mapView": "Map View",
+    "barView": "Bar View"
   },
   "dropdown": {
     "popular": "Popular",

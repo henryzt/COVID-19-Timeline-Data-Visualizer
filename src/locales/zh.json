@@ -48,7 +48,9 @@
     "zh": "中文",
     "global": "全球",
     "local": "国家",
-    "population": "总人口数"
+    "population": "总人口数",
+    "mapView": "地图模式",
+    "barView": "柱状图模式"
   },
   "dropdown": {
     "popular": "热门",
