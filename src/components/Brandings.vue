@@ -26,9 +26,9 @@ export default {
     }
   },
   mounted() {
-    const baseUrl = "https://henryzt.com/projects/covid-brandings/";
+    const baseUrl = "https://henryzt.com/projects/covid-brandings/index.php?hostname=";
     const hostname = window.location.hostname;
-    fetch(`${baseUrl}${hostname}.json`)
+    fetch(`${baseUrl}${hostname}`)
       .then((response) => {
         if (response.ok) {
           return response.json();

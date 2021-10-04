@@ -20,7 +20,8 @@
       <n-a href="https://github.com/henryz00">@henryz00</n-a> and
       <n-a href="https://github.com/Davi-X">@Davi-X</n-a>
       at University College London. Special thanks to
-      <n-a href="https://github.com/jieyouxu">@jieyouxu</n-a> and
+      <n-a href="https://github.com/jieyouxu">@jieyouxu</n-a>, 
+      <n-a href="https://github.com/shadowhusky">@shadowhusky</n-a> and
       <n-a href="https://github.com/robinWongM">@robinWongM</n-a>.
     </li>
   </ul>

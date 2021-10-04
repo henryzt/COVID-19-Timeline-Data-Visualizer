@@ -19,6 +19,16 @@
       :overview-data="overviewData"
       :all-time-series="loaded.timeSeries ? timeSeries : null"
     />
+    <!-- additional link -->
+    <div v-if="branding?.additionalLink">
+      <div class="title">{{ branding.additionalLink.title }}</div>
+      <div class="block alink">
+        <n-a class="alink" :href="branding.additionalLink.url">
+          {{ branding.additionalLink.linkTitle }}
+        </n-a>
+      </div>
+    </div>
+    <!-- local component -->
     <component
       v-if="localComponent"
       :is="localComponent"
@@ -63,7 +73,7 @@ import {
   getCountryList,
 } from "./utils/api";
 import { getLocalComponent } from "./utils/local";
-import { NAlert } from "naive-ui";
+import { NAlert, NA } from "naive-ui";
 
 export default defineComponent({
   name: "App",
@@ -74,7 +84,8 @@ export default defineComponent({
     TableMapSection,
     Credits,
     NAlert,
-    Brandings
+    Brandings,
+    NA
   },
   data() {
     return {
@@ -186,4 +197,9 @@ export default defineComponent({
 </script>
 
 <style>
+.alink {
+  text-align: center;
+  font-size: 1.1em;
+  text-decoration: none;
+}
 </style>
