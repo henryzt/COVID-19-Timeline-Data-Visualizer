@@ -17,10 +17,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+interface DataTypes {
+  b: Branding | null
+}
 export default {
   components: {},
-  data() {
+  data(): DataTypes {
     return {
       b: null
     }
@@ -36,7 +39,7 @@ export default {
           return Promise.reject("404");
         }
       })
-      .then((json) => {
+      .then((json: Branding) => {
         this.b = json;
         this.$emit("brandingReady", json);
       })

@@ -4,20 +4,20 @@ async function request(endpoint: string): Promise<any> {
   try {
     const response = await fetch(apiUrl + endpoint);
     return response.json();
-  } catch (e) {
+  } catch (e: unknown) {
     throw e;
   }
 }
 
-export async function getAllCountryData() {
+export async function getAllCountryData(): Promise<DataItem[]> {
   const countries = await request(`countries`);
-  countries.forEach((e) => {
+  countries.forEach((e: DataItem) => {
     e.locationName = e.country;
   });
   return countries;
 }
 
-export async function getOverviewData(country: string) {
+export async function getOverviewData(country: string): Promise<DataItem> {
   let result, outdated;
   if (country === "all") {
     result = await request(`all?yesterday=true`);
@@ -34,9 +34,10 @@ export async function getOverviewData(country: string) {
   return { ...result, outdated };
 }
 
-export async function getTimeSeries(country: string) {
-  let data = await request(`historical/${country}?lastdays=all`);
-  data = data.country ? data.timeline : data;
+export async function getTimeSeries(country: string): Promise<Timeseries> {
+  let res = await request(`historical/${country}?lastdays=all`);
+  res = res.country ? res.timeline : res;
+  let data = res as Timeseries;
   // filter empty recovered cases
   let gotNonZeroData = false;
   let gotZeroAfterNonZero = false;
@@ -51,7 +52,7 @@ export async function getTimeSeries(country: string) {
       datesToDelete.push(i);
     }
   }
-  datesToDelete.forEach(e => delete data.recovered[e]);
+  datesToDelete.forEach((e) => delete data.recovered[e]);
   // get active cases time series
   data.active = { ...data.recovered };
   for (let i in data.cases) {
@@ -60,8 +61,8 @@ export async function getTimeSeries(country: string) {
   }
   // get daily time series
   for (const [key, timeSeries] of Object.entries(data)) {
-    const dailyTimeSeries = {};
-    const tsEntires = Object.entries(timeSeries);
+    const dailyTimeSeries = {} as TimeseriesItem;
+    const tsEntires = Object.entries(timeSeries as TimeseriesItem);
     let lastNumber = 0;
     for (const [key, value] of tsEntires) {
       let diff = value - lastNumber;
@@ -73,7 +74,7 @@ export async function getTimeSeries(country: string) {
   return data;
 }
 
-export function getCountryList(allCountryData: any[], t: any) {
+export function getCountryList(allCountryData: any[], t: any): CountryListItem[] {
   let array = [
     {
       label: t("dropdown.popular"),
@@ -97,7 +98,7 @@ export function getCountryList(allCountryData: any[], t: any) {
       value: "divider1",
       disabled: true,
     },
-  ];
+  ] as CountryListItem[];
 
   if (allCountryData?.length > 0) {
     const popularCountries = array.map((i) => i.value);

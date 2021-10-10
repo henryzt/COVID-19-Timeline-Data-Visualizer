@@ -75,6 +75,23 @@ import {
 import { getLocalComponent } from "./utils/local";
 import { NAlert, NA } from "naive-ui";
 
+interface DataTypes {
+  render: boolean,
+  overviewData: DataItem | null,
+  timeSeries: Timeseries | null,
+  globalTableData: DataItem[] | null,
+  localTableData: DataItem[] | null,
+  countryList: CountryListItem[],
+  selectedCountry: string,
+  errorMsg: string | null,
+  loaded: {
+    overviewData: boolean,
+    timeSeries: boolean,
+    globalTableData: boolean,
+  },
+  branding: Branding | null,
+}
+
 export default defineComponent({
   name: "App",
   components: {
@@ -87,7 +104,7 @@ export default defineComponent({
     Brandings,
     NA
   },
-  data() {
+  data(): DataTypes {
     return {
       render: true,
       overviewData: null,
@@ -124,7 +141,7 @@ export default defineComponent({
     },
   },
   computed: {
-    localComponent() {
+    localComponent(): unknown {
       return getLocalComponent(this.selectedCountry);
     },
   },
@@ -143,7 +160,7 @@ export default defineComponent({
         this.handleError(error.toString());
       }
     },
-    handleLocalData(data) {
+    handleLocalData(data: LocalData) {
       if ("tableData" in data) {
         this.localTableData = data.tableData;
       }
@@ -182,7 +199,7 @@ export default defineComponent({
       localStorage.setItem("lastLang", lang);
       this.forceReload();
     },
-    setBranding(branding: any) { // TODO: typing
+    setBranding(branding: Branding) {
       this.branding = branding;
     },
     forceReload() {
