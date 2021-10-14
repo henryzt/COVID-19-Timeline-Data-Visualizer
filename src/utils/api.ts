@@ -6,6 +6,8 @@ async function request(endpoint: string): Promise<any> {
     const response = await fetch(apiUrl + endpoint);
     return response.json();
   } catch (e: unknown) {
+    // @ts-ignore:next-line
+    window.ga("send", "event", "error", "network", JSON.stringify(e));
     throw e;
   }
 }
@@ -97,7 +99,7 @@ export async function getTimeSeries(country: string): Promise<Timeseries> {
   // get vaccine time series
   const url =
     country === "all"
-      ? "vaccine/coverage​?lastdays=all"
+      ? "vaccine/coverage?lastdays=all"
       : `vaccine/coverage/countries/${country}?lastdays=all`;
   let vaccineRes = await request(url);
   vaccineRes = vaccineRes.country ? vaccineRes.timeline : vaccineRes;

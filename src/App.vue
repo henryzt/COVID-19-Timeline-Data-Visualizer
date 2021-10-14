@@ -158,6 +158,7 @@ export default defineComponent({
         this.loaded.overviewData = true;
         this.timeSeries = await getTimeSeries(this.selectedCountry);
         this.loaded.timeSeries = true;
+        await combineVaccineData(undefined, this.selectedCountry, this.overviewData);
       } catch (error) {
         this.handleError(error.toString());
       }

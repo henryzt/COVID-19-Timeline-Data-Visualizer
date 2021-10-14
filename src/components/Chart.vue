@@ -80,6 +80,7 @@ export default defineComponent({
         deaths: "#4b3077",
         recovered: "#28ca00",
         active: "#ff7300",
+        vaccinated: "#00b8ff",
         tests: "#00b8ff",
         critical: "#f00",
       };
