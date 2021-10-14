@@ -71,6 +71,7 @@ import {
   getOverviewData,
   getTimeSeries,
   getCountryList,
+  combineVaccineData
 } from "./utils/api";
 import { getLocalComponent } from "./utils/local";
 import { NAlert, NA } from "naive-ui";
@@ -131,6 +132,7 @@ export default defineComponent({
       this.globalTableData = await getAllCountryData();
       this.loaded.globalTableData = true;
       this.countryList = getCountryList(this.globalTableData, this.$t);
+      await combineVaccineData(this.globalTableData);
     } catch (error) {
       this.handleError(error.toString());
     }

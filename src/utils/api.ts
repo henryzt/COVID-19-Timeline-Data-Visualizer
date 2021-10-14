@@ -1,4 +1,5 @@
 const apiUrl = "https://disease.sh/v3/covid-19/";
+let allVaccineData: { [key: string]: Vaccine } | null = null;
 
 async function request(endpoint: string): Promise<any> {
   try {
@@ -6,6 +7,40 @@ async function request(endpoint: string): Promise<any> {
     return response.json();
   } catch (e: unknown) {
     throw e;
+  }
+}
+
+async function getVaccineData() {
+  if (allVaccineData) return allVaccineData;
+  let res = await request("vaccine/coverage/countries?lastdays=1&fullData=true");
+  const resArray = [];
+  res.forEach((e: VaccineReturnType) => resArray.push([e.country, e.timeline[0]]));
+  const worldRes = await request("vaccine/coverage?lastdays=1&fullData=true");
+  resArray.push(["all", worldRes[0]]);
+  allVaccineData = Object.fromEntries(resArray);
+  return allVaccineData;
+}
+
+function doVaccineCombine(target: DataItem, vaccine: Vaccine) {
+  if (!vaccine) return;
+  target.vaccinated = vaccine.total;
+  target.todayVaccinated = vaccine.daily;
+  target.vaccinatedPerOneMillion = vaccine.dailyPerMillion;
+}
+
+export async function combineVaccineData(allData?: DataItem[], country?: string, overview?: DataItem) {
+  const vaccine = await getVaccineData();
+  if (!vaccine) return;
+  if (country && overview) {
+    doVaccineCombine(overview, vaccine[country]);
+  }
+  if (allData) {
+    console.log(allData, vaccine)
+    allData.forEach((e: DataItem) => {
+      if (e.country) {
+        doVaccineCombine(e, vaccine[e.country]);
+      }
+    });
   }
 }
 
@@ -56,9 +91,18 @@ export async function getTimeSeries(country: string): Promise<Timeseries> {
   // get active cases time series
   data.active = { ...data.recovered };
   for (let i in data.cases) {
-    if (!data.recovered[i] || !data.deaths[i]) break;
+    if (!data.recovered[i] || !data.deaths[i]) continue;
     data.active[i] = data.cases[i] - data.deaths[i] - data.recovered[i];
   }
+  // get vaccine time series
+  const url =
+    country === "all"
+      ? "vaccine/coverage​?lastdays=all"
+      : `vaccine/coverage/countries/${country}?lastdays=all`;
+  let vaccineRes = await request(url);
+  vaccineRes = vaccineRes.country ? vaccineRes.timeline : vaccineRes;
+  data.vaccinated = vaccineRes;
+
   // get daily time series
   for (const [key, timeSeries] of Object.entries(data)) {
     const dailyTimeSeries = {} as TimeseriesItem;

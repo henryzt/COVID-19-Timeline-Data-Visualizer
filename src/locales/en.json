@@ -50,7 +50,10 @@
     "local": "Country",
     "population": "Population",
     "mapView": "Map View",
-    "barView": "Bar View"
+    "barView": "Bar View",
+    "vaccinated": "Vaccinated",
+    "vaccinatedPerOneMillion": "Vaccinated per 1m",
+    "todayVaccinated": "Vaccinated Today"
   },
   "dropdown": {
     "popular": "Popular",

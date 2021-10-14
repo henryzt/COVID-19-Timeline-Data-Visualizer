@@ -28,11 +28,26 @@ interface DataItem {
   oneDeathPerPeople: number;
   oneTestPerPeople: number;
   affectedCountries: number;
+  vaccinated: number;
+  vaccinatedPerOneMillion: number;
+  todayVaccinated: number;
   outdated?: boolean;
 }
 
 interface TimeseriesItem {
   [index: string]: number
+}
+
+interface Vaccine {
+  total: number
+  daily: number
+  totalPerHundred: number
+  dailyPerMillion: number
+  date: string
+}
+interface VaccineReturnType {
+  country: string
+  timeline: Vaccine[]
 }
 
 interface Timeseries {
@@ -44,6 +59,8 @@ interface Timeseries {
   deathsDaily: TimeseriesItem;
   recovered: TimeseriesItem;
   recoveredDaily: TimeseriesItem;
+  vaccinated: TimeseriesItem;
+  vaccinatedDaily: TimeseriesItem;
   [index: string]: TimeseriesItem;
 }
 

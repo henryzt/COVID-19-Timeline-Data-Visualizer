@@ -78,6 +78,7 @@ export default {
         "todayCases",
         "todayDeaths",
         "todayRecovered",
+        "vaccinated",
         "recovered",
         "tests",
         "critical",

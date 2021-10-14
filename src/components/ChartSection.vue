@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      dataTypes: ["cases", "deaths", "recovered", "active"],
+      dataTypes: ["cases", "deaths", "vaccinated", "recovered", "active"],
       selectedType: "cases",
     };
   },
